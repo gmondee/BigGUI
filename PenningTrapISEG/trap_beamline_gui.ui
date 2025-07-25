@@ -1,0 +1,1787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1420</width>
+    <height>989</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1420</width>
+    <height>989</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>39</x>
+     <y>19</y>
+     <width>1071</width>
+     <height>97</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>36</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>                Penning Trap Beamline</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>1381</width>
+     <height>751</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>2D_Labeled_Diagram.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_15">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>800</y>
+     <width>315</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_15">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_82">
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pulse Valve Voltage</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set12">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>20 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read12">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>20.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power12">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt12">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::WheelFocus</enum>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>25.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.500000000000000</double>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_16">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>650</y>
+     <width>261</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_16">
+    <item row="0" column="2">
+     <widget class="QLabel" name="set11">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power11">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_86">
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>MagneTOF</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt11">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::WheelFocus</enum>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>2400.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read11">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_10">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>140</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_10">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power6">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read6">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set6">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt6">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_11">
+   <property name="geometry">
+    <rect>
+     <x>1130</x>
+     <y>140</y>
+     <width>211</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_11">
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt5">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_12">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set5">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read5">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power5">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_18">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>340</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_18">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power2">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read2">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set2">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt2">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,0,128)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_19">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>360</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_19">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power1">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read1">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set1">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt1">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_14">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,0,0)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_20">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>180</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_20">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power4">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read4">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set4">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt4">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_15">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_21">
+   <property name="geometry">
+    <rect>
+     <x>1150</x>
+     <y>320</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_21">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power3">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read3">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(124,60,4)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set3">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(124,60,5)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt3">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_16">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(124,60,4)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_26">
+   <property name="geometry">
+    <rect>
+     <x>870</x>
+     <y>640</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_26">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power0">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read0">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set0">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt0">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>5000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>5.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_21">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_27">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>210</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_27">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power10">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read10">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set10">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt10">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>5000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_22">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,0,255)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_28">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>210</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_28">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power8">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read8">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set8">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt8">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>5000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_23">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0,128,0)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_29">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>290</y>
+     <width>211</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_29">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power7">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read7">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set7">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt7">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>5000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_24">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(128,0,128)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_30">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>120</y>
+     <width>221</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_30">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="power9">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color :rgb(170, 0, 0)</string>
+      </property>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="read9">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000.0 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="set9">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string>1000 V</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="volt9">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="keyboardTracking">
+       <bool>false</bool>
+      </property>
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <double>5000.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>10.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_25">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(128,0,0)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>1030</x>
+     <y>880</y>
+     <width>310</width>
+     <height>88</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="text">
+       <string>Save Configuration</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>File Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="text">
+       <string>Import</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Import/Export File</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>900</y>
+     <width>196</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>Set all Voltages to Zero</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <zorder>label_2</zorder>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>gridLayoutWidget_15</zorder>
+  <zorder>gridLayoutWidget_16</zorder>
+  <zorder>gridLayoutWidget_10</zorder>
+  <zorder>gridLayoutWidget_11</zorder>
+  <zorder>gridLayoutWidget_18</zorder>
+  <zorder>gridLayoutWidget_19</zorder>
+  <zorder>gridLayoutWidget_20</zorder>
+  <zorder>gridLayoutWidget_21</zorder>
+  <zorder>gridLayoutWidget_26</zorder>
+  <zorder>gridLayoutWidget_27</zorder>
+  <zorder>gridLayoutWidget_28</zorder>
+  <zorder>gridLayoutWidget_29</zorder>
+  <zorder>gridLayoutWidget_30</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>gridLayoutWidget_2</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>volt0</tabstop>
+  <tabstop>volt1</tabstop>
+  <tabstop>volt2</tabstop>
+  <tabstop>volt3</tabstop>
+  <tabstop>volt4</tabstop>
+  <tabstop>volt6</tabstop>
+  <tabstop>volt5</tabstop>
+  <tabstop>volt10</tabstop>
+  <tabstop>volt7</tabstop>
+  <tabstop>volt8</tabstop>
+  <tabstop>volt9</tabstop>
+  <tabstop>volt11</tabstop>
+  <tabstop>volt12</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

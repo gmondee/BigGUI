@@ -1,0 +1,72 @@
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QMdiArea, QMdiSubWindow,
+    QTextEdit, QWidget, QVBoxLayout
+)
+from PyQt6.QtGui import QAction
+import sys
+
+class AutoTilingSubWindow(QMdiSubWindow):
+    def __init__(self, mdi_area, content_widget, name):
+        super().__init__()
+        self.mdi_area = mdi_area
+        self.setWidget(content_widget)
+        self.setWindowTitle(name)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.mdi_area.tileSubWindows()
+
+    def hideEvent(self, event):
+        super().hideEvent(event)
+        self.mdi_area.tileSubWindows()
+
+    def closeEvent(self, event):
+        super().closeEvent(event)
+        self.mdi_area.tileSubWindows()
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("QMdiArea with Auto-Tiling")
+        self.setGeometry(100, 100, 1000, 600)
+
+        # Create central MDI area
+        self.mdi = QMdiArea()
+        self.setCentralWidget(self.mdi)
+
+        # Menu to toggle subwindows
+        menu = self.menuBar().addMenu("Windows")
+
+        self.subwindows = {}
+        names = ["Controls", "Plot", "Status", "Settings", "Logs"]
+
+        for name in names:
+            content = QTextEdit(f"Content of {name}")
+            sub = AutoTilingSubWindow(self.mdi, content, name)
+            self.mdi.addSubWindow(sub)
+            self.subwindows[name] = sub
+
+            # Add menu toggle
+            action = QAction(name, self)
+            action.setCheckable(True)
+            action.setChecked(True)
+            action.triggered.connect(lambda checked, n=name: self.toggle_sub(n, checked))
+            menu.addAction(action)
+
+        # Show all initially
+        for sub in self.subwindows.values():
+            sub.show()
+
+    def toggle_sub(self, name, show):
+        sub = self.subwindows[name]
+        if show:
+            sub.show()
+            sub.setWindowState(sub.windowState() & ~sub.WindowState.WindowMinimized)
+        else:
+            sub.hide()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())

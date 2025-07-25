@@ -1,0 +1,82 @@
+{
+    "DC": {
+        "Accelerator": {
+            "GUI Number": 0,
+            "Channel": 0,
+            "Set Voltage": 370.0,
+            "State": "Off"
+        },
+        "Quadrupole Lens Front": {
+            "GUI Number": 1,
+            "Channel": 2,
+            "Set Voltage": 0.0,
+            "State": "Off"
+        },
+        "Quadrupole Front Left": {
+            "GUI Number": 2,
+            "Channel": 200,
+            "Set Voltage": 650.0,
+            "State": "Off"
+        },
+        "Quadrupole Front Right": {
+            "GUI Number": 3,
+            "Channel": 4,
+            "Set Voltage": 99.0,
+            "State": "Off"
+        },
+        "Quadrupole Lens Left": {
+            "GUI Number": 4,
+            "Channel": 1,
+            "Set Voltage": 0.0,
+            "State": "Off"
+        },
+        "Quadrupole Back Right": {
+            "GUI Number": 5,
+            "Channel": 5,
+            "Set Voltage": 650.0,
+            "State": "Off"
+        },
+        "Quadrupole Back Left": {
+            "GUI Number": 6,
+            "Channel": 3,
+            "Set Voltage": 89.0,
+            "State": "Off"
+        },
+        "Lens Bottom": {
+            "GUI Number": 7,
+            "Channel": 113,
+            "Set Voltage": 11.0,
+            "State": "Off"
+        },
+        "Lens Right": {
+            "GUI Number": 8,
+            "Channel": 115,
+            "Set Voltage": 15.0,
+            "State": "Off"
+        },
+        "Lens Upper": {
+            "GUI Number": 9,
+            "Channel": 111,
+            "Set Voltage": 12.0,
+            "State": "Off"
+        },
+        "Lens Left": {
+            "GUI Number": 10,
+            "Channel": 114,
+            "Set Voltage": 17.0,
+            "State": "Off"
+        },
+        "MagneTOF": {
+            "GUI Number": 11,
+            "Channel": 201,
+            "Set Voltage": 2180.0,
+            "State": "Off"
+        },
+        "Pulse Valve": {
+            "GUI Number": 12,
+            "Channel": 115,
+            "Set Voltage": 0.0,
+            "State": "Off"
+        }
+    }
+}
