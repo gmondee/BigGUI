@@ -1,6 +1,10 @@
 import sys
+import requests
+import json
+import urllib
+from functools import partial
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
 from ui_BigGUI import Ui_MainWindow
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG import Penning_Trap_Beam_Line
@@ -13,7 +17,8 @@ class BigGUI(QMainWindow):
   ### Grant Mondeel | gmondeel@mit.edu | 07/25/2025
   def __init__(self):
     super().__init__() #super
-
+    self.IP = 'http://192.168.1.53:7557'
+    self.auth = ('QTuser','QT_53')
     # Create and set up the UI
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
@@ -25,25 +30,55 @@ class BigGUI(QMainWindow):
 
 
   def loadGUIs(self):
-    self.TDC_GUI = TDC_GUI()
-    self.ui.frameTDC.layout().addWidget(self.TDC_GUI)
+    self.TDCGUI = TDC_GUI()
+    self.ui.frameTDC.layout().addWidget(self.TDCGUI)
 
     self.AblationGUI = BigSkyHub()
     self.ui.frameAblation.layout().addWidget(self.AblationGUI)
 
+    self.BeamlineGUI = Penning_Trap_Beam_Line() #will be shown when the button is pressed
 
+    #self.QuantumComposerGUI = blah #eventually need to make this
 
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
     # OPO Buttons
-    # self.ui.
-    pass
+    self.ui.pushButtonToggleOPO.clicked.connect(partial(self.sendToOPO(self.dict_enable_OPO)))
+    self.ui.pushButtonOPOSet.clicked.connect(partial(self.sendToOPO(self.dict_set_OPO_wavelength())))
+    self.ui.pushButtonStartScan.clicked.connect(self.startWavelengthScan)
+    self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
+    self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
+    self.ui.pushButtonStartLaser.clicked.connect(self.handleStartOPO) #cant think of any checks
+    self.ui.pushButtonStopLaser.clicked.connect(self.handleStopOPO) #should also stop the scan
 
-  def on_button_clicked(self):
-    text = self.ui.lineEdit.text()
-    self.ui.label.setText(f"Hello, {text}!")
 
-def set_all_margins(obj):
+
+  ### Functions for OPO communication
+  def sendToOPO(self, payload):
+    encoded = urllib.parse.quote(json.dumps(payload,separators=(',', ':')))
+    url = f"{self.IP}/send?{encoded}"
+    return requests.get(url, auth=self.auth)
+
+  def dict_run_laser(self):
+    return {"action":"control","code":{"device":"laser","values":{"laser-run": 1}}}
+
+  def dict_stop_laser(self):
+    return {"action":"control","code":{"device":"laser","values":{"laser-run": 0}}}
+
+  def dict_set_OPO_wavelength(self): #in nm
+    wavelengthnm = round(self.ui.doubleSpinBoxSetOPOWavelength.value(),2)
+    return {"action":"control","code":{"device": "laser","values":{"forward-device":"opo","forward-protocol":"wavelength","forward-action":"control","wavelength": wavelengthnm}}}
+
+  def dict_enable_OPO():
+    return{"action":"control","code":{"device":"laser","values":{"forward-device":"harmonics","forward-protocol":"crystals","forward-action":"control","hu-status": 3.6}}}
+
+  def dict_set_trigger_external_TP():
+    return {"action":"control","code":{"device":"laser","values":{"trig-mode":2}}}
+  
+  def dict_set_trigger_internal():
+    return {"action":"control","code":{"device":"laser","values":{"trig-mode":0}}}
+  
+def set_all_margins(obj): #clean up GUI appearance: make the margins small and hide frames
     if isinstance(obj, QLayout):
         obj.setContentsMargins(1, 1, 1, 1)
         obj.setSpacing(1)
@@ -51,17 +86,14 @@ def set_all_margins(obj):
             item = obj.itemAt(i)
             if item.widget():
                 set_all_margins(item.widget())
-                print('a')
             elif item.layout():
                 set_all_margins(item.layout())
-                print('b')
     elif hasattr(obj, 'layout') and callable(obj.layout):
         layout = obj.layout()
         if layout:
             set_all_margins(layout)
-            print('c')
-    else:
-       print('nope')
+    if isinstance(obj, QFrame):
+        obj.setFrameShape(QFrame.Shape.NoFrame)
 
 
 # Main app entry

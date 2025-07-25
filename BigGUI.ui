@@ -18,7 +18,7 @@
     <item row="1" column="1">
      <layout class="QGridLayout" name="gridLayout">
       <item row="6" column="0">
-       <widget class="QFrame" name="frameAblation">
+       <widget class="QFrame" name="frameOPO">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>1</horstretch>
@@ -31,7 +31,567 @@
         <property name="frameShadow">
          <enum>QFrame::Shadow::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_15"/>
+        <layout class="QVBoxLayout" name="verticalLayout_15">
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>OPO Control</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QFrame" name="frame_8">
+              <property name="frameShape">
+               <enum>QFrame::Shape::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Shadow::Raised</enum>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="leftMargin">
+                <number>2</number>
+               </property>
+               <property name="topMargin">
+                <number>2</number>
+               </property>
+               <property name="rightMargin">
+                <number>2</number>
+               </property>
+               <property name="bottomMargin">
+                <number>2</number>
+               </property>
+               <item>
+                <widget class="QFrame" name="frame">
+                 <property name="frameShape">
+                  <enum>QFrame::Shape::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Shadow::Raised</enum>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <property name="leftMargin">
+                   <number>2</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>2</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>2</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>2</number>
+                  </property>
+                  <item>
+                   <widget class="QFrame" name="frame_5">
+                    <property name="frameShape">
+                     <enum>QFrame::Shape::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Shadow::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_3">
+                     <item>
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>Port 1 Status</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="Port1Status">
+                       <property name="text">
+                        <string>Inactive</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignmentFlag::AlignCenter</set>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushButtonToggleOPO">
+                       <property name="text">
+                        <string>Enable OPO</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="frame_2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>1</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::Shape::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Shadow::Raised</enum>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                     <property name="leftMargin">
+                      <number>2</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>2</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>2</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>2</number>
+                     </property>
+                     <item>
+                      <widget class="QFrame" name="frame_12">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_13">
+                        <item>
+                         <widget class="QLabel" name="label_14">
+                          <property name="text">
+                           <string>Port 1 Wavelength</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="label_2">
+                          <property name="text">
+                           <string>Set Wavelength (nm)</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="frame_3">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>1</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_8">
+                        <property name="leftMargin">
+                         <number>2</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>2</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>2</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>2</number>
+                        </property>
+                        <item>
+                         <layout class="QGridLayout" name="gridLayout_3">
+                          <item row="1" column="2">
+                           <widget class="QPushButton" name="pushButtonOPOSet">
+                            <property name="text">
+                             <string>Set</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1" colspan="2">
+                           <widget class="QLineEdit" name="lineEditOPOCurrent">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string>000.00 nm</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignmentFlag::AlignCenter</set>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="1">
+                           <widget class="QDoubleSpinBox" name="doubleSpinBoxSetOPOWavelength">
+                            <property name="minimum">
+                             <double>210.000000000000000</double>
+                            </property>
+                            <property name="maximum">
+                             <double>2300.000000000000000</double>
+                            </property>
+                            <property name="singleStep">
+                             <double>0.010000000000000</double>
+                            </property>
+                            <property name="value">
+                             <double>210.000000000000000</double>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>OPO Scan</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <item>
+                <widget class="QTabWidget" name="tabWidgetScan">
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <widget class="QWidget" name="TabScanWavelength">
+                  <attribute name="title">
+                   <string>Wavelength Scan</string>
+                  </attribute>
+                  <layout class="QVBoxLayout" name="verticalLayout_11">
+                   <property name="leftMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item>
+                    <layout class="QFormLayout" name="formLayout">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_5">
+                       <property name="text">
+                        <string>Starting Wavelength</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxScanStartingWavelength">
+                       <property name="minimum">
+                        <double>210.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>2300.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>210.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_6">
+                       <property name="text">
+                        <string>Ending Wavelength</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_7">
+                       <property name="text">
+                        <string>Step Size</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxScanStepSize">
+                       <property name="minimum">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>0.010000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>Pulses per Step</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QSpinBox" name="spinBoxScanPulsesPerStep">
+                       <property name="minimum">
+                        <number>1</number>
+                       </property>
+                       <property name="maximum">
+                        <number>100000</number>
+                       </property>
+                       <property name="value">
+                        <number>900</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QFrame" name="frame_10">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::NoFrame</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Plain</enum>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_8">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="labelScanStatus">
+                          <property name="text">
+                           <string>Scan Status: OFF</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="pushButtonStartScan">
+                          <property name="text">
+                           <string>Start Scan</string>
+                          </property>
+                          <property name="default">
+                           <bool>false</bool>
+                          </property>
+                          <property name="flat">
+                           <bool>false</bool>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QFrame" name="frame_11">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::NoFrame</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Plain</enum>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_9">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QPushButton" name="pushButtonStopScan">
+                          <property name="text">
+                           <string>Stop Scan</string>
+                          </property>
+                          <property name="default">
+                           <bool>false</bool>
+                          </property>
+                          <property name="flat">
+                           <bool>false</bool>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxScanEndingWavelength">
+                       <property name="minimum">
+                        <double>210.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>2300.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>225.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="tab_6">
+                  <attribute name="title">
+                   <string>Placeholder Scan (delays?)</string>
+                  </attribute>
+                  <layout class="QVBoxLayout" name="verticalLayout_12">
+                   <property name="leftMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>2</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>2</number>
+                   </property>
+                   <item>
+                    <layout class="QFormLayout" name="formLayout_2">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_9">
+                       <property name="text">
+                        <string>Placeholder</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_10">
+                       <property name="text">
+                        <string>Ending Wavelength</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_11">
+                       <property name="text">
+                        <string>Step Size</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>0.010000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_12">
+                       <property name="text">
+                        <string>Pulses per Step</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QSpinBox" name="spinBox_2"/>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+                       <property name="minimum">
+                        <double>210.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>2300.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>210.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>0.010000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QPushButton" name="pushButton_8">
+                       <property name="text">
+                        <string>Start Scan</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QPushButton" name="pushButton_9">
+                       <property name="text">
+                        <string>Stop Scan</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="6" column="2">
@@ -104,7 +664,7 @@
         <property name="frameShadow">
          <enum>QFrame::Shadow::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_16">
+        <layout class="QVBoxLayout" name="verticalLayout_18">
          <item>
           <widget class="QComboBox" name="comboBox">
            <item>
@@ -122,7 +682,7 @@
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
+          <verstretch>1</verstretch>
          </sizepolicy>
         </property>
         <property name="frameShape">
@@ -134,8 +694,8 @@
         <layout class="QVBoxLayout" name="verticalLayout_14"/>
        </widget>
       </item>
-      <item row="5" column="1" rowspan="2">
-       <widget class="QFrame" name="frameOPOControl">
+      <item row="6" column="1">
+       <widget class="QFrame" name="frameLaser">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>1</horstretch>
@@ -183,8 +743,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>558</width>
-              <height>747</height>
+              <width>328</width>
+              <height>403</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -206,553 +766,6 @@
              <property name="bottomMargin">
               <number>2</number>
              </property>
-             <item>
-              <widget class="QGroupBox" name="groupBox">
-               <property name="title">
-                <string>OPO Control</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
-                <property name="leftMargin">
-                 <number>2</number>
-                </property>
-                <property name="topMargin">
-                 <number>2</number>
-                </property>
-                <property name="rightMargin">
-                 <number>2</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>2</number>
-                </property>
-                <item>
-                 <widget class="QFrame" name="frame_8">
-                  <property name="frameShape">
-                   <enum>QFrame::Shape::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Shadow::Raised</enum>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_5">
-                   <property name="leftMargin">
-                    <number>2</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>2</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>2</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>2</number>
-                   </property>
-                   <item>
-                    <widget class="QFrame" name="frame">
-                     <property name="frameShape">
-                      <enum>QFrame::Shape::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Shadow::Raised</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout">
-                      <property name="leftMargin">
-                       <number>2</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>2</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>2</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>2</number>
-                      </property>
-                      <item>
-                       <widget class="QFrame" name="frame_5">
-                        <property name="frameShape">
-                         <enum>QFrame::Shape::StyledPanel</enum>
-                        </property>
-                        <property name="frameShadow">
-                         <enum>QFrame::Shadow::Raised</enum>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_3">
-                         <item>
-                          <widget class="QLabel" name="label">
-                           <property name="text">
-                            <string>Port 1 Status</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLineEdit" name="Port1Status">
-                           <property name="text">
-                            <string>Inactive</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QPushButton" name="pushButtonToggleOPO">
-                           <property name="text">
-                            <string>Toggle OPO</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QFrame" name="frame_2">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>1</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="frameShape">
-                         <enum>QFrame::Shape::StyledPanel</enum>
-                        </property>
-                        <property name="frameShadow">
-                         <enum>QFrame::Shadow::Raised</enum>
-                        </property>
-                        <layout class="QHBoxLayout" name="horizontalLayout_2">
-                         <property name="leftMargin">
-                          <number>2</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>2</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>2</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>2</number>
-                         </property>
-                         <item>
-                          <widget class="QFrame" name="frame_12">
-                           <property name="frameShape">
-                            <enum>QFrame::Shape::StyledPanel</enum>
-                           </property>
-                           <property name="frameShadow">
-                            <enum>QFrame::Shadow::Raised</enum>
-                           </property>
-                           <layout class="QVBoxLayout" name="verticalLayout_13">
-                            <item>
-                             <widget class="QLabel" name="label_14">
-                              <property name="text">
-                               <string>Port 1 Wavelength</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QLabel" name="label_2">
-                              <property name="text">
-                               <string>Set Wavelength (nm)</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QFrame" name="frame_3">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>1</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="frameShape">
-                            <enum>QFrame::Shape::StyledPanel</enum>
-                           </property>
-                           <property name="frameShadow">
-                            <enum>QFrame::Shadow::Raised</enum>
-                           </property>
-                           <layout class="QVBoxLayout" name="verticalLayout_8">
-                            <property name="leftMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>2</number>
-                            </property>
-                            <item>
-                             <layout class="QGridLayout" name="gridLayout_3">
-                              <item row="1" column="2">
-                               <widget class="QPushButton" name="pushButtonOPOSet">
-                                <property name="text">
-                                 <string>Set</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="0" column="1" colspan="2">
-                               <widget class="QLineEdit" name="lineEditOPOCurrent">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="text">
-                                 <string>000.00 nm</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="1">
-                               <widget class="QDoubleSpinBox" name="doubleSpinBoxSetOPOWavelength">
-                                <property name="minimum">
-                                 <double>210.000000000000000</double>
-                                </property>
-                                <property name="maximum">
-                                 <double>2300.000000000000000</double>
-                                </property>
-                                <property name="singleStep">
-                                 <double>0.010000000000000</double>
-                                </property>
-                                <property name="value">
-                                 <double>210.000000000000000</double>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>1</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="title">
-                   <string>OPO Scan</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_10">
-                   <item>
-                    <widget class="QTabWidget" name="tabWidgetScan">
-                     <property name="toolTip">
-                      <string/>
-                     </property>
-                     <property name="currentIndex">
-                      <number>0</number>
-                     </property>
-                     <widget class="QWidget" name="TabScanWavelength">
-                      <attribute name="title">
-                       <string>Wavelength Scan</string>
-                      </attribute>
-                      <layout class="QVBoxLayout" name="verticalLayout_11">
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <layout class="QFormLayout" name="formLayout">
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="label_5">
-                           <property name="text">
-                            <string>Starting Wavelength</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBoxScanStartingWavelength">
-                           <property name="minimum">
-                            <double>210.000000000000000</double>
-                           </property>
-                           <property name="maximum">
-                            <double>2300.000000000000000</double>
-                           </property>
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>210.000000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="label_6">
-                           <property name="text">
-                            <string>Ending Wavelength</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="label_7">
-                           <property name="text">
-                            <string>Step Size</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBoxScanStepSize">
-                           <property name="minimum">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>0.010000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="label_8">
-                           <property name="text">
-                            <string>Pulses per Step</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QSpinBox" name="spinBoxScanPulsesPerStep">
-                           <property name="minimum">
-                            <number>1</number>
-                           </property>
-                           <property name="maximum">
-                            <number>100000</number>
-                           </property>
-                           <property name="value">
-                            <number>900</number>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QFrame" name="frame_10">
-                           <property name="frameShape">
-                            <enum>QFrame::Shape::NoFrame</enum>
-                           </property>
-                           <property name="frameShadow">
-                            <enum>QFrame::Shadow::Plain</enum>
-                           </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_8">
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <item>
-                             <widget class="QLabel" name="labelScanStatus">
-                              <property name="text">
-                               <string>Scan Status: OFF</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QPushButton" name="pushButtonStartScan">
-                              <property name="text">
-                               <string>Start Scan</string>
-                              </property>
-                              <property name="default">
-                               <bool>false</bool>
-                              </property>
-                              <property name="flat">
-                               <bool>false</bool>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
-                          <widget class="QFrame" name="frame_11">
-                           <property name="frameShape">
-                            <enum>QFrame::Shape::NoFrame</enum>
-                           </property>
-                           <property name="frameShadow">
-                            <enum>QFrame::Shadow::Plain</enum>
-                           </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_9">
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <item>
-                             <widget class="QPushButton" name="pushButtonStopScan">
-                              <property name="text">
-                               <string>Stop Scan</string>
-                              </property>
-                              <property name="default">
-                               <bool>false</bool>
-                              </property>
-                              <property name="flat">
-                               <bool>false</bool>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBoxScanEndingWavelength">
-                           <property name="minimum">
-                            <double>210.000000000000000</double>
-                           </property>
-                           <property name="maximum">
-                            <double>2300.000000000000000</double>
-                           </property>
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>225.000000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </widget>
-                     <widget class="QWidget" name="tab_6">
-                      <attribute name="title">
-                       <string>Placeholder Scan (delays?)</string>
-                      </attribute>
-                      <layout class="QVBoxLayout" name="verticalLayout_12">
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <layout class="QFormLayout" name="formLayout_2">
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="label_9">
-                           <property name="text">
-                            <string>Placeholder</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="label_10">
-                           <property name="text">
-                            <string>Ending Wavelength</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="label_11">
-                           <property name="text">
-                            <string>Step Size</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>0.010000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="label_12">
-                           <property name="text">
-                            <string>Pulses per Step</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QSpinBox" name="spinBox_2"/>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
-                           <property name="minimum">
-                            <double>210.000000000000000</double>
-                           </property>
-                           <property name="maximum">
-                            <double>2300.000000000000000</double>
-                           </property>
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>210.000000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                           <property name="value">
-                            <double>0.010000000000000</double>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QPushButton" name="pushButton_8">
-                           <property name="text">
-                            <string>Start Scan</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
-                          <widget class="QPushButton" name="pushButton_9">
-                           <property name="text">
-                            <string>Stop Scan</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </widget>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item>
               <widget class="QGroupBox" name="groupBox_3">
                <property name="sizePolicy">
@@ -797,6 +810,15 @@
                     <widget class="QLineEdit" name="lineEditTrigMode">
                      <property name="text">
                       <string>MODE</string>
+                     </property>
+                     <property name="frame">
+                      <bool>true</bool>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -890,12 +912,24 @@
                         <property name="text">
                          <string>STATUS</string>
                         </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
                        </widget>
                       </item>
                       <item>
                        <widget class="QLineEdit" name="lineEditQSWStatus">
                         <property name="text">
                          <string>QSW STATUS</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                        <property name="readOnly">
+                         <bool>true</bool>
                         </property>
                        </widget>
                       </item>
@@ -913,6 +947,23 @@
           </widget>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QFrame" name="frameAblation">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_16"/>
        </widget>
       </item>
      </layout>
