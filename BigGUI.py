@@ -57,8 +57,10 @@ class BigGUI(QMainWindow):
     except Exception as E:
       print(f"\nFailed to load ablation GUI: {E}")
 
-    
-    # self.BeamlineGUI = MyApp() #will be shown when the button is pressed
+    try:
+      self.BeamlineGUI = MyApp() #will be shown when the button is pressed
+    except Exception as E:
+      print(f"\nFailed to load beamline GUI: {E}")
 
     #self.QuantumComposerGUI = blah #eventually need to make this
 
@@ -70,6 +72,7 @@ class BigGUI(QMainWindow):
     self.ui.pushButtonStartScan.clicked.connect(self.startWavelengthScan)
     self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
     # self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
+    self.ui.pushButtonOpenBeamlineGui.clicked.connect(self.openBeamlineGUI)
     self.ui.pushButtonStartLaser.clicked.connect(self.handleStartOPO) #cant think of any checks
     self.ui.pushButtonStopLaser.clicked.connect(self.handleStopOPO) #should also stop the scan
 
@@ -208,6 +211,9 @@ class BigGUI(QMainWindow):
     response = requests.get(url, auth=self.auth)
     if "failure" in response:
       print(f'\nFailed outgoing command {encoded}\nResponse:{response}')
+
+  def openBeamlineGUI(self):
+    self.BeamlineGUI.show()
 
 
   def dict_run_laser(self):
