@@ -52,7 +52,7 @@ class BigGUI(QMainWindow):
       self.AblationGUI.table_widget.homeTab.labelLineEdits[-1].setText('NEPTUNE Ablation')
       self.AblationGUI.table_widget.homeTab.saveLabels()
       ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
-      ablationTabIndex = [self.AblationGUI.table_widget.tabs.tabText(i) for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
+      ablationTabIndex = [i for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
       self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
     except Exception as E:
       print(f"\nFailed to load ablation GUI: {E}")
@@ -102,7 +102,7 @@ class BigGUI(QMainWindow):
     ### Prepare for the scan
     ## Ablation on first; ablation control buttons are lampActivationButton and stopButton
     ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
-    ablationTabIndex = [self.AblationGUI.table_widget.tabs.tabText(i) for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
+    ablationTabIndex = [i for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
     self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
     self.ablationTab.lampActivationButton.click()
     ## OPO enabled and powered on (TODO: check shutter)
