@@ -147,6 +147,7 @@ class BigGUI(QMainWindow):
       await self.make_sleep_task(waitTime)
     except asyncio.CancelledError:
       print("Main function interrupted during sleep.")
+      self.stopWavelengthScan()
       #TODO: handle canellation
       return
     #await asyncio.sleep(waitTime)## Wait for the measurement to finish
@@ -159,12 +160,13 @@ class BigGUI(QMainWindow):
         await self.make_sleep_task(waitTime)
       except asyncio.CancelledError:
         print("Main function interrupted during sleep.")
+        self.stopWavelengthScan()
         return
       #await asyncio.sleep(waitTime)## Wait for the measurement to finish
       self.TDCGUI.scanToggler.click()
       self.ablationTab.lampActivationButton.click() #turn ablation back on for the next measurement
     
-    if 2*self.scanParams["stepSize"]+self.scanWavelength > self.scanParams["endWL"]:
+    if 2*self.scanParams["stepSize"]+self.scanWavelength >= self.scanParams["endWL"]:
       print("\nScan finished.\n")
       pass #scan over
     else:
@@ -193,17 +195,6 @@ class BigGUI(QMainWindow):
         raise
       finally:
         self.scanSleepTask = None
-
-  @asyncSlot()
-  async def startSleepForScan(self):
-    if self.scanSleepTask and not self.scanSleepTask.done():
-      print("Already sleeping...")
-      return
-    self.scanSleepTask = asyncio.create_task(self.make_sleep_task())
-
-  def cancelSleepForScan(self):
-    if self.scanSleepTask and not self.scanSleepTask.done():
-        self.scanSleepTask.cancel()
 
   def stopDAQ(self):
     print("add some stuff to stop the daq")
