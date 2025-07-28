@@ -33,7 +33,8 @@ global state
 state = True
 
 #default directory for saving the beamtune files
-default_dir = "C:\\Users\\User\\Documents\\Penning Trap ISEG"
+basedir = os.path.dirname(os.path.abspath(__file__))
+default_dir = os.path.join(basedir,"PenningTrapISEG")#"C:\\Users\\User\\Documents\\Penning Trap ISEG"
 
 # Step 1: Create a worker class
 class VoltageRead(QObject):
@@ -287,7 +288,7 @@ class MyApp(QtWidgets.QWidget, Ui_MainWindow): #Change QtWidgets.QWidget to Qt.W
 
     #Initialize the ISEG power supply
     def initializeISEG(self):
-        self.setFromFile(os.path.join(os.path.dirname(__file__),"beamline.json"))
+        self.setFromFile(os.path.join(os.path.dirname(__file__),"PenningTrapISEG","beamline.json"))
        # self.readAllRampRates()
 
     #Set voltages from file input
