@@ -1,11 +1,12 @@
 import sys
+import os
 import requests
 import json
 import urllib
 import asyncio
 from qasync import QEventLoop, asyncSlot
 from functools import partial
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
 from PyQt6.QtCore import QTimer
 from ui_BigGUI import Ui_MainWindow
@@ -59,6 +60,9 @@ class BigGUI(QMainWindow):
 
     try:
       self.BeamlineGUI = MyApp() #will be shown when the button is pressed
+      script_dir = os.path.dirname(os.path.abspath(__file__))
+      image_path = os.path.join(script_dir, "2D_Labeled_Diagram.png")
+      self.BeamlineGUI.label_2.setPixmap(QtGui.QPixmap(image_path))
     except Exception as E:
       print(f"\nFailed to load beamline GUI: {E}")
 
@@ -269,6 +273,7 @@ if __name__ == "__main__":
   window.show()
   with loop:
     loop.run_forever()
+  sys.exit()
   # sys.exit(app.exec())
 
 

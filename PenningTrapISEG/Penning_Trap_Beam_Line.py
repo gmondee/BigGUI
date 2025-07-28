@@ -23,7 +23,7 @@ import json
 
 ip = '169.254.55.226'
 hv = isegHV(ip)
-qtCreatorFile = os.path.join(os.path.dirname(__file__),"trap_beamline_gui.ui") # Enter file here.
+# qtCreatorFile = os.path.join(os.path.dirname(__file__),"trap_beamline_gui.ui") # Enter file here.
 
 Ui_MainWindow = Ui_Form#uic.loadUiType(qtCreatorFile)
 
