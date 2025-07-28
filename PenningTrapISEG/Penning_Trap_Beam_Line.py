@@ -230,7 +230,7 @@ class MyApp(QtWidgets.QWidget, Ui_MainWindow): #Change QtWidgets.QWidget to Qt.W
         readOut.setText(hv.readActualVoltage(channel)[0:-4]+' V')
 
     def updateBuffer(self):
-        with open('beamline.json', "w") as outfile:
+        with open(os.path.join(os.path.dirname(__file__),"beamline.json"), "w") as outfile:
             json.dump(self.dic, outfile, indent=4)
 
     def readAll(self):
@@ -288,7 +288,7 @@ class MyApp(QtWidgets.QWidget, Ui_MainWindow): #Change QtWidgets.QWidget to Qt.W
 
     #Initialize the ISEG power supply
     def initializeISEG(self):
-        self.setFromFile(os.path.join(os.path.dirname(__file__),"PenningTrapISEG","beamline.json"))
+        self.setFromFile(os.path.join(os.path.dirname(__file__),"beamline.json"))
        # self.readAllRampRates()
 
     #Set voltages from file input
