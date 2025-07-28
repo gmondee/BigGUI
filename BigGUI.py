@@ -48,6 +48,9 @@ class BigGUI(QMainWindow):
     try:
       self.AblationGUI = BigSkyHub()
       self.ui.frameAblation.layout().addWidget(self.AblationGUI)
+      self.AblationGUI.table_widget.homeTab.buttons[-1].click()
+      self.AblationGUI.table_widget.homeTab.labelLineEdits[-1].setText('NEPTUNE Ablation')
+      self.AblationGUI.table_widget.homeTab.saveLabels()
       ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
       ablationTabIndex = [self.AblationGUI.table_widget.tabs.tabText(i) for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
       self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
@@ -250,6 +253,13 @@ def set_all_margins(obj): #clean up GUI appearance: make the margins small and h
 
 # Main app entry
 if __name__ == "__main__":
+  sys._excepthook = sys.excepthook 
+  def exception_hook(exctype, value, traceback):
+    print(exctype, value, traceback)
+    sys._excepthook(exctype, value, traceback) 
+    sys.exit(1) 
+  sys.excepthook = exception_hook 
+
   app = QApplication(sys.argv)
   loop = QEventLoop(app)
   asyncio.set_event_loop(loop)
