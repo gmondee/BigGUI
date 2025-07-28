@@ -65,8 +65,8 @@ class BigGUI(QMainWindow):
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
     # OPO Buttons
-    self.ui.pushButtonToggleOPO.clicked.connect(partial(self.sendToOPO,self.dict_enable_OPO))
-    self.ui.pushButtonOPOSet.clicked.connect(partial(self.sendToOPO,self.dict_set_OPO_wavelength))
+    self.ui.pushButtonToggleOPO.clicked.connect(partial(self.sendToOPO,self.dict_enable_OPO()))
+    self.ui.pushButtonOPOSet.clicked.connect(partial(self.sendToOPO,self.dict_set_OPO_wavelength()))
     self.ui.pushButtonStartScan.clicked.connect(self.startWavelengthScan)
     self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
     # self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
@@ -140,7 +140,7 @@ class BigGUI(QMainWindow):
     waitTime = int(1/self.frequency*self.scanParams["pulsesPerStep"])
     self.TDCGUI.scanToggler.click()
     try:
-      await self.sleep_task(waitTime)
+      await self.make_sleep_task(waitTime)
     except asyncio.CancelledError:
       print("Main function interrupted during sleep.")
       #TODO: handle canellation
@@ -152,7 +152,7 @@ class BigGUI(QMainWindow):
       self.ablationTab.stopButton.click()
       self.TDCGUI.scanToggler.click()
       try:
-        await self.sleep_task(waitTime)
+        await self.make_sleep_task(waitTime)
       except asyncio.CancelledError:
         print("Main function interrupted during sleep.")
         return
@@ -178,7 +178,7 @@ class BigGUI(QMainWindow):
     ### Re-enable scan GUI elements
 
   @asyncSlot()
-  async def sleep_task(self, time_s):
+  async def make_sleep_task(self, time_s):
       """Sleep that can be cancelled externally."""
       try:
         self.sleep_task = asyncio.create_task(asyncio.sleep(time_s))
@@ -194,7 +194,7 @@ class BigGUI(QMainWindow):
     if self.scanSleepTask and not self.scanSleepTask.done():
       print("Already sleeping...")
       return
-    self.scanSleepTask = asyncio.create_task(self.sleep_task())
+    self.scanSleepTask = asyncio.create_task(self.make_sleep_task())
 
   def cancelSleepForScan(self):
     if self.scanSleepTask and not self.scanSleepTask.done():
@@ -224,13 +224,13 @@ class BigGUI(QMainWindow):
     wavelengthnm = round(self.ui.doubleSpinBoxSetOPOWavelength.value(),2)
     return {"action":"control","code":{"device": "laser","values":{"forward-device":"opo","forward-protocol":"wavelength","forward-action":"control","wavelength": wavelengthnm}}}
 
-  def dict_enable_OPO():
+  def dict_enable_OPO(self):
     return{"action":"control","code":{"device":"laser","values":{"forward-device":"harmonics","forward-protocol":"crystals","forward-action":"control","hu-status": 3.6}}}
 
-  def dict_set_trigger_external_TP():
+  def dict_set_trigger_external_TP(self):
     return {"action":"control","code":{"device":"laser","values":{"trig-mode":2}}}
   
-  def dict_set_trigger_internal():
+  def dict_set_trigger_internal(self):
     return {"action":"control","code":{"device":"laser","values":{"trig-mode":0}}}
   
 def set_all_margins(obj): #clean up GUI appearance: make the margins small and hide frames
