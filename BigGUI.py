@@ -65,8 +65,8 @@ class BigGUI(QMainWindow):
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
     # OPO Buttons
-    self.ui.pushButtonToggleOPO.clicked.connect(partial(self.sendToOPO,self.dict_enable_OPO()))
-    self.ui.pushButtonOPOSet.clicked.connect(partial(self.sendToOPO,self.dict_set_OPO_wavelength()))
+    self.ui.pushButtonToggleOPO.clicked.connect(lambda: self.sendToOPO(self.dict_enable_OPO()))
+    self.ui.pushButtonOPOSet.clicked.connect(lambda: self.sendToOPO(self.dict_set_OPO_wavelength()))
     self.ui.pushButtonStartScan.clicked.connect(self.startWavelengthScan)
     self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
     # self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
