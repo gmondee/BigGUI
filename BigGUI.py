@@ -61,7 +61,7 @@ class BigGUI(QMainWindow):
     try:
       self.BeamlineGUI = MyApp() #will be shown when the button is pressed
       script_dir = os.path.dirname(os.path.abspath(__file__))
-      image_path = os.path.join(script_dir, "2D_Labeled_Diagram.png")
+      image_path = os.path.join(script_dir, "PenningTrapISEG","2D_Labeled_Diagram.png")
       self.BeamlineGUI.label_2.setPixmap(QtGui.QPixmap(image_path))
     except Exception as E:
       print(f"\nFailed to load beamline GUI: {E}")
