@@ -101,6 +101,9 @@ class BigGUI(QMainWindow):
 
     ### Prepare for the scan
     ## Ablation on first; ablation control buttons are lampActivationButton and stopButton
+    ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
+    ablationTabIndex = [self.AblationGUI.table_widget.tabs.tabText(i) for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
+    self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
     self.ablationTab.lampActivationButton.click()
     ## OPO enabled and powered on (TODO: check shutter)
     self.ui.pushButtonToggleOPO.click() #enable OPO if it isn't already
