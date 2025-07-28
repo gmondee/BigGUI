@@ -53,9 +53,9 @@ class SingleLaserController(QtWidgets.QWidget, Ui_Widget):
       cwd = os.path.join(basedir,"BigSkyController")
       # cwd = os.getcwd()
       if self.serialConnected:
-        self.calibData=np.loadtxt(os.path.join(cwd,"CalibrationFiles","CalibrationDataBigSky"+str(self.serialNumber)+".csv"),dtype="float",comments='#',delimiter=',')
+        self.calibData=np.loadtxt(os.path.join(cwd,"BigSkyController","CalibrationFiles","CalibrationDataBigSky"+str(self.serialNumber)+".csv"),dtype="float",comments='#',delimiter=',')
       else: 
-        self.calibData=np.loadtxt(os.path.join(cwd,"CalibrationFiles","CalibrationDataBigSky.csv"),dtype="float",comments='#',delimiter=',')
+        self.calibData=np.loadtxt(os.path.join(cwd,"BigSkyController","CalibrationFiles","CalibrationDataBigSky.csv"),dtype="float",comments='#',delimiter=',')
       self.calibVolts = self.calibData[:,0]; self.calibPower = self.calibData[:,1]
       self.calibrationFilePresent=True
     except:
