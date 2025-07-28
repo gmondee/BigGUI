@@ -49,11 +49,13 @@ class SingleLaserController(QtWidgets.QWidget, Ui_Widget):
 
    #Checking for self.calibration file in local directory
     try:
-      cwd = os.getcwd()
+      basedir = os.path.dirname(os.path.abspath(__file__))
+      cwd = os.path.join(basedir,"BigSkyController")
+      # cwd = os.getcwd()
       if self.serialConnected:
-        self.calibData=np.loadtxt(cwd+"\\CalibrationFiles\\CalibrationDataBigSky"+str(self.serialNumber)+".csv",dtype="float",comments='#',delimiter=',')
+        self.calibData=np.loadtxt(os.path.join(cwd,"CalibrationFiles","CalibrationDataBigSky"+str(self.serialNumber)+".csv"),dtype="float",comments='#',delimiter=',')
       else: 
-        self.calibData=np.loadtxt(cwd+"\\CalibrationFiles\\CalibrationDataBigSky.csv",dtype="float",comments='#',delimiter=',')
+        self.calibData=np.loadtxt(os.path.join(cwd,"CalibrationFiles","CalibrationDataBigSky.csv"),dtype="float",comments='#',delimiter=',')
       self.calibVolts = self.calibData[:,0]; self.calibPower = self.calibData[:,1]
       self.calibrationFilePresent=True
     except:
