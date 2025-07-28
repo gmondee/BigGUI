@@ -169,8 +169,8 @@ class BigGUI(QMainWindow):
 
   def stopWavelengthScan(self):
     #self.scanTimer.stop()
-    if self.sleep_task and not self.sleep_task.done():
-      self.sleep_task.cancel()
+    if self.scanSleepTask and not self.scanSleepTask.done():
+      self.scanSleepTask.cancel()
       print('Stopped scan')
     self.ui.labelScanStatus.setText("Scan Status: OFF")
     print('Stopping scan (doesnt do anything)')
@@ -181,13 +181,13 @@ class BigGUI(QMainWindow):
   async def make_sleep_task(self, time_s):
       """Sleep that can be cancelled externally."""
       try:
-        self.sleep_task = asyncio.create_task(asyncio.sleep(time_s))
-        await self.sleep_task
+        self.scanSleepTask = asyncio.create_task(asyncio.sleep(time_s))
+        await self.scanSleepTask
       except asyncio.CancelledError:
         print("Sleep cancelled!")
         raise
       finally:
-        self.sleep_task = None
+        self.scanSleepTask = None
 
   @asyncSlot()
   async def startSleepForScan(self):
