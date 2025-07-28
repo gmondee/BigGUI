@@ -10,6 +10,7 @@ import numpy as np
 from pyqtgraph import PlotWidget
 import pyqtgraph as pg
 from random import randint
+from .ui_TDCGUI_MultiWindow import Ui_MainWindow as TDC_MW
 import socket
 import pandas as pd
 import math
@@ -19,7 +20,8 @@ import pickle
 #np.set_printoptions(threshold=np.inf)
 
 qtCreatorFile = os.path.join(os.path.dirname(__file__),"TDCGUI_MultiWindow.ui") # Enter file here.
-Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+# Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+Ui_MainWindow = TDC_MW
 
 #TODO: send stop command to TDC before attempting re-connect
 class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):

@@ -13,6 +13,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets, uic, QtTest
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QApplication, QFileDialog
 from .isegHV import isegHV
+from .ui_trap_beamline_gui import Ui_Form
 import pandas as pd
 import numpy as np
 import logging
@@ -24,7 +25,7 @@ ip = '169.254.55.226'
 hv = isegHV(ip)
 qtCreatorFile = os.path.join(os.path.dirname(__file__),"trap_beamline_gui.ui") # Enter file here.
 
-Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+Ui_MainWindow = Ui_Form#uic.loadUiType(qtCreatorFile)
 
 from PyQt6.QtCore import QObject, QThread, pyqtSignal
 
@@ -286,7 +287,7 @@ class MyApp(QtWidgets.QWidget, Ui_MainWindow): #Change QtWidgets.QWidget to Qt.W
 
     #Initialize the ISEG power supply
     def initializeISEG(self):
-        self.setFromFile('beamline.json')
+        self.setFromFile(os.path.join(os.path.dirname(__file__),"beamline.json"))
        # self.readAllRampRates()
 
     #Set voltages from file input

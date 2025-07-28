@@ -1,1 +1,4 @@
 python -m PyQt6.uic.pyuic -o ui_BigGUI.py -x BigGUI.ui
+python -m PyQt6.uic.pyuic -o /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/PenningTrapISEG/ui_trap_beamline_gui.py -x /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/PenningTrapISEG/trap_beamline_gui.ui
+python -m PyQt6.uic.pyuic -o /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/TDC/ui_TDCGUI_MultiWindow.py -x /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/TDC/TDCGUI_MultiWindow.ui
+python -m PyQt6.uic.pyuic -o /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/BigSkyController/ui_GuiBigSkyWidget.py -x /Users/gmondeel/Documents/MIT/NEPTUNE/BigGUI/BigSkyController/GuiBigSkyWidget.ui

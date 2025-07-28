@@ -1,6 +1,7 @@
 #written by Alex Brinson (brinson@mit.edu, alexjbrinson@gmail.com) on behalf of EMA Lab
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from .ui_GuiBigSkyWidget import Ui_Form
 import serial
 import time
 import numpy as np
@@ -8,7 +9,8 @@ import os
  
 qtCreatorFile = os.path.join(os.path.dirname(__file__),"GuiBigSkyWidget.ui") # Enter file here.
  
-Ui_Widget, QtBaseClass = uic.loadUiType(qtCreatorFile)
+# Ui_Widget, QtBaseClass = uic.loadUiType(qtCreatorFile)
+Ui_Widget=Ui_Form
  
 class SingleLaserController(QtWidgets.QWidget, Ui_Widget):
   def __init__(self, cPort=-1, lString=''):
