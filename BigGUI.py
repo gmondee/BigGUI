@@ -127,9 +127,10 @@ class BigGUI(QMainWindow):
     # Disable OPO options
     # Disable Ablation options
     # Disable TDC options
-    scanETAmin=(1/self.frequency*self.scanParams["pulsesPerStep"]+1.5)*(self.scanParams["startWL"]-self.scanParams["endWL"])/self.scanParams["stepSize"]/60
+    scanETAmin=(1/self.frequency*self.scanParams["pulsesPerStep"]+1.5)*(self.scanParams["endWL"]-self.scanParams["startWL"])/self.scanParams["stepSize"]/60
     self.ui.labelScanStatus.setText("Scan Status: ON")
     print(f'Starting scan. ETA:{scanETAmin:.2f} minutes.\nScan parameters:{self.scanParams}')
+    self.scanNext(skipSetup=True)
 
   @asyncSlot()
   async def scanNext(self, skipSetup=False):
@@ -175,9 +176,10 @@ class BigGUI(QMainWindow):
     if self.scanSleepTask and not self.scanSleepTask.done():
       self.scanSleepTask.cancel()
       print('Stopped scan')
+    else:
+      print('No scan was in progress')
     self.ui.labelScanStatus.setText("Scan Status: OFF")
-    print('Stopping scan (doesnt do anything)')
-
+    
     ### Re-enable scan GUI elements
 
   @asyncSlot()
