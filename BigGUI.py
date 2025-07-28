@@ -8,11 +8,15 @@ from qasync import QEventLoop, asyncSlot
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, QStandardPaths
 from ui_BigGUI import Ui_MainWindow
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
 from TDC.TDC_DAQGUI import TDC_GUI
+from pathlib import Path
+
+DOCS_PATH = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
+# print(f"Documents folder: {DOCS_PATH}")
 
 
 
@@ -41,7 +45,11 @@ class BigGUI(QMainWindow):
 
   def loadGUIs(self):
     try:
-      self.TDCGUI = TDC_GUI()
+      settingsDic={ 'int_time':1000,
+                    'mode':'TTL',
+                    'threshold':0.5,
+                    'path':os.path.join(DOCS_PATH,'data','RFQ Tests')}
+      self.TDCGUI = TDC_GUI(settingsDic=settingsDic)
       self.ui.frameTDC.layout().addWidget(self.TDCGUI)
     except Exception as E:
       print(f"\nFailed to load TDCGUI: {E}")
@@ -63,6 +71,7 @@ class BigGUI(QMainWindow):
       script_dir = os.path.dirname(os.path.abspath(__file__))
       image_path = os.path.join(script_dir, "PenningTrapISEG","2D_Labeled_Diagram.png")
       self.BeamlineGUI.label_2.setPixmap(QtGui.QPixmap(image_path))
+      self.BeamlineGUI.readAll()
     except Exception as E:
       print(f"\nFailed to load beamline GUI: {E}")
 
@@ -238,6 +247,18 @@ class BigGUI(QMainWindow):
   
   def dict_set_trigger_internal(self):
     return {"action":"control","code":{"device":"laser","values":{"trig-mode":0}}}
+  
+  def closeEvent(self, event):
+    print("\nClosing BigGUI...\n")
+    try:
+      self.BeamlineGUI.allChannelsOff()
+    except Exception as E:
+      print(E)
+    try:
+      self.TDCGUI.safeExit()
+    except Exception as E:
+      print(E)
+    
   
 def set_all_margins(obj): #clean up GUI appearance: make the margins small and hide frames
   if isinstance(obj, QLayout):

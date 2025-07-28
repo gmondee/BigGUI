@@ -16,6 +16,8 @@ import pandas as pd
 import math
 from datetime import datetime
 import pickle
+from pathlib import Path
+from PyQt6.QtCore import QStandardPaths
 
 #np.set_printoptions(threshold=np.inf)
 
@@ -30,11 +32,12 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     # self.setWindowModality(QtCore.Qt.ApplicationModal)
     self.setupUi(self)
     self.setWindowTitle('TDC GUI') ;#self.setWindowIcon(QIcon('TDC_Icon.png'))
+    docs_dir = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
     if settingsDic=={}:
       settingsDic={'int_time':100,
                    'mode':'TTL',
                    'threshold':2.0,
-                   'path':'../data/DummyData'}
+                   'path':os.path.join(docs_dir,'data','DummyData')}
 
     self.settingsDic=settingsDic
     self.settingsButton.clicked.connect(self.openSettingsWindow)
@@ -332,7 +335,7 @@ if __name__ == "__main__":
   settingsDic={'int_time':1000,
                'mode':'TTL',
                'threshold':0.5,
-               'path':'../data/RFQ Tests'}
+               'path':os.path.join(Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation)),'data','RFQ Tests')}
   #TODO: make this initial setting window work without causing wack ass errors on main window closure.
   # app0 = QtWidgets.QApplication(sys.argv)
   # settingsWindow=SettingsWindow(settingDic=settingsDic);#app0.aboutToQuit.connect(settingsWindow.cancel)#placeholder for setting window
