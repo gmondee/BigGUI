@@ -28,8 +28,6 @@ class BigGUI(QMainWindow):
     self.IP = 'http://192.168.1.53:7557'
     self.auth = ('QTuser','QT_53')
     self.scanWavelength=None
-    self.DAQTimer = QTimer(self, singleShot=True)
-    self.DAQTimer.timeout.connect(self.stopDAQ)
     self.scanParams={}
     self.frequency = 10 # 10 Hz repetition rate
     self.scanSleepTask = None #this
@@ -57,9 +55,9 @@ class BigGUI(QMainWindow):
     try:
       self.AblationGUI = BigSkyHub()
       self.ui.frameAblation.layout().addWidget(self.AblationGUI)
-      self.AblationGUI.table_widget.homeTab.buttons[-1].click()
       self.AblationGUI.table_widget.homeTab.labelLineEdits[-1].setText('NEPTUNE Ablation')
       self.AblationGUI.table_widget.homeTab.saveLabels()
+      self.AblationGUI.table_widget.homeTab.buttons[-1].click()
       ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
       ablationTabIndex = [i for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
       self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
@@ -212,8 +210,6 @@ class BigGUI(QMainWindow):
       finally:
         self.scanSleepTask = None
 
-  def stopDAQ(self):
-    print("add some stuff to stop the daq")
   ### Functions for OPO communication
   def getOPOStatus(self):
     pass

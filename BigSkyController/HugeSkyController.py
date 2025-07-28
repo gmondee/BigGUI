@@ -7,6 +7,7 @@ from .BigSkyControllerAmbitious import SingleLaserController
 import serial.tools.list_ports
 import ctypes
 import pickle
+import os
 
 class BigSkyHub(QDialog):
   def __init__(self):
@@ -31,7 +32,7 @@ class HomeTab(QWidget):
     possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
     print(possibleDevices)
     try:
-        with open('laserNames.pkl','rb') as file: self.laserNames=pickle.load(file); file.close()
+      with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'laserNames.pkl'),'rb') as file: self.laserNames=pickle.load(file); file.close()
     except: self.laserNames={}
     self.layout = QGridLayout(parent)
     self.buttons=[]
@@ -79,7 +80,7 @@ class HomeTab(QWidget):
   def saveLabels(self):
     for i in range(len(self.buttons)):
       self.laserNames[self.serialNumbers[i]]=self.labelLineEdits[i].text()
-    with open('laserNames.pkl','wb') as file: pickle.dump(self.laserNames, file); file.close()
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'laserNames.pkl'),'wb') as file: pickle.dump(self.laserNames, file); file.close()
     self.text.append('laser names saved to file.')
     
 class MyTableWidget(QWidget):
