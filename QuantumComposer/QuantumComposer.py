@@ -42,7 +42,7 @@ class QComController():
             self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
             response = self.checkIdentification()
             #response = self.ser.read(2000).decode('utf-8').rstrip('\r\n'); if self.verbose: print("response:", response)
-            if "9514+" in response:
+            if "951" in response:
               print(f"QC+: Connected to {dev}."); self.ser.close()
               comport=dev
               self.connected=True
