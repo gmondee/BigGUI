@@ -9,6 +9,7 @@ from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
 from PyQt6.QtCore import QTimer, QStandardPaths
+from PyQt6.QtGui import QAction
 from ui_BigGUI import Ui_MainWindow
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
@@ -33,6 +34,7 @@ class BigGUI(QMainWindow):
     self.scanParams={}
     self.frequency = 10 # 10 Hz repetition rate
     self.scanSleepTask = None #this
+    self.buildMenuBar()
     # Create and set up the UI
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
@@ -42,6 +44,27 @@ class BigGUI(QMainWindow):
 
     set_all_margins(self)
 
+  def buildMenuBar(self):
+    menuBar = self.menuBar()
+    fileMenu = menuBar.addMenu("Debug")
+
+    # Create actions
+    reloadQC = QAction("Reload QC", self)
+    reloadAblation = QAction("Reload Ablation", self)
+    reloadBeamline = QAction("Reload Beamline", self)
+    reloadTDC = QAction("Reload TDC", self)
+
+    # Add actions to menu
+    fileMenu.addAction(reloadQC)
+    fileMenu.addAction(reloadAblation)
+    fileMenu.addAction(reloadBeamline)
+    fileMenu.addAction(reloadTDC)
+
+    # Connect using QAction.triggered.connect
+    reloadQC.triggered.connect(self.loadQC)
+    reloadAblation.triggered.connect(self.loadAblation)
+    reloadBeamline.triggered.connect(self.loadBeamline)
+    reloadTDC.triggered.connect(self.loadTDC)
 
   def loadGUIs(self):
     self.QCLoaded = self.loadQC()
@@ -318,6 +341,7 @@ if __name__ == "__main__":
   sys.excepthook = exception_hook 
 
   app = QApplication(sys.argv)
+  app.setApplicationName("BigGUI")
   loop = QEventLoop(app)
   asyncio.set_event_loop(loop)
   window = BigGUI(loop)
