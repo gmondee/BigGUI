@@ -463,7 +463,7 @@ class TimeStampTDC1(object):
         self.cleanDB = sl.connect(self.cleanDBname)
         bufferFrame.to_sql('TDC', self.cleanDB, if_exists='append')
         #print(len(goodTimeStamps), 'event timestamps recorded in this buffer')
-        print("We really out here", time.time())
+        # print("TDC: We really out here", time.time())
 
       timingRay+=[time.time()]#t3=time.time();
       for i in range(len(timingRay)-1): pass#print('t%d - t%d = '%(i+1,i), timingRay[i+1]-timingRay[i])
@@ -476,7 +476,7 @@ class TimeStampTDC1(object):
         #Starts the timestamp streaming service to file in the brackground
         self.accumulated_timestamps_filename = filename
         self.cleanDBname = cleanDBname
-        print('test:', self.cleanDBname)
+        # print('TDC: test:', self.cleanDBname)
         
         #with self.cleanDB: self.cleanDB.execute("""CREATE TABLE IF NOT EXISTS TDC""")
         self.run=run

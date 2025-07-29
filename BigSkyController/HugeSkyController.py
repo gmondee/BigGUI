@@ -12,6 +12,7 @@ import os
 class BigSkyHub(QDialog):
   def __init__(self):
     super().__init__()
+    print("Big Sky: Starting up...")
     self.setWindowTitle('Big Sky Controller Hub')
     self.setWindowIcon(QIcon('BigSkyWindowIcon.png'))
     self.left = 0; self.width = 900
@@ -20,7 +21,6 @@ class BigSkyHub(QDialog):
     self.table_widget = MyTableWidget(self)
     layout = QVBoxLayout()
     layout.addWidget(self.table_widget)
-
     # Set layout on the dialog itself
     self.setLayout(layout)
     # self.setCentralWidget(self.table_widget)
@@ -30,11 +30,11 @@ class HomeTab(QWidget):
   def __init__(self,parent):
     super().__init__()
     possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
-    print(possibleDevices)
+    # print(possibleDevices)
     try:
       with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'laserNames.pkl'),'rb') as file: self.laserNames=pickle.load(file); file.close()
     except: self.laserNames={}
-    self.layout = QGridLayout(parent)
+    self.layout = QGridLayout()
     self.buttons=[]
     self.devices=[]
     self.serialNumbers=[]
@@ -50,18 +50,18 @@ class HomeTab(QWidget):
     else:
       for dev in possibleDevices:
         try:
-          print('trying com port %s'%dev)
+          # print('trying com port %s'%dev)
           ser = serial.Serial(dev,9600,timeout=1)
         except:
-          print("nope not this one")
+          # print("nope not this one")
           #self.buttons[i].setEnabled(False)
           sn=-1
         else:
-          print(" maybe this one?")
+          # print(" maybe this one?")
           ser.flush(); ser.write(b'>sn\n')
-          response = ser.read(140).decode('utf-8'); print("response:", response)
+          response = ser.read(140).decode('utf-8'); #print("response:", response)
           if 'number'in response:
-            print("yeah this one."); ser.close()
+            print(f"Big Sky: Connecting to laser at {dev}."); ser.close()
             sn=response.strip('s// number\r\n')
             self.serialNumbers+=[sn]
             self.devices+=[dev]
@@ -91,7 +91,7 @@ class MyTableWidget(QWidget):
     self.tabs = QTabWidget()
     #self.tabs.resize(width,height)
     self.homeTab=HomeTab(self)
-    print("test: ", len(self.homeTab.buttons))
+    # print("test: ", len(self.homeTab.buttons))
 
     for i in range(len(self.homeTab.buttons)):
       self.homeTab.buttons[i].pressed.connect(lambda i=i: self.createTab(i))
@@ -121,7 +121,7 @@ class MyTableWidget(QWidget):
 
   def safeExit(self):
     for i in range(1, self.tabs.count()):
-      print('safely closing tab %d'%i)
+      print('Big Sky: safely closing tab %d'%i)
       self.closeTab(i)
     
 if __name__ == '__main__':

@@ -16,6 +16,7 @@ import pandas as pd
 import math
 from datetime import datetime
 import pickle
+import serial.tools.list_ports
 from pathlib import Path
 from PyQt6.QtCore import QStandardPaths
 
@@ -33,6 +34,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.setupUi(self)
     self.setWindowTitle('TDC GUI') ;#self.setWindowIcon(QIcon('TDC_Icon.png'))
     docs_dir = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
+    print("TDC: Starting up...")
     if settingsDic=={}:
       settingsDic={'int_time':100,
                    'mode':'TTL',
@@ -41,14 +43,27 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     self.settingsDic=settingsDic
     self.settingsButton.clicked.connect(self.openSettingsWindow)
-    
-    self.comPort='COM5'#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
+    possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
+    self.deviceCommunication=False
+    for dev in possibleDevices:
+      try:
+        # print('TDC: trying com port %s'%dev)
+        tempDevice = TimeStampTDC1(dev)
+        testQuery = tempDevice.int_time
+      except Exception as E:
+        try: tempDevice._com.close()
+        except: pass
+      else:
+        self.device = tempDevice
+        print(f'TDC: Connected to {dev}')
+        self.deviceCommunication=True
+    # self.comPort=comport#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
     self.realData=False; self.hasOldData=False
-    try:
-      self.device = TimeStampTDC1(self.comPort)
-      self.deviceCommunication=True
-    except: self.deviceCommunication=False
-    print("communicating with device?", self.deviceCommunication)
+    # try:
+    #   self.device = TimeStampTDC1(self.comPort)
+    #   self.deviceCommunication=True
+    # except: self.deviceCommunication=False
+    # print("communicating with device?", self.deviceCommunication)
     self.setSettings()
     
     self.scanToggled=False
@@ -74,7 +89,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.loadOldRunsLineEdit.returnPressed.connect(self.loadOldRuns);
 
     self.xToF = np.linspace(self.tMinValue, self.tMaxValue, self.tBinsValue+1)#list(range(self.tBinsValue))  # ToF x-axis
-    print(len(self.xToF))
+    # print(len(self.xToF))
     self.yToF_total = [-1]*(self.tBinsValue+1)
     self.yToF_latest = [0]*(self.tBinsValue+1)
     self.yToF_old = [0]*(self.tBinsValue+1)
@@ -96,7 +111,8 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.usingEpics=False #this is false unless the try below works
     #try: self.epicsDriver=tdcServer.Counter(); self.usingEpics=True
     #except Exception as e: print('wahhh!',e) ; self.usingEpics=False
-    print('initialization end')
+    # print('initialization end')
+    print("TDC: Done.")
 
   def openSettingsWindow(self):
     self.settingsWindow=SettingsWindow(settingDic=self.settingsDic)
@@ -108,7 +124,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
   def on_sub_window_confirm(self, settingsDic):
     self.settingsDic=settingsDic #update dictionary of settings
     self.setSettings()  #update actual hardware (and some pure software) settings based on updated dictionary
-    print('test:',settingsDic)
+    # print('test:',settingsDic)
 
   def setSettings(self):
     self.int_time=self.settingsDic['int_time'] ; self.mode = self.settingsDic['mode']
@@ -121,8 +137,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.device.clock='2'#force internal clock
         self.device.threshold=self.threshold
         #self.device.int_time=self.int_time
-        print('threshold = ',self.device.threshold)
-        print('time?',self.device.int_time)
+        print('TDC: Threshold = ',self.device.threshold,'\tTime?',self.device.int_time)
       except: print('this failed somehow pls investigate'); quit()
 
   def getScanNum(self):
@@ -137,7 +152,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
   
       try: self.scanNum=1+np.max(self.previousScans)
       except:self.scanNum=1
-      print('did it work?', self.scanNum)
+      # print('did it work?', self.scanNum)
 
   def instantiateDataFiles(self):
     self.getScanNum()
@@ -158,8 +173,8 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     try:
       tProposed = int(self.tMinLineEdit.text())
       if tProposed<0 or tProposed>self.tMaxValue:
-        print("please enter an integer between 0 and tMax (nanoseconds)."); tProposed = self.tMinValue #if line entry is trash, then set proposed freq to old value
-    except: print("please enter an integer value."); tProposed = self.tMinValue #if line entry is trash, then set proposed freq to old value
+        print("TDC: Please enter an integer between 0 and tMax (nanoseconds)."); tProposed = self.tMinValue #if line entry is trash, then set proposed freq to old value
+    except: print("TDC: Please enter an integer value."); tProposed = self.tMinValue #if line entry is trash, then set proposed freq to old value
     self.tMinValue=tProposed; self.tMinLineEdit.setText(str(self.tMinValue))
     self.tMinLabel.setText('Min Time: '+str(self.tMinValue)+str('units'))
     self.xToF = np.linspace(self.tMinValue, self.tMaxValue, self.tBinsValue+1)
@@ -174,8 +189,8 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     try:
       tProposed = int(self.tMaxLineEdit.text())
       if tProposed<self.tMinValue or tProposed>2E9:
-        print("please enter an integer between tMin and 2*10^9 (nanoseconds)."); tProposed = self.tMaxValue #if line entry is trash, then set proposed freq to old value
-    except: print("please enter an integer value."); tProposed = self.tMaxValue #if line entry is trash, then set proposed freq to old value
+        print("TDC: Please enter an integer between tMin and 2*10^9 (nanoseconds)."); tProposed = self.tMaxValue #if line entry is trash, then set proposed freq to old value
+    except: print("TDC: Please enter an integer value."); tProposed = self.tMaxValue #if line entry is trash, then set proposed freq to old value
     self.tMaxValue=tProposed; self.tMaxLineEdit.setText(str(self.tMaxValue))
     self.tMaxLabel.setText('Max Time: '+str(self.tMaxValue)+str('units'))
     self.xToF = np.linspace(self.tMinValue, self.tMaxValue, self.tBinsValue+1)
@@ -190,8 +205,8 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     try:
       binsProposed = int(self.tBinsLineEdit.text())
       if binsProposed<2 or binsProposed>100000000:
-        print("please enter an integer between 2 and 100000000"); binsProposed = self.tBinsValue #if line entry is trash, then set proposed freq to old value
-    except: print("please enter an integer value."); binsProposed = self.tBinsValue #if line entry is trash, then set proposed freq to old value
+        print("TDC: Please enter an integer between 2 and 100000000"); binsProposed = self.tBinsValue #if line entry is trash, then set proposed freq to old value
+    except: print("TDC: Please enter an integer value."); binsProposed = self.tBinsValue #if line entry is trash, then set proposed freq to old value
     self.tBinsValue=binsProposed; self.tBinsLineEdit.setText(str(self.tBinsValue))
     self.tBinsLabel.setText('bin count: '+str(self.tBinsValue))
     self.xToF = np.linspace(self.tMinValue, self.tMaxValue, self.tBinsValue+1)
@@ -207,26 +222,30 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     try:
       oldRunsList=[int(x) for x in oldRunsString.split(',')]; success=True
     except:
-      print('Please provide comma-delimited scan numbers, and nothing more')
+      print('TDC: Please provide comma-delimited scan numbers, and nothing more')
       oldRunsList=self.oldRuns; success=False
     self.oldRuns=oldRunsList
     self.loadOldRunsLineEdit.setText(str(oldRunsList).strip('[]'))
     if success:
       self.oldData=pd.DataFrame()
+      self.hasOldData=False
       for run in self.oldRuns:
         try:
-          oldDataPrefix=str(self.scanDirectory)+'/scan'+str(run)+'/scan'+str(run)+'_'
+          oldDataPrefix=os.path.join(self.scanDirectory,'scan'+str(run),'scan'+str(run)+'_')
           old_dbName=oldDataPrefix+'allData.db'
-          print('test: old_dbName=',old_dbName)
+          # print('test: old_dbName=',old_dbName)
           oldDataConnection = sl.connect(old_dbName)
-          print('works up to here?')
-          tempFrame=pd.read_sql_query("SELECT * from TDC", oldDataConnection); print(tempFrame)
+          # print('works up to here?')
+          tempFrame=pd.read_sql_query("SELECT * from TDC", oldDataConnection); #print(tempFrame)
           self.oldData=pd.concat([self.oldData,pd.read_sql_query("SELECT * from TDC WHERE run="+str(run), oldDataConnection)])
           oldDataConnection.close()
-        except: print('failed to load run %d. Does it really even exist?'%run)
-      print('test oldData:\n', self.oldData)
-      self.hasOldData = True
-      self.updatePlotTof_old()
+          self.hasOldData=True
+        except: print(f'TDC: Failed to load run {run}.')
+      # print('test oldData:\n', self.oldData)
+      if self.hasOldData:
+        self.updatePlotTof_old()
+      else:
+        print(f"TDC: Didn't find any of these runs: {oldRunsList}")
 
   def endScan(self):
     if self.usingEpics: self.epicsDriver.stop()
@@ -251,7 +270,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.tMinLineEdit.setEnabled(False)
     self.tMaxLineEdit.setEnabled(False)
     self.tBinsLineEdit.setEnabled(False)
-    self.instantiateDataFiles(); print('test: self.scanNum=',self.scanNum)
+    self.instantiateDataFiles(); print('TDC: Starting scan',self.scanNum)
     self.scanToggler.clicked.disconnect(self.beginScan)
     self.scanToggled=True
     self.scanToggler.clicked.connect(self.endScan)
@@ -262,7 +281,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                     totalToFs_targetFile=self.liveToFs_totals_File, latestToFs_targetFile=self.liveToFs_latest_File,timeStreamFile=self.timeStreamFile)
     if self.usingEpics:
       try:self.epicsDriver.start()
-      except Exception as e: print('wahhh!',e); self.safeExit(); #exit()
+      except Exception as e: print('TDC: wahhh!',e); self.safeExit(); #exit()
     self.realData = True
 
     self.timer.timeout.connect(self.updateEverything)
@@ -270,18 +289,18 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
   def updateEverything(self):
     if not self.scanToggled:
-      print('investigate this!'); quit()
+      print('TDC: investigate this!'); quit()
     #time.sleep(self.sleepyTime)
     try:
       with open(self.liveToFs_totals_File, 'rb') as file: self.currentData_totals=pickle.load(file); file.close()
       self.updatePlotTof_total()
-    except EOFError: print("oops! file collision on liveToFs_totals_File. But don't worry: this should resolve by next update call")
+    except EOFError: print("TDC: oops! file collision on liveToFs_totals_File. But don't worry: this should resolve by next update call")
     except FileNotFoundError: pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
 
     try:
       with open(self.liveToFs_latest_File, 'rb') as file: self.currentData_latest=pickle.load(file); file.close()
       self.updatePlotTof_latest()
-    except EOFError: print("oops! file collision on liveToFs_latest_File. But don't worry: this should resolve by next update call")
+    except EOFError: print("TDC: oops! file collision on liveToFs_latest_File. But don't worry: this should resolve by next update call")
     except FileNotFoundError:  pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
     
     try:
@@ -289,7 +308,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
       self.tStreamData=self.tStreamDataDic['channel 3']
       #print('mean rate = %.3f +- %.3f'%(np.mean(self.tStreamData), np.std(self.tStreamData)/np.sqrt(len(self.tStreamData))))#reports mean and std error of counts/trigger group
       self.updateTimeStream()
-    except EOFError: print("oops! file collision on timeStreamFile. But don't worry: this should resolve by next update call")
+    except EOFError: print("TDC: oops! file collision on timeStreamFile. But don't worry: this should resolve by next update call")
     except FileNotFoundError: pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
     
     
@@ -323,12 +342,12 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
   def safeExit(self):
     #if self.scanToggled: self.endScan()
-    print("Live plotter closed")
+    print("TDC: Live plotter closed")
 
 def getSettings(d):
   global settingsDic
   settingsDic=d
-  print('test:',settingsDic)
+  # print('test:',settingsDic)
 
 if __name__ == "__main__":
   #global settingsDic, app0, app1

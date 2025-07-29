@@ -12,6 +12,7 @@ from PyQt6.QtCore import QTimer, QStandardPaths
 from ui_BigGUI import Ui_MainWindow
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
+from QuantumComposer.QuantumComposer import QComController
 from TDC.TDC_DAQGUI import TDC_GUI
 from pathlib import Path
 
@@ -43,6 +44,12 @@ class BigGUI(QMainWindow):
 
 
   def loadGUIs(self):
+    self.QCLoaded = self.loadQC()
+    self.AblationLoaded = self.loadAblation()
+    self.BeamlineLoaded = self.loadBeamline()
+    self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
+
+  def loadTDC(self):
     try:
       settingsDic={ 'int_time':1000,
                     'mode':'TTL',
@@ -50,9 +57,11 @@ class BigGUI(QMainWindow):
                     'path':os.path.join(DOCS_PATH,'data','RFQ Tests')}
       self.TDCGUI = TDC_GUI(settingsDic=settingsDic)
       self.ui.frameTDC.layout().addWidget(self.TDCGUI)
+      return 1
     except Exception as E:
       print(f"\nFailed to load TDCGUI: {E}")
-
+      return 0
+  def loadAblation(self):
     try:
       self.AblationGUI = BigSkyHub()
       self.ui.frameAblation.layout().addWidget(self.AblationGUI)
@@ -62,19 +71,31 @@ class BigGUI(QMainWindow):
       ablation_tab_count = self.AblationGUI.table_widget.tabs.count()
       ablationTabIndex = [i for i in range(ablation_tab_count) if "Ablation" in self.AblationGUI.table_widget.tabs.tabText(i)]
       self.ablationTab = self.AblationGUI.table_widget.tabs.widget(ablationTabIndex[0])
+      print("Big Sky: Done.")
+      return 1
     except Exception as E:
       print(f"\nFailed to load ablation GUI: {E}")
-
+      return 0
+  def loadBeamline(self):
     try:
+      print("Beamline: Starting up...")
       self.BeamlineGUI = MyApp() #will be shown when the button is pressed
       script_dir = os.path.dirname(os.path.abspath(__file__))
       image_path = os.path.join(script_dir, "PenningTrapISEG","2D_Labeled_Diagram.png")
       self.BeamlineGUI.label_2.setPixmap(QtGui.QPixmap(image_path))
       self.BeamlineGUI.readAll()
+      print("Beamline: Done.")
+      return 1
     except Exception as E:
       print(f"\nFailed to load beamline GUI: {E}")
-
-    #self.QuantumComposerGUI = blah #eventually need to make this
+      return 0
+  def loadQC(self):
+    try:
+      self.QCGUI = QComController()
+      return 1
+    except Exception as E:
+      print(f"\nFailed to load Quantum Composer GUI: {E}")
+      return 0
 
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
@@ -85,6 +106,7 @@ class BigGUI(QMainWindow):
     self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
     # self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
     self.ui.pushButtonOpenBeamlineGui.clicked.connect(self.openBeamlineGUI)
+    self.ui.pushButtonOpenQC.clicked.connect(self.openQCGUI)
     self.ui.pushButtonStartLaser.clicked.connect(self.handleStartOPO) #cant think of any checks
     self.ui.pushButtonStopLaser.clicked.connect(self.handleStopOPO) #should also stop the scan
 
@@ -213,7 +235,8 @@ class BigGUI(QMainWindow):
 
   ### Functions for OPO communication
   def getOPOStatus(self):
-    pass
+    print("make the getOPOStatus function")
+
   def sendToOPO(self, payload):
     encoded = urllib.parse.quote(json.dumps(payload,separators=(',', ':')))
     url = f"{self.IP}/send?{encoded}"
@@ -224,8 +247,12 @@ class BigGUI(QMainWindow):
       print(f'\nFailed outgoing command {encoded}\nResponse:{response}')
 
   def openBeamlineGUI(self):
-    self.BeamlineGUI.show()
+    try: self.BeamlineGUI.show()
+    except Exception as E: print(E)
 
+  def openQCGUI(self):
+    try: self.QCGUI.show()
+    except Exception as E: print(E)
 
   def dict_run_laser(self):
     return {"action":"control","code":{"device":"laser","values":{"laser-run": 1}}}
