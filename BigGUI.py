@@ -23,8 +23,9 @@ DOCS_PATH = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation
 class BigGUI(QMainWindow):
   ### This is intended to consolidate the various NEPTUNE interfaces in one place. 
   ### Grant Mondeel | gmondeel@mit.edu | 07/25/2025
-  def __init__(self):
-    super().__init__() #super
+  def __init__(self, loop):
+    super().__init__() #super]
+    self.loop = loop #event loop, just storing it here so i can close it on exit
     self.IP = 'http://192.168.1.53:7557'
     self.auth = ('QTuser','QT_53')
     self.scanWavelength=None
@@ -218,6 +219,7 @@ class BigGUI(QMainWindow):
     url = f"{self.IP}/send?{encoded}"
     #todo: what if this fails
     response = requests.get(url, auth=self.auth)
+    print("OPO Response:",response)
     if "failure" in response:
       print(f'\nFailed outgoing command {encoded}\nResponse:{response}')
 
@@ -254,6 +256,11 @@ class BigGUI(QMainWindow):
       self.TDCGUI.safeExit()
     except Exception as E:
       print(E)
+    try:
+      self.loop.stop()
+    except Exception as E:
+      print(E)
+    event.accept()
     
   
 def set_all_margins(obj): #clean up GUI appearance: make the margins small and hide frames
@@ -286,7 +293,7 @@ if __name__ == "__main__":
   app = QApplication(sys.argv)
   loop = QEventLoop(app)
   asyncio.set_event_loop(loop)
-  window = BigGUI()
+  window = BigGUI(loop)
   window.show()
   with loop:
     loop.run_forever()
