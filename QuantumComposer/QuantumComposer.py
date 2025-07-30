@@ -46,6 +46,7 @@ class QComController():
               print(f"QC+: Connected to {dev}."); self.ser.close()
               comport=dev
               self.connected=True
+            else: self.ser.close()
           except: 
             try: self.ser.close()
             except: pass
@@ -769,5 +770,5 @@ class mainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = mainWindow()
+    ex = mainWindow(verbose=True)
     app.exec()
