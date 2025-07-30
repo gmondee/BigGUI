@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>NEPTUNE_BigGUI</class>
+ <widget class="QMainWindow" name="NEPTUNE_BigGUI">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>884</width>
+    <width>1356</width>
     <height>845</height>
    </rect>
   </property>
@@ -757,7 +757,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>328</width>
+              <width>558</width>
               <height>429</height>
              </rect>
             </property>
@@ -989,12 +989,17 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>884</width>
+     <width>1356</width>
      <height>37</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionGgg">
+   <property name="text">
+    <string>ggg</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

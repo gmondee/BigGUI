@@ -10,7 +10,7 @@ from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
 from PyQt6.QtCore import QTimer, QStandardPaths
 from PyQt6.QtGui import QAction
-from ui_BigGUI import Ui_MainWindow
+from ui_BigGUI import Ui_NEPTUNE_BigGUI
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
 from QuantumComposer.QuantumComposer import QComController
@@ -34,10 +34,10 @@ class BigGUI(QMainWindow):
     self.scanParams={}
     self.frequency = 10 # 10 Hz repetition rate
     self.scanSleepTask = None #this
-    self.buildMenuBar()
     # Create and set up the UI
-    self.ui = Ui_MainWindow()
+    self.ui = Ui_NEPTUNE_BigGUI()
     self.ui.setupUi(self)
+    self.buildMenuBar()
 
     self.loadGUIs() #Load up the other GUIs, like the ablation control and TDC
     self.connect()  #Make the buttons do things
@@ -45,8 +45,7 @@ class BigGUI(QMainWindow):
     set_all_margins(self)
 
   def buildMenuBar(self):
-    menuBar = self.menuBar()
-    fileMenu = menuBar.addMenu("Debug")
+    fileMenu = self.ui.menubar.addMenu("Debug")
 
     # Create actions
     reloadQC = QAction("Reload QC", self)
@@ -85,6 +84,10 @@ class BigGUI(QMainWindow):
       print(f"\nFailed to load TDCGUI: {E}")
       return 0
   def loadAblation(self):
+    try: 
+      self.AblationGUI.table_widget.safeExit()
+      self.AblationGUI.layout().removeWidget(self.AblationGUI)
+    except: pass
     try:
       self.AblationGUI = BigSkyHub()
       self.ui.frameAblation.layout().addWidget(self.AblationGUI)
