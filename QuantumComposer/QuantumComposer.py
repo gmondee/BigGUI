@@ -30,8 +30,6 @@ class QComController():
                             'F': [0, 0, 0, 'Channel F: TDC/Ionization Q-Switch'],
                             'G': [0, 0, 0, 'Channel G: OPO Flashlamp'],
                             'H': [0, 0, 0, 'Channel H: OPO Q-Switch']}
-        with open(self.settingsPath, "w") as file:
-            json.dump(self.masterState, file)
         possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
         for dev in possibleDevices:
           try:
@@ -62,6 +60,8 @@ class QComController():
               self.getSync(key)
               self.getDelay(key)
           print("QC+: Done.")
+          with open(self.settingsPath, "w") as file:
+              json.dump(self.masterState, file)
         else:
           print("QC+: Error: Failed to connect to Quantum Composer!")
 
