@@ -67,6 +67,7 @@ class QComController():
     def write(self, command, channel, dataType):
         command = (command + '\r\n').encode('utf-8')
         if self.verbose: print(command)
+        self.ser.flush()
         self.ser.write(command)
         self.out = self.ser.readline().decode('utf-8').rstrip('\r\n')
         if self.out == 'ok':
