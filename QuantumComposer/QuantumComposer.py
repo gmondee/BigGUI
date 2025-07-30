@@ -38,7 +38,7 @@ class QComController():
             if self.verbose: print('QC+: trying com port %s'%dev)
             self.ser = serial.Serial(dev, 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
             # if self.verbose: print(" maybe this one?")
-            # self.ser.flush()
+            self.ser.flush()
             self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
             response = self.checkIdentification()
             #response = self.ser.read(2000).decode('utf-8').rstrip('\r\n'); if self.verbose: print("response:", response)
