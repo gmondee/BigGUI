@@ -138,12 +138,13 @@ class QComController():
 
 
 class mainWindow(QWidget):
-    def __init__(self):
+    def __init__(self, verbose=False):
         super().__init__()
-        self.QComController = QComController()
+        self.QComController = QComController(verbose=verbose)
         self.title = "Quantum Composer Controller"
         self.left = 10
         self.top = 10
+        self.verbose=verbose
         self.width = 1000
         self.height = 500
         self.initUI()

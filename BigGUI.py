@@ -13,7 +13,7 @@ from PyQt6.QtGui import QAction
 from ui_BigGUI import Ui_NEPTUNE_BigGUI
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
-from QuantumComposer.QuantumComposer import QComController
+from QuantumComposer.QuantumComposer import mainWindow as QComMainWindow
 from TDC.TDC_DAQGUI import TDC_GUI
 from pathlib import Path
 
@@ -60,7 +60,7 @@ class BigGUI(QMainWindow):
     fileMenu.addAction(reloadTDC)
 
     # Connect using QAction.triggered.connect
-    reloadQC.triggered.connect(self.loadQC)
+    reloadQC.triggered.connect(lambda: self.loadQC(verbose=True))
     reloadAblation.triggered.connect(self.loadAblation)
     reloadBeamline.triggered.connect(self.loadBeamline)
     reloadTDC.triggered.connect(self.loadTDC)
@@ -115,9 +115,11 @@ class BigGUI(QMainWindow):
     except Exception as E:
       print(f"\nFailed to load beamline GUI: {E}")
       return 0
-  def loadQC(self):
+  def loadQC(self, verbose=False):
+    try: self.QCGUI.deleteLater()
+    except: pass
     try:
-      self.QCGUI = QComController()
+      self.QCGUI = QComMainWindow(verbose=verbose)
       return 1
     except Exception as E:
       print(f"\nFailed to load Quantum Composer GUI: {E}")
@@ -313,7 +315,7 @@ class BigGUI(QMainWindow):
       print(E)
     try:
       print("Stopping event loop...")
-      self.loop.stop()
+      # self.loop.stop()
     except Exception as E:
       print(E)
     event.accept()
