@@ -36,7 +36,7 @@ class QComController():
         for dev in possibleDevices:
           try:
             if self.verbose: print('QC+: trying com port %s'%dev)
-            self.ser = serial.Serial(dev, 115200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
+            self.ser = serial.Serial(dev, 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
             # if self.verbose: print(" maybe this one?")
             # self.ser.flush()
             self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
@@ -52,11 +52,11 @@ class QComController():
             except: pass
         if self.connected:
           self.ser = serial.Serial(port=comport,
-                              baudrate=115200,
+                              baudrate=19200,
                               bytesize=serial.EIGHTBITS,
                               parity=serial.PARITY_NONE,
                               stopbits=serial.STOPBITS_ONE,
-                              timeout=2)
+                              timeout=.25)
           for key in self.masterState.keys():
               self.getState(key)
               self.getSync(key)
