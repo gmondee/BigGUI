@@ -138,7 +138,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.device.threshold=self.threshold
         #self.device.int_time=self.int_time
         print('TDC: Threshold = ',self.device.threshold,'\tTime?',self.device.int_time)
-      except: print('this failed somehow pls investigate'); quit()
+      except Exception as E: print('this failed somehow pls investigate', E); #quit()
 
   def getScanNum(self):
     self.previousScans=[]
