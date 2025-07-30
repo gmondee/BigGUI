@@ -8,7 +8,7 @@ from qasync import QEventLoop, asyncSlot
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
-from PyQt6.QtCore import QTimer, QStandardPaths
+from PyQt6.QtCore import QTimer, QStandardPaths, QThread, QObject, pyqtSignal
 from PyQt6.QtGui import QAction
 from ui_BigGUI import Ui_NEPTUNE_BigGUI
 from BigSkyController.HugeSkyController import BigSkyHub
@@ -302,14 +302,17 @@ class BigGUI(QMainWindow):
   def closeEvent(self, event):
     print("\nClosing BigGUI...\n")
     try:
+      print("Closing Beamline GUI...")
       self.BeamlineGUI.allChannelsOff()
     except Exception as E:
       print(E)
     try:
+      print("Closing TDC GUI...")
       self.TDCGUI.safeExit()
     except Exception as E:
       print(E)
     try:
+      print("Stopping event loop...")
       self.loop.stop()
     except Exception as E:
       print(E)
@@ -332,7 +335,6 @@ def set_all_margins(obj): #clean up GUI appearance: make the margins small and h
       set_all_margins(layout)
   if isinstance(obj, QFrame):
     obj.setFrameShape(QFrame.Shape.NoFrame)
-
 
 # Main app entry
 if __name__ == "__main__":

@@ -51,7 +51,7 @@ class HomeTab(QWidget):
       for dev in possibleDevices:
         try:
           # print('trying com port %s'%dev)
-          ser = serial.Serial(dev,9600,timeout=1)
+          ser = serial.Serial(dev,9600,timeout=.2)
         except:
           # print("nope not this one")
           #self.buttons[i].setEnabled(False)
