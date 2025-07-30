@@ -67,6 +67,7 @@ class TimeStampTDC1(object):
         self._device_path = device_path
         # self._com = serial_connection.SerialConnection(device_path)
         self._com = serial.Serial(device_path, timeout=0.1)
+        self._com.open() #doesnt open by default maybe?
         self._com.write(b"\r\n")
         self._com.readlines()
         self.mode = mode
