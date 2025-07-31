@@ -71,7 +71,7 @@ class QComController():
           self.getSync(key)
           self.getDelay(key)
           self.getWidth(key)
-    def getUpdateLoop(self):
+    def startUpdateLoop(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.getQCValues)
         self.timer.start(2)  # ms
