@@ -6,7 +6,7 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton,\
 QGroupBox, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QRadioButton, \
 QComboBox, QLineEdit, QButtonGroup
-from PyQt6.QtCore import QObject, QThread, pyqtSignal
+from PyQt6.QtCore import QObject, QThread, pyqtSignal, QTimer
 import re
 from PyQt6.QtGui import QFont
 import os
@@ -22,14 +22,15 @@ class QComController():
         self.reply = ''
         self.connected=False
         self.verbose=verbose
-        self.masterState = {'A': [0, 0, 0, 'Channel A: Not used'],
-                            'B': [0, 0, 0, 'Channel B: Ablation Flashlamp'],
-                            'C': [0, 0, 0, 'Channel C: Ablation Q-Switch'],
-                            'D': [0, 0, 0, 'Channel D: Gas'],
-                            'E': [0, 0, 0, 'Channel E: Ionization Flashlamp'],
-                            'F': [0, 0, 0, 'Channel F: TDC/Ionization Q-Switch'],
-                            'G': [0, 0, 0, 'Channel G: OPO Flashlamp'],
-                            'H': [0, 0, 0, 'Channel H: OPO Q-Switch']}
+        #masterState is 0=state, 1=sync, 2=delay, 3=label, 4=width
+        self.masterState = {'A': [0, 0, 0, 'Channel A: Not used',0],
+                            'B': [0, 0, 0, 'Channel B: Ablation Flashlamp',0],
+                            'C': [0, 0, 0, 'Channel C: Ablation Q-Switch',0],
+                            'D': [0, 0, 0, 'Channel D: Gas',0],
+                            'E': [0, 0, 0, 'Channel E: Ionization Flashlamp',0],
+                            'F': [0, 0, 0, 'Channel F: TDC/Ionization Q-Switch',0],
+                            'G': [0, 0, 0, 'Channel G: OPO Flashlamp',0],
+                            'H': [0, 0, 0, 'Channel H: OPO Q-Switch',0]}
         possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
         for dev in possibleDevices:
           try:
@@ -55,10 +56,8 @@ class QComController():
                               parity=serial.PARITY_NONE,
                               stopbits=serial.STOPBITS_ONE,
                               timeout=.25)
-          for key in self.masterState.keys():
-              self.getState(key)
-              self.getSync(key)
-              self.getDelay(key)
+          self.getQCValues()
+          self.startUpdateLoop()
           print("QC+: Done.")
           with open(self.settingsPath, "w") as file:
               json.dump(self.masterState, file)
@@ -66,6 +65,16 @@ class QComController():
         else:
           print("QC+: Error: Failed to connect to Quantum Composer!")
 
+    def getQCValues(self):
+        for key in self.masterState.keys():
+          self.getState(key)
+          self.getSync(key)
+          self.getDelay(key)
+          self.getWidth(key)
+    def getUpdateLoop(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.getQCValues)
+        self.timer.start(2)  # ms
     def write(self, command, channel, dataType):
         command = (command + '\r\n').encode('utf-8')
         if self.verbose: print(command)
@@ -122,21 +131,33 @@ class QComController():
         command = ':PULSE' + self.channel_number + ':DELAY ' + '{:.9f}'.format(float(delay)*1e-6)
         self.write(command, channel, 2)
 
+    def getWidth(self, channel):
+        self.channel_number = self.channel_index[channel]
+        command = ":PULSE"+str(self.channel_number)+":WIDTH?"
+        self.write(command, channel, 4)
+
+    def setWidth(self, channel, width):
+        self.channel_number = self.channel_index[channel]
+        command = ':PULSE' + self.channel_number + ':WIDTH ' + '{:.9f}'.format(float(width)*1e-6)
+        self.write(command, channel, 4)
+
     def checkIdentification(self):
         command = "*IDN?"
         return self.write(command,channel='SYSTEM',dataType=None)
     
     def start(self):
-        for channel in self.masterState.keys():
-            channel_number = self.channel_index[channel]
-            command = ":PULSE"+str(channel_number)+":STATE 1"
-            self.write(command, channel, 0)
+        self.setState("T0",1)
+        # for channel in self.masterState.keys():
+        #     channel_number = self.channel_index[channel]
+        #     command = ":PULSE"+str(channel_number)+":STATE 1"
+        #     self.write(command, channel, 0)
     
     def stop(self):
-        for channel in self.masterState.keys():
-            channel_number = self.channel_index[channel]
-            command = ":PULSE"+str(channel_number)+":STATE 0"
-            self.write(command, channel, 0)
+        self.setState("T0",0)
+        # for channel in self.masterState.keys():
+        #     channel_number = self.channel_index[channel]
+        #     command = ":PULSE"+str(channel_number)+":STATE 0"
+        #     self.write(command, channel, 0)
     
 
 
@@ -768,6 +789,7 @@ class mainWindow(QWidget):
         self.delayDict[channel][1].setText(self.QComController.masterState[channel][2] + ' µs')
         self.delayDict[channel][0].setText(self.QComController.masterState[channel][2])
         self.QComController.getSync(channel)
+        
         
 
 if __name__ == '__main__':

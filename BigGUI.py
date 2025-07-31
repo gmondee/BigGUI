@@ -71,7 +71,7 @@ class BigGUI(QMainWindow):
     self.AblationLoaded = self.loadAblation()
     self.BeamlineLoaded = self.loadBeamline()
     self.QCLoaded = self.loadQC()
-    if self.QCLoaded: self.prepareQCScan()
+    # if self.QCLoaded: self.prepareQCScan()
 
   def loadTDC(self):
     try:
@@ -122,6 +122,7 @@ class BigGUI(QMainWindow):
     except: pass
     try:
       self.QCGUI = QComMainWindow(verbose=verbose)
+      self.prepareQCScan()
       return 1
     except Exception as E:
       print(f"\nFailed to load Quantum Composer GUI: {E}")
@@ -161,7 +162,9 @@ class BigGUI(QMainWindow):
       scanMode = 'delay'
     elif self.ui.radioButtonQCScanWidth.isChecked():
       scanMode = 'width'
-      print("not implemented"); return
+    else: 
+      print("uh oh")
+      return
     self.QCScanParams['startValue'] = self.ui.doubleSpinBoxQCScanStartValue.value()
     self.QCScanParams['endValue'] = self.ui.doubleSpinBoxQCScanEndValue.value()
     self.QCScanParams['stepSize'] = self.ui.doubleSpinBoxQCScanStepSize.value()
@@ -183,7 +186,7 @@ class BigGUI(QMainWindow):
     scanETAmin = (1/self.frequency*self.QCScanParams["pulsesPerStep"]+0.5)*(self.QCScanParams["endValue"]-self.QCScanParams["startValue"])/self.QCScanParams["stepSize"]/60
     self.ui.labelQCScanStatus.setText("Scan Status: ON")
     print(f'Starting QC scan. ETA:{scanETAmin:.2f} minutes.\nScan parameters:{self.QCScanParams}')
-    self.scanQCNext()
+    self.scanQCNext(scanMode)
 
   @asyncSlot()
   async def startWavelengthScan(self):
@@ -299,17 +302,19 @@ class BigGUI(QMainWindow):
     self.ui.labelQCScanStatus.setText("Scan Status: OFF")
 
   @asyncSlot()
-  async def scanQCNext(self):
+  async def scanQCNext(self,scanMode):
     if self.TDCGUI.scanToggled: #if there's a TDC run in progress, stop it
       self.TDCGUI.scanToggler.click()
     waitTime = int(1/self.frequency*self.QCScanParams["pulsesPerStep"])
     channel = self.QCScanParams["channel"]
 
-    if self.QCScanParams["mode"] == "delay":
+    if scanMode == "delay":
       # set the delay to the current value
       print(f'Setting QC delay to {self.QCScanTime}')
       self.QCGUI.QComController.setDelay(channel=channel, delay=self.QCScanTime)
-    else: print("not implemented");return
+    elif scanMode == "width": 
+      print(f'Setting QC width to {self.QCScanTime}')
+      self.QCGUI.QComController.setWidth(channel=channel, delay=self.QCScanTime)
     self.TDCGUI.scanToggler.click()  #start recording
     try:
       await self.make_sleep_task(waitTime)
