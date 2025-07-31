@@ -32,6 +32,7 @@ class BigGUI(QMainWindow):
     self.auth = ('QTuser','QT_53')
     self.scanWavelength=None
     self.scanParams={}
+    self.QCScanParams={}
     self.frequency = 10 # 10 Hz repetition rate
     self.scanSleepTask = None #this
     # Create and set up the UI
@@ -67,6 +68,7 @@ class BigGUI(QMainWindow):
 
   def loadGUIs(self):
     self.QCLoaded = self.loadQC()
+    if self.QCLoaded: self.prepareQCScan()
     self.AblationLoaded = self.loadAblation()
     self.BeamlineLoaded = self.loadBeamline()
     self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
@@ -124,6 +126,10 @@ class BigGUI(QMainWindow):
     except Exception as E:
       print(f"\nFailed to load Quantum Composer GUI: {E}")
       return 0
+  def prepareQCScan(self):
+    self.ui.comboBoxQCScanChannel.clear()
+    for channel in  self.QCGUI.stateDict.keys():
+      self.ui.comboBoxQCScanChannel.addItem(channel)
 
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
@@ -137,6 +143,8 @@ class BigGUI(QMainWindow):
     self.ui.pushButtonOpenQC.clicked.connect(self.openQCGUI)
     self.ui.pushButtonStartLaser.clicked.connect(self.handleStartOPO) #cant think of any checks
     self.ui.pushButtonStopLaser.clicked.connect(self.handleStopOPO) #should also stop the scan
+    self.ui.pushButtonQCScanStart.clicked.connect(self.startQCScan)
+    self.ui.pushButtonQCScanStop.clicked.connect(self.stopQCScan)
 
   def handleStartOPO(self):
     ##any checks go here
@@ -145,6 +153,37 @@ class BigGUI(QMainWindow):
   def handleStopOPO(self):
     self.stopWavelengthScan()
     self.sendToOPO(self.dict_stop_laser())
+
+  @asyncSlot()
+  async def startQCScan(self):
+    channel = "CH"+self.ui.comboBoxQCScanChannel.currentText() #get channel as CHX for channel X
+    if self.ui.radioButtonQCScanDelay.isChecked():
+      scanMode = 'delay'
+    elif self.ui.radioButtonQCScanWidth.isChecked():
+      scanMode = 'width'
+      print("not implemented"); return
+    self.QCScanParams['startValue'] = self.ui.doubleSpinBoxQCScanStartValue.value()
+    self.QCScanParams['endValue'] = self.ui.doubleSpinBoxQCScanEndValue.value()
+    self.QCScanParams['stepSize'] = self.ui.doubleSpinBoxQCScanStepSize.value()
+    self.QCScanParams['pulsesPerStep'] = self.ui.spinBoxQCScanPulsesPerStep.value()
+    self.QCScanParams['mode'] = scanMode
+    self.QCScanParams['channel'] = channel
+
+    if self.QCScanParams["startValue"]+self.QCScanParams["stepSize"]>=self.QCScanParams["endValue"]:
+      print('Starting time + step size must be less than the ending time')
+      return
+    
+    self.QCScanTime = self.QCScanParams['startValue']
+
+    ### Prepare for the scan
+    ## Let user set ablation and OPO
+    ## Disable GUI elements
+    #TODO: disable GUI elements for safety
+
+    scanETAmin = (1/self.frequency*self.QCScanParams["pulsesPerStep"]+0.5)*(self.QCScanParams["endValue"]-self.QCScanParams["startValue"])/self.QCScanParams["stepSize"]/60
+    self.ui.labelQCScanStatus.setText("Scan Status: ON")
+    print(f'Starting QC scan. ETA:{scanETAmin:.2f} minutes.\nScan parameters:{self.QCScanParams}')
+    self.scanQCNext()
 
   @asyncSlot()
   async def startWavelengthScan(self):
@@ -233,6 +272,7 @@ class BigGUI(QMainWindow):
     
     if 2*self.scanParams["stepSize"]+self.scanWavelength >= self.scanParams["endWL"]:
       print("\nScan finished.\n")
+      self.stopWavelengthScan()
       pass #scan over
     else:
       self.scanWavelength += self.scanParams["stepSize"]
@@ -248,6 +288,45 @@ class BigGUI(QMainWindow):
     self.ui.labelScanStatus.setText("Scan Status: OFF")
     
     ### Re-enable scan GUI elements
+
+  def stopQCScan(self):
+    #self.scanTimer.stop()
+    if self.scanSleepTask and not self.scanSleepTask.done():
+      self.scanSleepTask.cancel()
+      print('Stopped scan')
+    else:
+      print('No scan was in progress')
+    self.ui.labelQCScanStatus.setText("Scan Status: OFF")
+
+  @asyncSlot()
+  async def scanQCNext(self):
+    if self.TDCGUI.scanToggled: #if there's a TDC run in progress, stop it
+      self.TDCGUI.scanToggler.click()
+    waitTime = int(1/self.frequency*self.QCScanParams["pulsesPerStep"])
+    channel = self.QCScanParams["channel"]
+
+    if self.QCScanParams["mode"] == "delay":
+      # set the delay to the current value
+      self.QCGUI.QComController.setDelay(channel=channel, delay=self.QCScanTime)
+    else: print("not implemented");return
+    self.TDCGUI.scanToggler.click()  #start recording
+    try:
+      await self.make_sleep_task(waitTime)
+    except asyncio.CancelledError:
+      print("Main function interrupted during sleep.")
+      # self.stopQCScan()
+      #TODO: handle canellation
+      return
+    self.TDCGUI.scanToggler.click()
+
+    if 2*self.QCScanParams["stepSize"]+self.QCScanTime>= self.QCScanParams["endValue"]:
+      print("\nQC scan finished.\n")
+      self.stopQCScan()
+      pass #scan over
+    else:
+      self.QCScanTime += self.QCScanParams["stepSize"]
+      self.scanQCNext()
+
 
   @asyncSlot()
   async def make_sleep_task(self, time_s):
