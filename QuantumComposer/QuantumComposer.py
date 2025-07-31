@@ -62,6 +62,7 @@ class QComController():
           print("QC+: Done.")
           with open(self.settingsPath, "w") as file:
               json.dump(self.masterState, file)
+          # import ipdb; ipdb.set_trace()
         else:
           print("QC+: Error: Failed to connect to Quantum Composer!")
 
@@ -82,8 +83,10 @@ class QComController():
             #    self.masterState[channel][0] = 1
         else:
             if re.match("^[0-9.]+$", self.out) and len(self.out) > 2:
-                self.out = self.out[:-7]
+                self.out = str(float(self.out[:-4])*1e6) #change timings to nanoseconds
             self.masterState[channel][dataType] = self.out
+            print(self.out)
+            print(f'{self.masterState[channel][dataType]}=')
             #if self.verbose: print(self.masterState)
         with open(self.settingsPath, "w") as file:
             json.dump(self.masterState, file)
@@ -117,7 +120,7 @@ class QComController():
 
     def setDelay(self, channel, delay):
         self.channel_number = self.channel_index[channel]
-        command = ':PULSE' + self.channel_number + ':DELAY ' + delay
+        command = ':PULSE' + self.channel_number + ':DELAY ' + str(float(delay)*1e-6)
         self.write(command, channel, 2)
 
     def checkIdentification(self):
@@ -214,7 +217,7 @@ class mainWindow(QWidget):
         self.channelASyncTo.setCurrentText(self.QComController.masterState['A'][1].replace('CH', 'Channel '))
         # delay
         self.channelADelayLabel = QLabel('Delay (μs)')
-        self.channelADelay = QLineEdit(self.QComController.masterState['A'][2])
+        self.channelADelay =QLineEdit(str(self.QComController.masterState['A'][2]))
         self.channelADelaySet = QPushButton('Set')
         channelADelayLayout = QHBoxLayout()
         channelADelayLayout.addWidget(self.channelADelayLabel)
@@ -272,7 +275,7 @@ class mainWindow(QWidget):
         self.channelBSyncTo.setCurrentText(self.QComController.masterState['B'][1].replace('CH', 'Channel '))
         # delay
         self.channelBDelayLabel = QLabel('Delay (μs)')
-        self.channelBDelay = QLineEdit(self.QComController.masterState['B'][2])
+        self.channelBDelay =QLineEdit(str(self.QComController.masterState['B'][2]))
         self.channelBDelaySet = QPushButton('Set')
         channelBDelayLayout = QHBoxLayout()
         channelBDelayLayout.addWidget(self.channelBDelayLabel)
@@ -330,7 +333,7 @@ class mainWindow(QWidget):
         self.channelCSyncTo.setCurrentText(self.QComController.masterState['C'][1].replace('CH', 'Channel '))
         # delay
         self.channelCDelayLabel = QLabel('Delay (μs)')
-        self.channelCDelay = QLineEdit(self.QComController.masterState['C'][2])
+        self.channelCDelay =QLineEdit(str(self.QComController.masterState['C'][2]))
         self.channelCDelaySet = QPushButton('Set')
         channelCDelayLayout = QHBoxLayout()
         channelCDelayLayout.addWidget(self.channelCDelayLabel)
@@ -387,7 +390,7 @@ class mainWindow(QWidget):
         self.channelDSyncTo.setCurrentText(self.QComController.masterState['D'][1].replace('CH', 'Channel '))
         # delay
         self.channelDDelayLabel = QLabel('Delay (μs)')
-        self.channelDDelay = QLineEdit(self.QComController.masterState['D'][2])
+        self.channelDDelay =QLineEdit(str(self.QComController.masterState['D'][2]))
         self.channelDDelaySet = QPushButton('Set')
         channelDDelayLayout = QHBoxLayout()
         channelDDelayLayout.addWidget(self.channelDDelayLabel)
@@ -450,7 +453,7 @@ class mainWindow(QWidget):
         self.channelESyncTo.setCurrentText(self.QComController.masterState['E'][1].replace('CH', 'Channel '))
         # delay
         self.channelEDelayLabel = QLabel('Delay (μs)')
-        self.channelEDelay = QLineEdit(self.QComController.masterState['E'][2])
+        self.channelEDelay =QLineEdit(str(self.QComController.masterState['E'][2]))
         self.channelEDelaySet = QPushButton('Set')
         channelEDelayLayout = QHBoxLayout()
         channelEDelayLayout.addWidget(self.channelEDelayLabel)
@@ -507,7 +510,7 @@ class mainWindow(QWidget):
         self.channelFSyncTo.setCurrentText(self.QComController.masterState['F'][1].replace('CH', 'Channel '))
         # delay
         self.channelFDelayLabel = QLabel('Delay (μs)')
-        self.channelFDelay = QLineEdit(self.QComController.masterState['F'][2])
+        self.channelFDelay =QLineEdit(str(self.QComController.masterState['F'][2]))
         self.channelFDelaySet = QPushButton('Set')
         channelFDelayLayout = QHBoxLayout()
         channelFDelayLayout.addWidget(self.channelFDelayLabel)
@@ -564,7 +567,7 @@ class mainWindow(QWidget):
         self.channelGSyncTo.setCurrentText(self.QComController.masterState['G'][1].replace('CH', 'Channel '))
         # delay
         self.channelGDelayLabel = QLabel('Delay (μs)')
-        self.channelGDelay = QLineEdit(self.QComController.masterState['G'][2])
+        self.channelGDelay =QLineEdit(str(self.QComController.masterState['G'][2]))
         self.channelGDelaySet = QPushButton('Set')
         channelGDelayLayout = QHBoxLayout()
         channelGDelayLayout.addWidget(self.channelGDelayLabel)
@@ -621,7 +624,7 @@ class mainWindow(QWidget):
         self.channelHSyncTo.setCurrentText(self.QComController.masterState['H'][1].replace('CH', 'Channel '))
         # delay
         self.channelHDelayLabel = QLabel('Delay (μs)')
-        self.channelHDelay = QLineEdit(self.QComController.masterState['H'][2])
+        self.channelHDelay =QLineEdit(str(self.QComController.masterState['H'][2]))
         self.channelHDelaySet = QPushButton('Set')
         channelHDelayLayout = QHBoxLayout()
         channelHDelayLayout.addWidget(self.channelHDelayLabel)
@@ -667,7 +670,7 @@ class mainWindow(QWidget):
 
 
         self.setLayout(windowLayout)
-        self.show()
+        # self.show()
 
         self.channelASwitchOn.clicked.connect(lambda:self.switchOnClick('A'))
         self.channelASwitchOff.clicked.connect(lambda:self.switchOffClick('A'))
