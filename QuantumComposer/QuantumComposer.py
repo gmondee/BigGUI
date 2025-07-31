@@ -57,7 +57,7 @@ class QComController():
                               stopbits=serial.STOPBITS_ONE,
                               timeout=.25)
           self.getQCValues()
-          self.startUpdateLoop()
+          # self.startUpdateLoop() #disable until multithreading
           print("QC+: Done.")
           with open(self.settingsPath, "w") as file:
               json.dump(self.masterState, file)
