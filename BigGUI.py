@@ -4,7 +4,6 @@ import requests
 import json
 import urllib
 import asyncio
-from qasync import QEventLoop, asyncSlot
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
@@ -16,6 +15,7 @@ from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
 from QuantumComposer.QuantumComposer import mainWindow as QComMainWindow
 from TDC.TDC_DAQGUI import TDC_GUI
 from pathlib import Path
+from qasync import QEventLoop, asyncSlot
 
 DOCS_PATH = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
 # print(f"Documents folder: {DOCS_PATH}")
@@ -67,8 +67,8 @@ class BigGUI(QMainWindow):
     reloadTDC.triggered.connect(self.loadTDC)
 
   def loadGUIs(self):
-    self.AblationLoaded = self.loadAblation()
     self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
+    self.AblationLoaded = self.loadAblation()
     self.BeamlineLoaded = self.loadBeamline()
     self.QCLoaded = self.loadQC()
     if self.QCLoaded: self.prepareQCScan()

@@ -43,40 +43,42 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     self.settingsDic=settingsDic
     self.settingsButton.clicked.connect(self.openSettingsWindow)
-    possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
-    self.deviceCommunication=False
-    import ipdb; ipdb.set_trace()
-    for dev in possibleDevices:
-      try:
-        print('TDC: trying com port %s'%dev)
-        tempDevice = TimeStampTDC1(dev)
-      except Exception as E:#PermissionError:
-        #already connected to something; ignore this port
-        if "PermissionError" in E.args[0]:
-          continue
-        else: 
-          try:
-            ser = serial.Serial(dev)
-            ser.close()
-            tempDevice = TimeStampTDC1(dev)
-          except: pass
-
-      try:
-        testQuery = tempDevice.int_time
-        self.device = tempDevice
-        print(f'TDC: Connected to {dev}')
-        self.deviceCommunication=True
-      except Exception as E:
-        print("TDC:",E)
-        try: tempDevice._com.close()
-        except: pass
-    # self.comPort=comport#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
+    # possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
     self.realData=False; self.hasOldData=False
+    pid = 4097
+    self.deviceCommunication=False
+    # self.device=TimeStampTDC1('COM5')
+    # self.deviceCommunication = True
+    device_list = serial.tools.list_ports.comports()
+    for dev in device_list:
+      if dev.pid==pid:
+        try:
+          #first, try closing it
+          try:
+            pass
+            # ser = serial.Serial(dev.device)
+            # ser.close()
+          except Exception as E: print(E)
+          self.device=TimeStampTDC1(dev.device)
+          print(f"TDC: Connected to {dev.device}")
+          self.deviceCommunication=True
+        except Exception as E:
+          print("failed?",E)
+          # import ipdb; ipdb.set_trace()
+
+    
     # try:
     #   self.device = TimeStampTDC1(self.comPort)
     #   self.deviceCommunication=True
     # except: self.deviceCommunication=False
     # print("communicating with device?", self.deviceCommunication)
+    
+    # self.comPort='COM5'#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
+    # self.realData=False; self.hasOldData=False
+    # try:
+    #   self.device = TimeStampTDC1(self.comPort)
+    #   self.deviceCommunication=True
+    # except: self.deviceCommunication=False
     self.setSettings()
     
     self.scanToggled=False

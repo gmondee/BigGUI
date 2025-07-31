@@ -773,4 +773,5 @@ class mainWindow(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = mainWindow(verbose=True)
+    ex.show()
     app.exec()
