@@ -203,6 +203,7 @@ class mainWindow(QWidget):
                     'H': [self.channelHSyncTo, self.channelHSyncRead]
                     }
         # Store the QC controller as a class level variable so it can be accessed in other functions
+        import ipdb; ipdb.set_trace()
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.height, self.width, self.height)
@@ -799,6 +800,23 @@ class mainWindow(QWidget):
         self.delayDict[channel][1].setText(self.QComController.masterState[channel][2] + ' µs')
         self.delayDict[channel][0].setText(self.QComController.masterState[channel][2])
         self.QComController.getSync(channel)  
+
+    def refreshUI(self):
+        self.QComController.getQCValues()
+        for ch in self.QComController.masterState.keys():
+          if self.QComController.masterState['E'][0] == '0': #radio buttons
+              self.channelESwitchOff.setChecked(True)
+          else:
+              self.channelESwitchOn.setChecked(True)
+
+          self.channelCDelayRead.setText(self.QComController.masterState['C'][2] + ' µs') #delay readout label
+
+          self.channelHDelay.setText(str(self.QComController.masterState['H'][2])) #delay lineedit
+
+          self.channelHSyncTo.setCurrentText(self.QComController.masterState['H'][1].replace('CH', 'Channel ')) #combobox
+
+          self.channelHSyncRead.setText(self.QComController.masterState['H'][1].replace('CH', 'Channel '))
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
