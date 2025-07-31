@@ -287,7 +287,7 @@
                   <string/>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="TabScanWavelength">
                   <attribute name="title">
@@ -556,13 +556,6 @@
                        </property>
                       </widget>
                      </item>
-                     <item row="6" column="0">
-                      <widget class="QPushButton" name="pushButtonQCScanStart">
-                       <property name="text">
-                        <string>Start Scan</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="6" column="1">
                       <widget class="QPushButton" name="pushButtonQCScanStop">
                        <property name="text">
@@ -672,6 +665,24 @@
                         <number>900</number>
                        </property>
                       </widget>
+                     </item>
+                     <item row="6" column="0">
+                      <layout class="QHBoxLayout" name="horizontalLayout_11">
+                       <item>
+                        <widget class="QLabel" name="labelQCScanStatus">
+                         <property name="text">
+                          <string>Scan Status: OFF</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButtonQCScanStart">
+                         <property name="text">
+                          <string>Start Scan</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </item>
                     </layout>
                    </item>
@@ -785,7 +796,18 @@
         <property name="frameShadow">
          <enum>QFrame::Shadow::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_14"/>
+        <layout class="QVBoxLayout" name="verticalLayout_14">
+         <item>
+          <widget class="QFrame" name="frame_14">
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Raised</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="6" column="1">
@@ -838,7 +860,7 @@
               <x>0</x>
               <y>0</y>
               <width>558</width>
-              <height>487</height>
+              <height>499</height>
              </rect>
             </property>
             <property name="sizePolicy">
