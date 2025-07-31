@@ -38,6 +38,7 @@ class QComController():
             self.ser = serial.Serial(dev, 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
             # if self.verbose: print(" maybe this one?")
             self.ser.flush()
+            self.ser.reset_output_buffer()
             self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
             response = self.checkIdentification()
             #response = self.ser.read(2000).decode('utf-8').rstrip('\r\n'); if self.verbose: print("response:", response)
@@ -71,6 +72,7 @@ class QComController():
           self.getSync(key)
           self.getDelay(key)
           self.getWidth(key)
+        self.triggering = self.getState("T0")
     def startUpdateLoop(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.getQCValues)
@@ -85,8 +87,8 @@ class QComController():
             if self.verbose: print('QC+: task trasmitted')
         else:
             if self.verbose: print('QC+: this is out: ' + self.out)
-        if channel == 'SYSTEM':
-            pass 
+        if channel == 'SYSTEM' or channel=="T0":
+            return self.out 
             #if self.verbose: print('QC+: baa')
             #for channel in self.masterState.keys():
             #    self.masterState[channel][0] = 1
@@ -103,7 +105,7 @@ class QComController():
     def getState(self, channel):
         channel_number = self.channel_index[channel]
         command = ":PULSE" + str(channel_number) + ":STATE?"
-        self.write(command, channel, 0)
+        return int(self.write(command, channel, 0))
 
     def setState(self, channel, state):
         channel_number = self.channel_index[channel]
@@ -435,6 +437,9 @@ class mainWindow(QWidget):
         channelDLayout.addLayout(channelDReadoutLayout)
 
         channelAtoDLayout = QVBoxLayout()
+        pushButtonUpdate=QPushButton("Refresh Values from QC")
+        pushButtonUpdate.clicked.connect(self.QComController.getQCValues)
+        channelAtoDLayout.addWidget(pushButtonUpdate)
         channelAtoDLayout.addLayout(channelALayout)
         channelAtoDLayout.addLayout(channelBLayout)
         channelAtoDLayout.addLayout(channelCLayout)
@@ -675,7 +680,12 @@ class mainWindow(QWidget):
 
         self.systemOnLabel = QLabel('Turn on all the channels')
         self.systemOn = QPushButton('SYSTEM ON')
-        self.systemOn.setStyleSheet("background-color : lightblue")
+        if self.QComController.triggering:
+          self.systemOn.setText('SYSTEM ON')
+          self.systemOn.setStyleSheet("background-color : lightblue")
+        else:
+          self.systemOn.setText('SYSTEM OFF')
+          self.systemOn.setStyleSheet("background-color : lightpink")
         self.systemOn.setCheckable(True)
         self.systemOn.clicked.connect(lambda:self.start())
 
@@ -733,11 +743,11 @@ class mainWindow(QWidget):
         self.channelHDelaySet.clicked.connect(lambda:self.delaySelect('H'))
 
     def start(self):
-        if self.systemOn.isChecked() == True:
+        if not self.QComController.triggering: #self.systemOn.isChecked() == True:
             self.QComController.start()
             self.systemOn.setText('SYSTEM ON')
             self.systemOn.setStyleSheet("background-color : lightblue")
-        elif self.systemOn.isChecked() == False:
+        elif self.QComController.triggering:#self.systemOn.isChecked() == False:
             self.QComController.stop()
             self.systemOn.setText('SYSTEM OFF')
             self.systemOn.setStyleSheet("background-color : lightpink")
@@ -788,9 +798,7 @@ class mainWindow(QWidget):
         self.QComController.getDelay(channel)
         self.delayDict[channel][1].setText(self.QComController.masterState[channel][2] + ' µs')
         self.delayDict[channel][0].setText(self.QComController.masterState[channel][2])
-        self.QComController.getSync(channel)
-        
-        
+        self.QComController.getSync(channel)  
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
