@@ -45,18 +45,31 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.settingsButton.clicked.connect(self.openSettingsWindow)
     possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
     self.deviceCommunication=False
+    import ipdb; ipdb.set_trace()
     for dev in possibleDevices:
       try:
-        # print('TDC: trying com port %s'%dev)
+        print('TDC: trying com port %s'%dev)
         tempDevice = TimeStampTDC1(dev)
+      except Exception as E:#PermissionError:
+        #already connected to something; ignore this port
+        if "PermissionError" in E.args[0]:
+          continue
+        else: 
+          try:
+            ser = serial.Serial(dev)
+            ser.close()
+            tempDevice = TimeStampTDC1(dev)
+          except: pass
+
+      try:
         testQuery = tempDevice.int_time
-      except Exception as E:
-        try: tempDevice._com.close()
-        except: pass
-      else:
         self.device = tempDevice
         print(f'TDC: Connected to {dev}')
         self.deviceCommunication=True
+      except Exception as E:
+        print("TDC:",E)
+        try: tempDevice._com.close()
+        except: pass
     # self.comPort=comport#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
     self.realData=False; self.hasOldData=False
     # try:
@@ -275,7 +288,6 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.scanToggled=True
     self.scanToggler.clicked.connect(self.endScan)
     self.scanToggler.setText('stop run '+str(self.scanNum))
- 
     if self.deviceCommunication:
       self.device.start_continuous_stream_timestamps_to_file(self.rawDataFile, self.dbName, self.scanNum, binRay=[self.tMinValue,self.tMaxValue,self.tBinsValue], int_time=self.int_time,
                                                                     totalToFs_targetFile=self.liveToFs_totals_File, latestToFs_targetFile=self.liveToFs_latest_File,timeStreamFile=self.timeStreamFile)

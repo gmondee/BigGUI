@@ -85,8 +85,7 @@ class QComController():
             if re.match("^[0-9.]+$", self.out) and len(self.out) > 2:
                 self.out = str(float(self.out[:-4])*1e6) #change timings to nanoseconds
             self.masterState[channel][dataType] = self.out
-            print(self.out)
-            print(f'{self.masterState[channel][dataType]}=')
+            print(command, self.out)
             #if self.verbose: print(self.masterState)
         with open(self.settingsPath, "w") as file:
             json.dump(self.masterState, file)
@@ -120,7 +119,7 @@ class QComController():
 
     def setDelay(self, channel, delay):
         self.channel_number = self.channel_index[channel]
-        command = ':PULSE' + self.channel_number + ':DELAY ' + str(float(delay)*1e-6)
+        command = ':PULSE' + self.channel_number + ':DELAY ' + '{:.9f}'.format(float(delay)*1e-6)
         self.write(command, channel, 2)
 
     def checkIdentification(self):

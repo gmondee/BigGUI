@@ -52,9 +52,8 @@ class HomeTab(QWidget):
         try:
           # print('trying com port %s'%dev)
           ser = serial.Serial(dev,9600,timeout=.2)
-        except:
-          # print("nope not this one")
-          #self.buttons[i].setEnabled(False)
+        except serial.SerialException:
+          #already open--so don't close it
           sn=-1
         else:
           # print(" maybe this one?")
@@ -70,6 +69,7 @@ class HomeTab(QWidget):
             else: self.labelLineEdits+=[QLineEdit('')]
             self.layout.addWidget(self.buttons[-1], len(self.buttons)-1, 0)
             self.layout.addWidget(self.labelLineEdits[-1], len(self.buttons)-1, 1)
+          else: ser.close()
     self.text = QTextBrowser()
     self.layout.addWidget(self.text, len(self.buttons),0)
     self.saveButton=QPushButton('Save Labels')

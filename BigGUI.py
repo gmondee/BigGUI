@@ -67,11 +67,11 @@ class BigGUI(QMainWindow):
     reloadTDC.triggered.connect(self.loadTDC)
 
   def loadGUIs(self):
+    self.AblationLoaded = self.loadAblation()
+    self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
+    self.BeamlineLoaded = self.loadBeamline()
     self.QCLoaded = self.loadQC()
     if self.QCLoaded: self.prepareQCScan()
-    self.AblationLoaded = self.loadAblation()
-    self.BeamlineLoaded = self.loadBeamline()
-    self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
 
   def loadTDC(self):
     try:
@@ -156,7 +156,7 @@ class BigGUI(QMainWindow):
 
   @asyncSlot()
   async def startQCScan(self):
-    channel = "CH"+self.ui.comboBoxQCScanChannel.currentText() #get channel as CHX for channel X
+    channel = self.ui.comboBoxQCScanChannel.currentText()
     if self.ui.radioButtonQCScanDelay.isChecked():
       scanMode = 'delay'
     elif self.ui.radioButtonQCScanWidth.isChecked():
@@ -307,6 +307,7 @@ class BigGUI(QMainWindow):
 
     if self.QCScanParams["mode"] == "delay":
       # set the delay to the current value
+      print(f'Setting QC delay to {self.QCScanTime}')
       self.QCGUI.QComController.setDelay(channel=channel, delay=self.QCScanTime)
     else: print("not implemented");return
     self.TDCGUI.scanToggler.click()  #start recording
@@ -319,7 +320,7 @@ class BigGUI(QMainWindow):
       return
     self.TDCGUI.scanToggler.click()
 
-    if 2*self.QCScanParams["stepSize"]+self.QCScanTime>= self.QCScanParams["endValue"]:
+    if self.QCScanParams["stepSize"]+self.QCScanTime> self.QCScanParams["endValue"]:
       print("\nQC scan finished.\n")
       self.stopQCScan()
       pass #scan over
