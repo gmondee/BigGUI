@@ -72,9 +72,9 @@ class QComController():
           self.getDelay(key)
           self.getWidth(key)
     def startUpdateLoop(self):
-        self.timer = QTimer(self)
+        self.timer = QTimer()
         self.timer.timeout.connect(self.getQCValues)
-        self.timer.start(2)  # ms
+        self.timer.start(2000)  # ms
     def write(self, command, channel, dataType):
         command = (command + '\r\n').encode('utf-8')
         if self.verbose: print(command)
