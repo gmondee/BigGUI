@@ -287,7 +287,7 @@
                   <string/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="TabScanWavelength">
                   <attribute name="title">
@@ -493,9 +493,9 @@
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="tab_6">
+                 <widget class="QWidget" name="tabQCScan">
                   <attribute name="title">
-                   <string>Placeholder Scan (delays?)</string>
+                   <string>Quantum Composer Scan</string>
                   </attribute>
                   <layout class="QVBoxLayout" name="verticalLayout_12">
                    <property name="leftMargin">
@@ -515,81 +515,161 @@
                      <item row="0" column="0">
                       <widget class="QLabel" name="label_9">
                        <property name="text">
-                        <string>Placeholder</string>
+                        <string>Scan Channel:</string>
                        </property>
                       </widget>
                      </item>
                      <item row="1" column="0">
                       <widget class="QLabel" name="label_10">
                        <property name="text">
-                        <string>Ending Wavelength</string>
+                        <string>Scan Parameter:</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="2" column="0">
+                     <item row="4" column="0">
                       <widget class="QLabel" name="label_11">
                        <property name="text">
-                        <string>Step Size</string>
+                        <string>Step Size (μs):</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="2" column="1">
-                      <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+                     <item row="4" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxQCScanStepSize">
+                       <property name="minimum">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>100.000000000000000</double>
+                       </property>
                        <property name="singleStep">
                         <double>0.010000000000000</double>
                        </property>
                        <property name="value">
-                        <double>0.010000000000000</double>
+                        <double>10.000000000000000</double>
                        </property>
                       </widget>
                      </item>
-                     <item row="3" column="0">
+                     <item row="5" column="0">
                       <widget class="QLabel" name="label_12">
                        <property name="text">
                         <string>Pulses per Step</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="3" column="1">
-                      <widget class="QSpinBox" name="spinBox_2"/>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
-                       <property name="minimum">
-                        <double>210.000000000000000</double>
-                       </property>
-                       <property name="maximum">
-                        <double>2300.000000000000000</double>
-                       </property>
-                       <property name="singleStep">
-                        <double>0.010000000000000</double>
-                       </property>
-                       <property name="value">
-                        <double>210.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
-                       <property name="singleStep">
-                        <double>0.010000000000000</double>
-                       </property>
-                       <property name="value">
-                        <double>0.010000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QPushButton" name="pushButton_8">
+                     <item row="6" column="0">
+                      <widget class="QPushButton" name="pushButtonQCScanStart">
                        <property name="text">
                         <string>Start Scan</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="4" column="1">
-                      <widget class="QPushButton" name="pushButton_9">
+                     <item row="6" column="1">
+                      <widget class="QPushButton" name="pushButtonQCScanStop">
                        <property name="text">
                         <string>Stop Scan</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QComboBox" name="comboBoxQCScanChannel">
+                       <item>
+                        <property name="text">
+                         <string>CH X</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QFrame" name="frame_13">
+                       <property name="frameShape">
+                        <enum>QFrame::Shape::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Shadow::Raised</enum>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_10">
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonQCScanDelay">
+                          <property name="text">
+                           <string>Delay</string>
+                          </property>
+                          <property name="checked">
+                           <bool>true</bool>
+                          </property>
+                          <attribute name="buttonGroup">
+                           <string notr="true">buttonGroupScanParameter</string>
+                          </attribute>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonQCScanWidth">
+                          <property name="text">
+                           <string>Width</string>
+                          </property>
+                          <attribute name="buttonGroup">
+                           <string notr="true">buttonGroupScanParameter</string>
+                          </attribute>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_15">
+                       <property name="text">
+                        <string>Starting Value (μs):</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_16">
+                       <property name="text">
+                        <string>Ending Value (μs):</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxQCScanStartValue">
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>1000000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>10.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxQCScanEndValue">
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>1000000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.010000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>10.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QSpinBox" name="spinBoxQCScanPulsesPerStep">
+                       <property name="minimum">
+                        <number>1</number>
+                       </property>
+                       <property name="maximum">
+                        <number>100000</number>
+                       </property>
+                       <property name="value">
+                        <number>900</number>
                        </property>
                       </widget>
                      </item>
@@ -758,7 +838,7 @@
               <x>0</x>
               <y>0</y>
               <width>558</width>
-              <height>429</height>
+              <height>487</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -1003,4 +1083,7 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroupScanParameter"/>
+ </buttongroups>
 </ui>
