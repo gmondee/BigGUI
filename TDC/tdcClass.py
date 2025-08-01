@@ -66,8 +66,10 @@ class TimeStampTDC1(object):
             print("Connected to", device_path)
         self._device_path = device_path
         # self._com = serial_connection.SerialConnection(device_path)
-        self._com = serial.Serial(device_path, timeout=0.1)
-        self._com.open() #doesnt open by default maybe?
+        # import ipdb; ipdb.set_trace()
+        self._com = serial.Serial(device_path, timeout=1)
+        try: self._com.open() #doesnt open by default maybe?
+        except: pass
         self._com.write(b"\r\n")
         self._com.readlines()
         self.mode = mode

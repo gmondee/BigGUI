@@ -10,7 +10,7 @@ import numpy as np
 from pyqtgraph import PlotWidget
 import pyqtgraph as pg
 from random import randint
-from .ui_TDCGUI_MultiWindow import Ui_MainWindow as TDC_MW
+from .ui_TDCGUI_MultiWindow import Ui_MainWindow
 import socket
 import pandas as pd
 import math
@@ -24,7 +24,6 @@ from PyQt6.QtCore import QStandardPaths
 
 qtCreatorFile = os.path.join(os.path.dirname(__file__),"TDCGUI_MultiWindow.ui") # Enter file here.
 # Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
-Ui_MainWindow = TDC_MW
 
 #TODO: send stop command to TDC before attempting re-connect
 class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -66,19 +65,6 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
           print("failed?",E)
           # import ipdb; ipdb.set_trace()
 
-    
-    # try:
-    #   self.device = TimeStampTDC1(self.comPort)
-    #   self.deviceCommunication=True
-    # except: self.deviceCommunication=False
-    # print("communicating with device?", self.deviceCommunication)
-    
-    # self.comPort='COM5'#'/dev/tty.usbmodemTDC1_00301' #TODO: Automate this
-    # self.realData=False; self.hasOldData=False
-    # try:
-    #   self.device = TimeStampTDC1(self.comPort)
-    #   self.deviceCommunication=True
-    # except: self.deviceCommunication=False
     self.setSettings()
     
     self.scanToggled=False
