@@ -203,7 +203,7 @@ class mainWindow(QWidget):
                     'H': [self.channelHSyncTo, self.channelHSyncRead]
                     }
         # Store the QC controller as a class level variable so it can be accessed in other functions
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.height, self.width, self.height)
