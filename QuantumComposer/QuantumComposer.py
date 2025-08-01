@@ -149,6 +149,7 @@ class QComController():
     
     def start(self):
         self.setState("T0",1)
+        self.triggering = self.getState("T0")
         # for channel in self.masterState.keys():
         #     channel_number = self.channel_index[channel]
         #     command = ":PULSE"+str(channel_number)+":STATE 1"
@@ -156,6 +157,7 @@ class QComController():
     
     def stop(self):
         self.setState("T0",0)
+        self.triggering = self.getState("T0")
         # for channel in self.masterState.keys():
         #     channel_number = self.channel_index[channel]
         #     command = ":PULSE"+str(channel_number)+":STATE 0"
