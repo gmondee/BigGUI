@@ -74,6 +74,12 @@ class BigGUI(QMainWindow):
     # if self.QCLoaded: self.prepareQCScan()
 
   def loadTDC(self):
+    try: 
+      self.TDCGUI.safeExit()
+      self.TDCGUI.layout().removeWidget(self.TDCGUI)
+    except: pass
+    try: self.TDCGUI.deleteLater()
+    except: pass
     try:
       settingsDic={ 'int_time':1000,
                     'mode':'TTL',
@@ -89,6 +95,8 @@ class BigGUI(QMainWindow):
     try: 
       self.AblationGUI.table_widget.safeExit()
       self.AblationGUI.layout().removeWidget(self.AblationGUI)
+    except: pass
+    try: self.AblationGUI.deleteLater()
     except: pass
     try:
       self.AblationGUI = BigSkyHub()
@@ -273,7 +281,7 @@ class BigGUI(QMainWindow):
       self.TDCGUI.scanToggler.click()
       self.ablationTab.lampActivationButton.click() #turn ablation back on for the next measurement
     
-    if 2*self.scanParams["stepSize"]+self.scanWavelength >= self.scanParams["endWL"]:
+    if self.scanParams["stepSize"]+self.scanWavelength > self.scanParams["endWL"]:
       print("\nScan finished.\n")
       self.stopWavelengthScan()
       pass #scan over
@@ -331,11 +339,11 @@ class BigGUI(QMainWindow):
       pass #scan over
     else:
       self.QCScanTime += self.QCScanParams["stepSize"]
-      self.scanQCNext()
+      self.scanQCNext(scanMode)
 
 
   @asyncSlot()
-  async def make_sleep_task(self, time_s):
+  async def make_sleep_task(self, time_s): #asynchronous timer for scans. assumes only one scan is active at a time
       """Sleep that can be cancelled externally."""
       try:
         self.scanSleepTask = asyncio.create_task(asyncio.sleep(time_s))
@@ -354,10 +362,14 @@ class BigGUI(QMainWindow):
     encoded = urllib.parse.quote(json.dumps(payload,separators=(',', ':')))
     url = f"{self.IP}/send?{encoded}"
     #todo: what if this fails
-    response = requests.get(url, auth=self.auth)
+    try:
+      response = requests.get(url, auth=self.auth, timeout=0.5)
+    except Exception as E:
+      print(f'OPO: Failed outgoing command {payload}')
+      return
     print("OPO Response:",response)
     if "failure" in response:
-      print(f'\nFailed outgoing command {encoded}\nResponse:{response}')
+      print(f'OPO: Failed outgoing command {encoded}\nResponse:{response}')
 
   def openBeamlineGUI(self):
     try: self.BeamlineGUI.show()
@@ -385,6 +397,11 @@ class BigGUI(QMainWindow):
   
   def dict_set_trigger_internal(self):
     return {"action":"control","code":{"device":"laser","values":{"trig-mode":0}}}
+  
+  def OPOgetValues(self):
+    valuesUrl = r"http://192.168.1.53:7557/values?"
+    response = requests.get(valuesUrl, auth=self.auth)
+    return response
   
   def closeEvent(self, event):
     print("\nClosing BigGUI...\n")

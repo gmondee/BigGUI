@@ -31,40 +31,40 @@ class QComController():
                             'F': [0, 0, 0, 'Channel F: TDC/Ionization Q-Switch',0],
                             'G': [0, 0, 0, 'Channel G: OPO Flashlamp',0],
                             'H': [0, 0, 0, 'Channel H: OPO Q-Switch',0]}
-        possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
-        for dev in possibleDevices:
-          try:
-            if self.verbose: print('QC+: trying com port %s'%dev)
-            self.ser = serial.Serial(dev, 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
-            # if self.verbose: print(" maybe this one?")
-            self.ser.flush()
-            self.ser.reset_output_buffer()
-            self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
-            response = self.checkIdentification()
-            #response = self.ser.read(2000).decode('utf-8').rstrip('\r\n'); if self.verbose: print("response:", response)
-            if "951" in response:
-              print(f"QC+: Connected to {dev}."); self.ser.close()
-              comport=dev
-              self.connected=True
-            else: self.ser.close()
-          except: 
-            try: self.ser.close()
-            except: pass
-        if self.connected:
-          self.ser = serial.Serial(port=comport,
-                              baudrate=19200,
-                              bytesize=serial.EIGHTBITS,
-                              parity=serial.PARITY_NONE,
-                              stopbits=serial.STOPBITS_ONE,
-                              timeout=.25)
-          self.getQCValues()
-          # self.startUpdateLoop() #disable until multithreading
-          print("QC+: Done.")
-          with open(self.settingsPath, "w") as file:
-              json.dump(self.masterState, file)
-          # import ipdb; ipdb.set_trace()
-        else:
-          print("QC+: Error: Failed to connect to Quantum Composer!")
+        # possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
+        sn = 'AB0PEW5NA'
+        device_list = serial.tools.list_ports.comports()
+        # import ipdb; ipdb.set_trace()
+        for dev in device_list:
+          if dev.serial_number==sn:
+            try:
+              if self.verbose: print('QC+: trying com port %s'%dev)
+              self.ser = serial.Serial(dev.device, 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, timeout=.25)
+              # if self.verbose: print(" maybe this one?")
+              self.ser.flush()
+              self.ser.reset_output_buffer()
+              self.ser.readline().decode('utf-8').rstrip('\r\n') #check for prefilled line
+              self.checkIdentification() #should actually clear anything out so it works
+              response = self.checkIdentification()
+              #response = self.ser.read(2000).decode('utf-8').rstrip('\r\n'); if self.verbose: print("response:", response)
+              if "951" in response:
+                print(f"QC+: Connected to {dev}.")
+                self.connected=True
+              else: 
+                print("QC+: Error: Failed to connect to Quantum Composer!")
+                self.ser.close()
+                return
+            except Exception as E:
+                print("QC+: Error: Failed to connect to Quantum Composer!", E)
+                return
+        if not self.connected:
+            print("QC: Failed to connect.")
+            return
+        self.getQCValues()
+        # self.startUpdateLoop() #disable until multithreading
+        print("QC+: Done.")
+        with open(self.settingsPath, "w") as file:
+            json.dump(self.masterState, file)
 
     def getQCValues(self):
         for key in self.masterState.keys():

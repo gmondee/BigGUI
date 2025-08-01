@@ -342,6 +342,9 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
   def safeExit(self):
     #if self.scanToggled: self.endScan()
+    try:
+      self.device._com.close()
+    except: pass
     print("TDC: Live plotter closed")
 
 def getSettings(d):
