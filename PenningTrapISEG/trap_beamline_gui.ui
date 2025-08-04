@@ -68,9 +68,9 @@
   <widget class="QWidget" name="gridLayoutWidget_15">
    <property name="geometry">
     <rect>
-     <x>44</x>
+     <x>70</x>
      <y>800</y>
-     <width>351</width>
+     <width>315</width>
      <height>33</height>
     </rect>
    </property>
@@ -159,12 +159,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt12">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -178,9 +172,6 @@
       </property>
       <property name="focusPolicy">
        <enum>Qt::FocusPolicy::WheelFocus</enum>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -201,9 +192,9 @@
   <widget class="QWidget" name="gridLayoutWidget_16">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>90</x>
      <y>650</y>
-     <width>341</width>
+     <width>261</width>
      <height>33</height>
     </rect>
    </property>
@@ -274,12 +265,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt11">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -293,9 +278,6 @@
       </property>
       <property name="focusPolicy">
        <enum>Qt::FocusPolicy::WheelFocus</enum>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -334,9 +316,9 @@
   <widget class="QWidget" name="gridLayoutWidget_10">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>740</x>
      <y>140</y>
-     <width>271</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -410,8 +392,8 @@
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt6">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
@@ -425,9 +407,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -466,19 +445,13 @@
     <rect>
      <x>1130</x>
      <y>140</y>
-     <width>261</width>
+     <width>211</width>
      <height>36</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_11">
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt5">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -489,9 +462,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -594,9 +564,9 @@
   <widget class="QWidget" name="gridLayoutWidget_18">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>750</x>
      <y>340</y>
-     <width>271</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -669,12 +639,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -685,9 +649,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -723,7 +684,7 @@
     <rect>
      <x>1140</x>
      <y>360</y>
-     <width>251</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -802,12 +763,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -818,9 +773,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -856,7 +808,7 @@
     <rect>
      <x>710</x>
      <y>180</y>
-     <width>261</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -929,12 +881,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt4">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -945,9 +891,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -984,9 +927,9 @@
   <widget class="QWidget" name="gridLayoutWidget_21">
    <property name="geometry">
     <rect>
-     <x>1140</x>
+     <x>1150</x>
      <y>320</y>
-     <width>251</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -1059,12 +1002,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt3">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>50</width>
@@ -1075,9 +1012,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1116,7 +1050,7 @@
     <rect>
      <x>870</x>
      <y>640</y>
-     <width>311</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -1189,12 +1123,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt0">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1205,9 +1133,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1244,9 +1169,9 @@
   <widget class="QWidget" name="gridLayoutWidget_27">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>60</x>
      <y>210</y>
-     <width>251</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -1319,12 +1244,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt10">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1335,9 +1254,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1376,7 +1292,7 @@
     <rect>
      <x>450</x>
      <y>210</y>
-     <width>231</width>
+     <width>211</width>
      <height>33</height>
     </rect>
    </property>
@@ -1449,12 +1365,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt8">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1465,9 +1375,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1504,9 +1411,9 @@
   <widget class="QWidget" name="gridLayoutWidget_29">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>260</x>
      <y>290</y>
-     <width>251</width>
+     <width>261</width>
      <height>33</height>
     </rect>
    </property>
@@ -1579,12 +1486,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt7">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1595,9 +1496,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1634,9 +1532,9 @@
   <widget class="QWidget" name="gridLayoutWidget_30">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>260</x>
      <y>120</y>
-     <width>271</width>
+     <width>221</width>
      <height>33</height>
     </rect>
    </property>
@@ -1709,12 +1607,6 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt9">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1725,9 +1617,6 @@
        <font>
         <pointsize>8</pointsize>
        </font>
-      </property>
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
