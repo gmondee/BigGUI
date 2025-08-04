@@ -179,6 +179,9 @@
       <property name="focusPolicy">
        <enum>Qt::FocusPolicy::WheelFocus</enum>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -290,6 +293,9 @@
       </property>
       <property name="focusPolicy">
        <enum>Qt::FocusPolicy::WheelFocus</enum>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -420,6 +426,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -480,6 +489,9 @@
        <font>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -674,6 +686,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -804,6 +819,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -927,6 +945,9 @@
        <font>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1055,6 +1076,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -1181,6 +1205,9 @@
        <font>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1309,6 +1336,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -1435,6 +1465,9 @@
        <font>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -1563,6 +1596,9 @@
         <pointsize>8</pointsize>
        </font>
       </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+      </property>
       <property name="keyboardTracking">
        <bool>false</bool>
       </property>
@@ -1689,6 +1725,9 @@
        <font>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
