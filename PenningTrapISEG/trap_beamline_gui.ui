@@ -40,7 +40,7 @@
        <string>                Penning Trap Beamline</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -71,7 +71,7 @@
      <x>70</x>
      <y>800</y>
      <width>315</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_15">
@@ -86,7 +86,6 @@
       <property name="font">
        <font>
         <pointsize>8</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -94,7 +93,7 @@
        <string>Pulse Valve Voltage</string>
       </property>
       <property name="textFormat">
-       <enum>Qt::AutoText</enum>
+       <enum>Qt::TextFormat::AutoText</enum>
       </property>
      </widget>
     </item>
@@ -148,7 +147,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -172,7 +171,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::WheelFocus</enum>
+       <enum>Qt::FocusPolicy::WheelFocus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -196,7 +195,7 @@
      <x>90</x>
      <y>650</y>
      <width>261</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_16">
@@ -232,7 +231,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -253,7 +252,6 @@
       <property name="font">
        <font>
         <pointsize>8</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -261,7 +259,7 @@
        <string>MagneTOF</string>
       </property>
       <property name="textFormat">
-       <enum>Qt::AutoText</enum>
+       <enum>Qt::TextFormat::AutoText</enum>
       </property>
      </widget>
     </item>
@@ -279,7 +277,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::WheelFocus</enum>
+       <enum>Qt::FocusPolicy::WheelFocus</enum>
       </property>
       <property name="keyboardTracking">
        <bool>false</bool>
@@ -321,7 +319,7 @@
      <x>740</x>
      <y>140</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_10">
@@ -345,7 +343,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -393,6 +391,12 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt6">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -545,7 +549,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -563,7 +567,7 @@
      <x>750</x>
      <y>340</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_18">
@@ -587,7 +591,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -681,7 +685,7 @@
      <x>1140</x>
      <y>360</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_19">
@@ -705,7 +709,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -805,7 +809,7 @@
      <x>710</x>
      <y>180</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_20">
@@ -829,7 +833,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -926,7 +930,7 @@
      <x>1150</x>
      <y>320</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_21">
@@ -950,7 +954,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1047,7 +1051,7 @@
      <x>870</x>
      <y>640</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_26">
@@ -1071,7 +1075,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1168,7 +1172,7 @@
      <x>60</x>
      <y>210</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_27">
@@ -1192,7 +1196,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1289,7 +1293,7 @@
      <x>450</x>
      <y>210</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_28">
@@ -1313,7 +1317,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1410,7 +1414,7 @@
      <x>260</x>
      <y>290</y>
      <width>211</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_29">
@@ -1434,7 +1438,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1531,7 +1535,7 @@
      <x>260</x>
      <y>120</y>
      <width>221</width>
-     <height>27</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_30">
@@ -1555,7 +1559,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color :rgb(170, 0, 0)</string>
@@ -1652,7 +1656,7 @@
      <x>1030</x>
      <y>880</y>
      <width>310</width>
-     <height>88</height>
+     <height>89</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -1664,7 +1668,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="text">
        <string>Save Configuration</string>
@@ -1674,7 +1678,7 @@
     <item row="1" column="1">
      <widget class="QLineEdit" name="lineEdit">
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
      </widget>
     </item>
@@ -1698,7 +1702,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="text">
        <string>Import</string>
@@ -1710,7 +1714,6 @@
       <property name="font">
        <font>
         <pointsize>14</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -1718,7 +1721,7 @@
        <string>Import/Export File</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -1737,7 +1740,7 @@
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton_3">
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::FocusPolicy::NoFocus</enum>
       </property>
       <property name="text">
        <string>Set all Voltages to Zero</string>
