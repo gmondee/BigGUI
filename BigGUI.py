@@ -206,6 +206,9 @@ class BigGUI(QMainWindow):
 
   @asyncSlot()
   async def startQCScan(self):
+    if not hasattr(self, "TDCGUI"):
+      print("Error: TDC GUI must be open to scan.")
+      return
     channel = self.ui.comboBoxQCScanChannel.currentText()
     if self.ui.radioButtonQCScanDelay.isChecked():
       scanMode = 'delay'
