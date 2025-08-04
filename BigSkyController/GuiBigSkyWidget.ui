@@ -23,7 +23,6 @@
          <property name="font">
           <font>
            <pointsize>24</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -48,7 +47,7 @@
 Trigger Setting</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
              </property>
             </widget>
            </item>
@@ -90,11 +89,14 @@ Trigger Setting</string>
          <item>
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Maximum</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>10</width>
              <height>20</height>
             </size>
            </property>
@@ -114,7 +116,7 @@ Trigger Setting</string>
 Trigger Setting</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
              </property>
             </widget>
            </item>
@@ -195,7 +197,7 @@ Trigger Setting</string>
            <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
-              <enum>Qt::Vertical</enum>
+              <enum>Qt::Orientation::Vertical</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -254,7 +256,7 @@ Trigger Setting</string>
              <item>
               <spacer name="horizontalSpacer_5">
                <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -271,7 +273,7 @@ Trigger Setting</string>
          <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -385,7 +387,7 @@ Power @ 10Hz:</string>
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -493,7 +495,7 @@ Commands:
         <string>Questions: alexjbrinson@gmail.com</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
        </property>
       </widget>
      </item>
@@ -504,7 +506,7 @@ Commands:
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
  </buttongroups>
 </ui>
