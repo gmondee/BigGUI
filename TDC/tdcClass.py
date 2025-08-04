@@ -67,7 +67,7 @@ class TimeStampTDC1(object):
         self._device_path = device_path
         # self._com = serial_connection.SerialConnection(device_path)
         # import ipdb; ipdb.set_trace()
-        self._com = serial.Serial(device_path, timeout=1)
+        self._com = serial.Serial(device_path, timeout=.4)
         try: self._com.open() #doesnt open by default maybe?
         except: pass
         self._com.write(b"\r\n")
@@ -164,7 +164,8 @@ class TimeStampTDC1(object):
 
     def write_only(self, cmd):
         self._com.write((cmd + "\r\n").encode())
-        self._com.readlines()
+        # self._com.readlines()
+        self._com.reset_input_buffer()
         time.sleep(0.02)
 
     @property
@@ -198,9 +199,9 @@ class TimeStampTDC1(object):
         """
         print('value=',value)
         if value < 0:
-            self.write_only("NEG {}".format(value))
+            self.write_only(f"NEG {value:.2f}")
         else:
-            self.write_only("POS {}".format(value))
+            self.write_only(f"POS {value:.2f}")
 
     @property
     def clock(self) -> str:
@@ -350,7 +351,8 @@ class TimeStampTDC1(object):
         self.mode = "singles"
         level = float(self.level.split()[0])
         level_str = "NEG" if level < 0 else "POS"
-        self._com.readlines()  # empties buffer
+        self._com.reset_input_buffer() #empties buffer faster
+        # self._com.readlines()  # empties buffer
         # t_acq_for_cmd = t_acq if t_acq < 65 else 0
         cmd_str = "INPKT;{} {};time {};timestamp;counts?;".format(level_str, level, int_time)
         #if integration time is "0", device only needs to be written to once, and will output data every time the buffer fills up,
@@ -519,10 +521,11 @@ class TimeStampTDC1(object):
         Stops the timestamp streaming service to file in the brackground
         """
         self.accumulate_timestamps = False
-        time.sleep(0.1)
+        time.sleep(0.4)
         self.proc.join()
         self._com.write(b"abort\r\n")
-        self._com.readlines()
+        self._com.reset_input_buffer()
+        # self._com.readlines()
         if self.updateDB: self.writeToDBs()
 
     def writeToDBs(self):

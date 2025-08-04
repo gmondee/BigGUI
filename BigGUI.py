@@ -348,6 +348,8 @@ class BigGUI(QMainWindow):
     #self.scanTimer.stop()
     if self.scanSleepTask and not self.scanSleepTask.done():
       self.scanSleepTask.cancel()
+      try: self.TDCGUI.endScan()
+      except: pass
       print('Stopped scan')
     else:
       print('No scan was in progress')
@@ -394,7 +396,7 @@ class BigGUI(QMainWindow):
         await self.scanSleepTask
       except asyncio.CancelledError:
         print("Sleep cancelled!")
-        raise
+        # raise
       finally:
         self.scanSleepTask = None
 
