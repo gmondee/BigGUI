@@ -49,22 +49,61 @@ class BigGUI(QMainWindow):
     fileMenu = self.ui.menubar.addMenu("Debug")
 
     # Create actions
+    closeQC = QAction("Close QC", self)
+    closeAblation = QAction("Close Ablation", self)
+    closeBeamline = QAction("Close Beamline", self)
+    closeTDC = QAction("Close TDC", self)
     reloadQC = QAction("Reload QC", self)
     reloadAblation = QAction("Reload Ablation", self)
     reloadBeamline = QAction("Reload Beamline", self)
     reloadTDC = QAction("Reload TDC", self)
 
     # Add actions to menu
+    fileMenu.addAction(closeQC)
+    fileMenu.addAction(closeAblation)
+    fileMenu.addAction(closeBeamline)
+    fileMenu.addAction(closeTDC)
     fileMenu.addAction(reloadQC)
     fileMenu.addAction(reloadAblation)
     fileMenu.addAction(reloadBeamline)
     fileMenu.addAction(reloadTDC)
 
     # Connect using QAction.triggered.connect
+    closeQC.triggered.connect(self.closeQCGUI)
+    closeAblation.triggered.connect(self.closeAblationGUI)
+    closeBeamline.triggered.connect(self.closeBeamlineGUI)
+    closeTDC.triggered.connect(self.closeTDCGUI)
+
     reloadQC.triggered.connect(lambda: self.loadQC(verbose=True))
     reloadAblation.triggered.connect(self.loadAblation)
     reloadBeamline.triggered.connect(self.loadBeamline)
     reloadTDC.triggered.connect(self.loadTDC)
+
+  def closeQCGUI(self):
+    try: self.QCGUI.deleteLater()
+    except: pass
+
+  def closeAblationGUI(self):
+    try: 
+      self.AblationGUI.table_widget.safeExit()
+      self.AblationGUI.layout().removeWidget(self.AblationGUI)
+    except: pass
+    try: self.AblationGUI.deleteLater()
+    except: pass
+
+  def closeBeamlineGUI(self):
+    try: self.BeamlineGUI.allChannelsOff()
+    except: pass
+    try: self.BeamlineGUI.deleteLater()
+    except: pass
+
+  def closeTDCGUI(self):
+    try: 
+      self.TDCGUI.safeExit()
+      self.TDCGUI.layout().removeWidget(self.TDCGUI)
+    except: pass
+    try: self.TDCGUI.deleteLater()
+    except: pass
 
   def loadGUIs(self):
     self.TDCLoaded = self.loadTDC() #load TDC last because its COM port checking is ugly
