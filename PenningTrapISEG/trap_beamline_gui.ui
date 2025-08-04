@@ -1123,6 +1123,12 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt0">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
@@ -1413,7 +1419,7 @@
     <rect>
      <x>230</x>
      <y>290</y>
-     <width>291</width>
+     <width>251</width>
      <height>33</height>
     </rect>
    </property>
@@ -1486,6 +1492,12 @@
     </item>
     <item row="0" column="1">
      <widget class="QDoubleSpinBox" name="volt7">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>55</width>
