@@ -1,3 +1,7 @@
 *.pyc
 *.pyc
+__pycache__/
 QuantumComposer/__pycache__/QuantumComposer.cpython-313.pyc
+/BigSkyController/__pycache__
+/PenningTrapISEG/__pycache__
+/QuantumComposer/__pycache__

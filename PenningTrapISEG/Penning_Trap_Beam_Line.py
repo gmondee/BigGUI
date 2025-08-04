@@ -282,6 +282,7 @@ class MyApp(QtWidgets.QWidget, Ui_MainWindow): #Change QtWidgets.QWidget to Qt.W
         for i in range(0,len(self.ls)):
             inputSpinBox = getattr(self,'volt{}'.format(i))
             inputSpinBox.setSingleStep(set)
+
  
 
 #*****************The following are for setting voltages to all channels from an input file***********************

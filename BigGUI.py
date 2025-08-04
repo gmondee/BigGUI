@@ -322,7 +322,7 @@ class BigGUI(QMainWindow):
       self.QCGUI.QComController.setDelay(channel=channel, delay=self.QCScanTime)
     elif scanMode == "width": 
       print(f'Setting QC width to {self.QCScanTime}')
-      self.QCGUI.QComController.setWidth(channel=channel, delay=self.QCScanTime)
+      self.QCGUI.QComController.setWidth(channel=channel, width=self.QCScanTime)
     self.TDCGUI.scanToggler.click()  #start recording
     try:
       await self.make_sleep_task(waitTime)
@@ -356,7 +356,57 @@ class BigGUI(QMainWindow):
 
   ### Functions for OPO communication
   def getOPOStatus(self):
-    print("make the getOPOStatus function")
+    valuesUrl = r"http://192.168.1.53:7557/values?"
+    try:
+      response = requests.get(valuesUrl, auth=self.auth, timeout=0.2)
+    except Exception as E:
+      print(f'OPO: Failed to get OPO values via {valuesUrl}')
+      return 0
+    return response
+    # json.loads
+
+  def updateOPOGUI(self):
+    valuesHTTP = self.getOPOStatus()
+    if not valuesHTTP: return
+    ### get the JSON portion
+    valuesJSON = [{"device":"attenuator","values":{"attenuator":{"id":60,"type":0,"stepperenable":1,"error-code":0, "transmission":50.1, "step-size":1.0,"zerotransmission-offset":230, "position":871}}},
+                  {"device":"laser","values":{"id":"000009d1b15a","laser-run":1,"housingtemperature":27.750,"temperature":27.750,"center-temp":28.000,"pulsecount":977724,"error-code":0,
+                                              "on-time":142255,"cputemperature":44.935,"LD1-current":69.8,"LD1-set-current":70.0,"trigmode":0,"batch-pulses-set":0,"batch-mode":0,
+                                              "batch-mode-pulsesremaining":0,"rep-rate":50.00,"laser-state":6}}]
+    valuesDict = {entry['device']: entry['values'] for entry in valuesJSON}
+    laserDict = valuesDict['laser']
+    OPODict = valuesDict['OPO']
+
+    isLaserRunning = laserDict["laser-state"] #0 = not running; 1 = running
+    OPOWavelength = OPODict['something']
+    isOPOEnabled = OPODict['hu-status']==3.6
+    triggeringMode = laserDict["trigmode"] #0=internal; 1=external single; 2=external double
+    QSwitchStatus = laserDict["qswrun"]
+
+    trigmodes = ["Internal", "External (1P)", "External (2P)"]
+
+    if isLaserRunning:
+      self.ui.lineEditLaserStatus.setText("RUNNING")
+      self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: orange; }")
+    else:
+      self.ui.lineEditLaserStatus.setText("OFF")
+      self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: lightGray; }")
+
+    self.ui.lineEditOPOCurrent.setText(f"{OPOWavelength:.2f} nm")
+
+    if isOPOEnabled:
+      self.ui.Port1Status.setText("OPO Enabled")
+    else:
+      self.ui.Port1Status.setText("OPO Disabled")
+
+    self.ui.lineEditTrigMode.setText(trigmodes[triggeringMode])
+
+    if QSwitchStatus: self.ui.lineEditQSWStatus.setText("QSW ON")
+    else: self.ui.lineEditQSWStatus.setText("QSW OFF")
+    
+
+
+
 
   def sendToOPO(self, payload):
     encoded = urllib.parse.quote(json.dumps(payload,separators=(',', ':')))
@@ -398,13 +448,9 @@ class BigGUI(QMainWindow):
   def dict_set_trigger_internal(self):
     return {"action":"control","code":{"device":"laser","values":{"trig-mode":0}}}
   
-  def OPOgetValues(self):
-    valuesUrl = r"http://192.168.1.53:7557/values?"
-    response = requests.get(valuesUrl, auth=self.auth)
-    return response
   
   def closeEvent(self, event):
-    print("\nClosing BigGUI...\n")
+    print("Closing BigGUI...\n")
     try:
       print("Closing Beamline GUI...")
       self.BeamlineGUI.allChannelsOff()
