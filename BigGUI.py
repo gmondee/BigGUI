@@ -102,7 +102,9 @@ class BigGUI(QMainWindow):
       self.TDCGUI.safeExit()
       self.TDCGUI.layout().removeWidget(self.TDCGUI)
     except: pass
-    try: self.TDCGUI.deleteLater()
+    try: 
+      self.TDCGUI.deleteLater()
+      del self.TDCGUI
     except: pass
 
   def loadGUIs(self):
