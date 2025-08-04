@@ -496,6 +496,7 @@ if __name__ == "__main__":
   sys.excepthook = exception_hook 
 
   app = QApplication(sys.argv)
+  app.setStyle("Fusion")
   app.setApplicationName("BigGUI")
   loop = QEventLoop(app)
   asyncio.set_event_loop(loop)
