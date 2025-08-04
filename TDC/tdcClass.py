@@ -85,7 +85,7 @@ class TimeStampTDC1(object):
         self.prev_Time=-1; self.pCount=0
         self.timeStreamData=[]; self.timeStreamLength=100
         self.updateDB = False
-        time.sleep(0.2)
+        time.sleep(0.01)
 
     @property
     def int_time(self):
@@ -165,7 +165,7 @@ class TimeStampTDC1(object):
     def write_only(self, cmd):
         self._com.write((cmd + "\r\n").encode())
         self._com.readlines()
-        time.sleep(0.1)
+        time.sleep(0.02)
 
     @property
     def level(self):
@@ -519,7 +519,7 @@ class TimeStampTDC1(object):
         Stops the timestamp streaming service to file in the brackground
         """
         self.accumulate_timestamps = False
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.proc.join()
         self._com.write(b"abort\r\n")
         self._com.readlines()
