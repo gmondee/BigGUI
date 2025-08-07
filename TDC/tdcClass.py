@@ -67,7 +67,7 @@ class TimeStampTDC1(object):
         self._device_path = device_path
         # self._com = serial_connection.SerialConnection(device_path)
         # import ipdb; ipdb.set_trace()
-        self._com = serial.Serial(device_path, timeout=.4)
+        self._com = serial.Serial(device_path, timeout=.1)
         try: self._com.open() #doesnt open by default maybe?
         except: pass
         self._com.write(b"\r\n")
@@ -244,9 +244,10 @@ class TimeStampTDC1(object):
         time0 = time.time()
         self._com.write((cmd + "\r\n").encode())
         while (time.time() - time0) <= acq_time + 0.01:
-            ts_list.append(self._com.read((1 << 20) * 4))
+            ts_list.append(self._com.read((1 << 20) * 4)) #waits for 2^22 bytes or (more likely) until the full timeout duration. This is what takes the most time during live data acquisition.
         # self._com.write(b"abort\r\n")
-        self._com.readlines()
+        # self._com.readlines()
+        self._com.reset_input_buffer()
         return b"".join(ts_list)
 
     def get_counts_and_coincidences(self, t_acq: float = 1) -> Tuple[int, ...]:
@@ -298,7 +299,8 @@ class TimeStampTDC1(object):
         self.mode = "singles"
         level = float(self.level.split()[0])
         level_str = "NEG" if level < 0 else "POS"
-        self._com.readlines()  # empties buffer
+        # self._com.readlines()  # empties buffer
+        self._com.reset_input_buffer()
         # t_acq_for_cmd = t_acq if t_acq < 65 else 0
         cmd_str = "INPKT;{} {};time {};timestamp;counts?;".format(
             level_str, level, (t_acq if t_acq < 65 else 0) * 1000

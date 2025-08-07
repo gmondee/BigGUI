@@ -80,9 +80,12 @@ class QComController():
     def write(self, command, channel, dataType):
         command = (command + '\r\n').encode('utf-8')
         if self.verbose: print(command)
-        self.ser.flush()
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
         self.ser.write(command)
+        a = time.time()
         self.out = self.ser.readline().decode('utf-8').rstrip('\r\n')
+        print(f'QC: {time.time()-a}')
         if self.out == 'ok':
             if self.verbose: print('QC+: task trasmitted')
         else:

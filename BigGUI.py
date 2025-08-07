@@ -38,12 +38,15 @@ class BigGUI(QMainWindow):
     # Create and set up the UI
     self.ui = Ui_NEPTUNE_BigGUI()
     self.ui.setupUi(self)
+    self.OPOupdateTimer = QTimer(self)
+    self.OPOupdateTimer.timeout.connect(self.updateOPOGUI)
     self.buildMenuBar()
 
     self.loadGUIs() #Load up the other GUIs, like the ablation control and TDC
     self.connect()  #Make the buttons do things
 
     set_all_margins(self)
+    self.OPOupdateTimer.start(1000)
 
   def buildMenuBar(self):
     fileMenu = self.ui.menubar.addMenu("Debug")
@@ -414,20 +417,17 @@ class BigGUI(QMainWindow):
   def updateOPOGUI(self):
     valuesHTTP = self.getOPOStatus()
     if not valuesHTTP: return
-    ### get the JSON portion
-    valuesJSON = [{"device":"attenuator","values":{"attenuator":{"id":60,"type":0,"stepperenable":1,"error-code":0, "transmission":50.1, "step-size":1.0,"zerotransmission-offset":230, "position":871}}},
-                  {"device":"laser","values":{"id":"000009d1b15a","laser-run":1,"housingtemperature":27.750,"temperature":27.750,"center-temp":28.000,"pulsecount":977724,"error-code":0,
-                                              "on-time":142255,"cputemperature":44.935,"LD1-current":69.8,"LD1-set-current":70.0,"trigmode":0,"batch-pulses-set":0,"batch-mode":0,
-                                              "batch-mode-pulsesremaining":0,"rep-rate":50.00,"laser-state":6}}]
+    valuesJSON = valuesHTTP.json()
     valuesDict = {entry['device']: entry['values'] for entry in valuesJSON}
     laserDict = valuesDict['laser']
-    OPODict = valuesDict['OPO']
+    OPODict = valuesDict['harmonics']
 
-    isLaserRunning = laserDict["laser-state"] #0 = not running; 1 = running
-    OPOWavelength = OPODict['something']
-    isOPOEnabled = OPODict['hu-status']==3.6
-    triggeringMode = laserDict["trigmode"] #0=internal; 1=external single; 2=external double
-    QSwitchStatus = laserDict["qswrun"]
+    isLaserRunning = int(laserDict["laser-run"]) #0 = not running; 1 = running
+    # breakpoint()
+    OPOWavelength = OPODict['wavelength']
+    isOPOEnabled = int(OPODict['opo-status'])
+    triggeringMode = int(laserDict["trig-mode"]) #0=internal; 1=external single; 2=external double
+    QSwitchStatus = int(laserDict["qsw-run"])
 
     trigmodes = ["Internal", "External (1P)", "External (2P)"]
 
@@ -447,8 +447,14 @@ class BigGUI(QMainWindow):
 
     self.ui.lineEditTrigMode.setText(trigmodes[triggeringMode])
 
-    if QSwitchStatus: self.ui.lineEditQSWStatus.setText("QSW ON")
-    else: self.ui.lineEditQSWStatus.setText("QSW OFF")
+    if QSwitchStatus: 
+      self.ui.lineEditQSWStatus.setText("QSW ON")
+      self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: white; }")
+    else: 
+      self.ui.lineEditQSWStatus.setText("QSW OFF")
+      self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: red; }")
+    # print(valuesJSON)
+    # breakpoint()
     
 
 

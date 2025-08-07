@@ -9,3 +9,10 @@ response = ser.readline().decode('utf-8').strip()
 print("Response:", repr(response))
 
 ser.close()
+
+def Write(cmd):
+    cmd+="\r\n"
+    ser.write(cmd.encode('utf-8'))
+    print(cmd)
+    response = ser.readline().decode('utf-8').strip()
+    print("Response:", repr(response))
