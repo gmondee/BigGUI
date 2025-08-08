@@ -1,8 +1,10 @@
 import sqlite3 as sl
 from .tdcClass import TimeStampTDC1
+from .tdcSettings import SettingsWindow
+from .ui_TDCGUI_MultiWindow import Ui_MainWindow
+from .oldPlotList import TableWidgetOldPlots
 import TDC.TDCutilities as tdcu
 #import tdcServer as tdcServer
-from .tdcSettings import SettingsWindow
 import sys, os
 import time
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
@@ -10,7 +12,6 @@ import numpy as np
 from pyqtgraph import PlotWidget
 import pyqtgraph as pg
 from random import randint
-from .ui_TDCGUI_MultiWindow import Ui_MainWindow
 import socket
 import pandas as pd
 import math
@@ -18,8 +19,10 @@ from datetime import datetime
 import pickle
 import serial.tools.list_ports
 from pathlib import Path
-from PyQt6.QtCore import QStandardPaths
-
+from PyQt6.QtCore import QStandardPaths, Qt
+from PyQt6.QtGui import QColor, QBrush, QPen
+from PyQt6.QtWidgets import QTableWidget, QWidget, QTableWidgetItem
+from glob import glob
 #np.set_printoptions(threshold=np.inf)
 
 qtCreatorFile = os.path.join(os.path.dirname(__file__),"TDCGUI_MultiWindow.ui") # Enter file here.
@@ -33,6 +36,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.setupUi(self)
     self.setWindowTitle('TDC GUI') ;#self.setWindowIcon(QIcon('TDC_Icon.png'))
     docs_dir = Path(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
+    self.runNumbers=[]
     print("TDC: Starting up...")
     if settingsDic=={}:
       settingsDic={'int_time':100,
@@ -113,6 +117,8 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     #try: self.epicsDriver=tdcServer.Counter(); self.usingEpics=True
     #except Exception as e: print('wahhh!',e) ; self.usingEpics=False
     # print('initialization end')
+    self.oldRunsTablePlots={}
+    self.initOldPlotTable()
     print("TDC: Done.")
 
   def openSettingsWindow(self):
@@ -264,6 +270,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.tMinLineEdit.setEnabled(True)
     self.tMaxLineEdit.setEnabled(True)
     self.tBinsLineEdit.setEnabled(True)
+    self.handleOldRunsTableAddRun()
 
 
   def beginScan(self):
@@ -350,6 +357,86 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     except: pass
     print("TDC: Live plotter closed")
 
+  def initOldPlotTable(self):
+    self.oldPlotTable = TableWidgetOldPlots()
+    self.oldPlotListFrame.layout().addWidget(self.oldPlotTable)
+    self.populateOldRunsTable()
+    self.oldPlotTable.table.itemSelectionChanged.connect(self.plotSelectedOldRuns)
+
+  def getListOfRuns(self):
+    ### Find all of the old runs available for plotting
+    files = glob(os.path.join(self.scanDirectory,'scan*'))
+    runNumbers = sorted([int(r.split('scan')[-1]) for r in files])
+    # breakpoint()
+    return runNumbers
+  
+  def populateOldRunsTable(self):
+    allRunNumbers = self.getListOfRuns()
+    newRunNums = allRunNumbers[len(self.runNumbers):]
+    for i, runNum in enumerate(newRunNums):
+      i+=len(self.runNumbers)
+      item_text = f"Run {runNum}"
+      item = QTableWidgetItem(item_text)
+      item.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)  # Disable editing
+
+      color_cell = QTableWidgetItem()
+      color_cell.setFlags(Qt.ItemFlag.ItemIsEnabled)  # Not selectable/editable
+
+      self.oldPlotTable.table.insertRow(self.oldPlotTable.table.rowCount())
+      self.oldPlotTable.table.setItem(i, 0, item)
+      self.oldPlotTable.table.setItem(i, 1, color_cell)
+    self.runNumbers = allRunNumbers
+    self.oldPlotTable.table.scrollToBottom()
+
+  def plotSelectedOldRuns(self):
+    # oldRunsData=pd.DataFrame()
+    # for plot in self.oldRunsTablePlots.values():
+    #   self.tofPlotWidget.removeItem(plot)
+
+    
+    # self.oldRunsTablePlots = {}
+
+
+    ### If an item was deselected, this should remove it:
+    selectedRuns = self.oldPlotTable.selectedRuns.keys() #looks like "Scan XYZ"; I need XYZ
+    selectedRunsInts = []
+    toDelete=[]
+    for string in selectedRuns:
+      selectedRunsInts.append(int(string.split(' ')[-1]))
+    for run, data in self.oldRunsTablePlots.items(): #currently plotted items
+      if run not in selectedRunsInts:
+        self.tofPlotWidget.removeItem(data)
+        toDelete.append(run)
+    for run in toDelete:
+      del self.oldRunsTablePlots[run]
+
+    for runText, pen in self.oldPlotTable.selectedRuns.items():
+      run = int(runText.split(' ')[-1])
+      if run in self.oldRunsTablePlots.keys(): #don't replot existing curves
+        print("already exists")
+        continue
+      oldDataPrefix=os.path.join(self.scanDirectory,'scan'+str(run),'scan'+str(run)+'_')
+      old_dbName=oldDataPrefix+'allData.db'
+      # print('test: old_dbName=',old_dbName)
+      oldDataConnection = sl.connect(old_dbName)
+      # print('works up to here?')
+      # tempFrame=pd.read_sql_query("SELECT * from TDC", oldDataConnection); #print(tempFrame)
+      try: oldRunData=pd.read_sql_query("SELECT * from TDC WHERE run="+str(run), oldDataConnection)
+      except: 
+        print(f"TDC: Failed to load {runText}. It's probably empty.")
+        oldDataConnection.close()
+        continue
+      oldDataConnection.close()
+
+      yToF_old, bins =np.histogram(np.array(oldRunData.tStamp), bins=self.xToF)
+      self.oldRunsTablePlots[run]=self.tofPlotWidget.plot((bins[1:]+bins[:-1])/2, yToF_old, pen=pen)
+      # self.data_lineToF_old.setData( (bins[1:]+bins[:-1])/2, self.yToF_old, pen=pen)
+
+  def handleOldRunsTableAddRun(self):
+    self.populateOldRunsTable()
+    pass
+
+
 def getSettings(d):
   global settingsDic
   settingsDic=d
@@ -372,4 +459,4 @@ if __name__ == "__main__":
   window = TDC_GUI(settingsDic=settingsDic)
   app1.aboutToQuit.connect(window.safeExit) #TODO: write safeExit function
   window.show()
-  sys.exit(app1.exec_())
+  sys.exit(app1.exec())
