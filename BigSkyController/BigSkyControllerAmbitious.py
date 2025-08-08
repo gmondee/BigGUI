@@ -25,7 +25,7 @@ class SingleLaserController(QtWidgets.QWidget, Ui_Widget):
     self.serialConnected = False
     if self.comPort!=-1:
       try:
-        self.ser = serial.Serial(self.comPort,9600,timeout=1); self.fetchSerial()
+        self.ser = serial.Serial(self.comPort,9600,timeout=.2); self.fetchSerial()
         tiempo = time.strftime("%d %b %Y %H:%M:%S",time.localtime())#
         self.terminalOutputTextBrowser.append('Connection established at '+str(tiempo))
         self.serialConnected=True

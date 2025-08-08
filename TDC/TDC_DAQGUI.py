@@ -296,12 +296,14 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
       self.updatePlotTof_total()
     except EOFError: print("TDC: oops! file collision on liveToFs_totals_File. But don't worry: this should resolve by next update call")
     except FileNotFoundError: pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
+    except Exception as E: print("TDC: Uncaught error",E)
 
     try:
       with open(self.liveToFs_latest_File, 'rb') as file: self.currentData_latest=pickle.load(file); file.close()
       self.updatePlotTof_latest()
     except EOFError: print("TDC: oops! file collision on liveToFs_latest_File. But don't worry: this should resolve by next update call")
     except FileNotFoundError:  pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
+    except Exception as E: print("TDC: Uncaught error",E)
     
     try:
       with open(self.timeStreamFile, 'rb') as file: self.tStreamDataDic=pickle.load(file); file.close()
@@ -310,6 +312,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
       self.updateTimeStream()
     except EOFError: print("TDC: oops! file collision on timeStreamFile. But don't worry: this should resolve by next update call")
     except FileNotFoundError: pass;# print("no file found. Probably bc you haven't acquired any data yet. Broke ass")
+    except Exception as E: print("TDC: Uncaught error",E)
     
     
   def updatePlotTof_total(self):

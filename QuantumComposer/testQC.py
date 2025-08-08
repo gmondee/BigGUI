@@ -16,3 +16,5 @@ def Write(cmd):
     print(cmd)
     response = ser.readline().decode('utf-8').strip()
     print("Response:", repr(response))
+    print(response)
+    return response
