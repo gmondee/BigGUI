@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>928</width>
-    <height>845</height>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,6 +157,13 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonClearTDCPlot">
+          <property name="text">
+           <string>Clear Plot</string>
           </property>
          </widget>
         </item>

@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(928, 845)
+        MainWindow.resize(928, 744)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setAutoFillBackground(True)
         self.centralwidget.setObjectName("centralwidget")
@@ -101,6 +101,9 @@ class Ui_MainWindow(object):
         self.loadOldRunsLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.loadOldRunsLabel.setObjectName("loadOldRunsLabel")
         self.verticalLayout_2.addWidget(self.loadOldRunsLabel, 0, QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.pushButtonClearTDCPlot = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.pushButtonClearTDCPlot.setObjectName("pushButtonClearTDCPlot")
+        self.verticalLayout_2.addWidget(self.pushButtonClearTDCPlot)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.gridLayout_2.addLayout(self.horizontalLayout, 3, 1, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -139,6 +142,7 @@ class Ui_MainWindow(object):
         self.scanToggler.setText(_translate("MainWindow", "LogData"))
         self.settingsButton.setText(_translate("MainWindow", "Settings"))
         self.loadOldRunsLabel.setText(_translate("MainWindow", "Plot Old Runs"))
+        self.pushButtonClearTDCPlot.setText(_translate("MainWindow", "Clear Plot"))
 from pyqtgraph import PlotWidget
 
 
