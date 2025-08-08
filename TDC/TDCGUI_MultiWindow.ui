@@ -181,6 +181,7 @@
         <property name="frameShadow">
          <enum>QFrame::Shadow::Raised</enum>
         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5"/>
        </widget>
       </item>
      </layout>

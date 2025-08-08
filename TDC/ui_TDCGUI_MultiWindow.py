@@ -113,6 +113,8 @@ class Ui_MainWindow(object):
         self.oldPlotListFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.oldPlotListFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.oldPlotListFrame.setObjectName("oldPlotListFrame")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.oldPlotListFrame)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.horizontalLayout_2.addWidget(self.oldPlotListFrame)
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
