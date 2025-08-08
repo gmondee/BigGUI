@@ -174,7 +174,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="TableWidgetOldPlots" native="true"/>
+       <widget class="QFrame" name="oldPlotListFrame">
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
