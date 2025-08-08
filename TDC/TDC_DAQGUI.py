@@ -119,6 +119,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     # print('initialization end')
     self.oldRunsTablePlots={}
     self.initOldPlotTable()
+    self.pushButtonClearTDCPlot.clicked.connect(self.clearPlot)
     print("TDC: Done.")
 
   def openSettingsWindow(self):
@@ -413,7 +414,6 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     for runText, pen in self.oldPlotTable.selectedRuns.items():
       run = int(runText.split(' ')[-1])
       if run in self.oldRunsTablePlots.keys(): #don't replot existing curves
-        print("already exists")
         continue
       oldDataPrefix=os.path.join(self.scanDirectory,'scan'+str(run),'scan'+str(run)+'_')
       old_dbName=oldDataPrefix+'allData.db'
@@ -434,7 +434,12 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
   def handleOldRunsTableAddRun(self):
     self.populateOldRunsTable()
-    pass
+  
+  def clearPlot(self):
+    for plot in self.oldRunsTablePlots.values():
+      self.tofPlotWidget.removeItem(plot)
+    self.oldRunsTablePlots = {}
+    self.oldPlotTable.table.clearSelection()
 
 
 def getSettings(d):
