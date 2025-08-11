@@ -2,7 +2,7 @@ import sys
 import time
 import threading
 from collections import deque
-
+import numpy as np
 import serial
 import serial.tools.list_ports
 import pyqtgraph as pg
@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QMessageBox
 )
 from PyQt6.QtCore import pyqtSignal, QObject, QTimer
+import requests
 
 
 # Worker Thread Object
@@ -40,10 +41,11 @@ class PressureReader(QObject):
 
             self.ser.write(b'PR1\r\n') #warm up communication for some reason??
             self.ser.readline()
+            self.ser.write(b's\r\n')
             self.ser.write(b'PR1\r\n')
-            self.ser.readline()
+            self.ser.readlines()
 
-            self.ser.write(b'COM,1\r\n')  # Start continuous output
+            self.ser.write(b'COM,0\r\n')  # Start continuous output
             ack = self.ser.readline()
             if "\x06" not in ack.decode():
                 print("Pfeiffer: command rejected:", ack.decode())
@@ -97,7 +99,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TPG261 Vacuum Gauge Monitor")
-        self.setMinimumSize(600, 400)
+        # self.setMinimumSize(600, 400)
 
         # UI Elements
         self.label = QLabel("Pressure: --- mbar")
@@ -109,22 +111,24 @@ class MainWindow(QMainWindow):
         self.stop_button.clicked.connect(self.stop_reading)
 
         # Plot setup
-        self.plot = pg.PlotWidget()
+        self.plot = pg.PlotWidget(axisItems = {'bottom': pg.DateAxisItem(), 'left':FineLogAxis('left'), 'right':FineLogAxis('right')})
         self.plot.setBackground('w')
-        self.plot.setTitle("Pressure over Time", color='black', size="14pt")
+        self.plot.setTitle("Pressure vs. Time", color='black', size="14pt")
         self.plot.setLabel('left', "Pressure", units='mbar', **{'color': 'black', 'font-size': '12pt'})
         self.plot.setLabel('bottom', "Time", units='s', **{'color': 'black', 'font-size': '12pt'})
+        # self.plot.setLogMode(False, True)
         self.plot.showGrid(x=True, y=True)
+        # import ipdb; ipdb.set_trace()
         self.curve = self.plot.plot(pen=pg.mkPen('b', width=2))
 
-        self.data_buffer = deque(maxlen=300)
-        self.time_buffer = deque(maxlen=300)
+        self.pressureBuffer = deque(maxlen=1000)
+        self.timeBuffer = deque(maxlen=1000)
         self.start_time = time.time()
 
         # Timer to update the plot
         self.plot_timer = QTimer()
         self.plot_timer.timeout.connect(self.update_plot)
-        self.plot_timer.start(500)
+        self.plot_timer.start(250)
 
         # Layout
         layout = QVBoxLayout()
@@ -142,16 +146,37 @@ class MainWindow(QMainWindow):
         self.reader.pressure_updated.connect(self.update_pressure)
         self.reader.error_occurred.connect(self.show_error)
 
+        # Pressure threshold setup
+        self.alertSent=False
+        self.pressureThreshold = 1.0e-4
+        self.holdTimerActivate = False
+        self.overpressureTimeMs = 550 #in ms
+        self.overpressureTimer = QTimer(self)
+        self.overpressureTimer.setSingleShot(True)
+        self.overpressureTimer.timeout.connect(self.sendTeamsAlert)
+
     def update_pressure(self, status, pressure):
         # import ipdb; ipdb.set_trace()
         self.label.setText(f"Pressure: {pressure:.3e} mbar")
-        current_time = time.time() - self.start_time
-        self.data_buffer.append(pressure)
-        self.time_buffer.append(current_time)
+        current_time = time.time()# - self.start_time
+        self.pressureBuffer.append(pressure)
+        self.timeBuffer.append(current_time)
+        if status!=0:
+            print("Pfeiffer: Gauge status not 0/OK:",status)
+        maxP = pressure
+        if maxP>self.pressureThreshold:
+            if not self.alertSent and not self.holdTimerActivate:
+                print("nope")
+                self.holdTimerActivate = True
+                self.overpressureTimer.start(self.overpressureTimeMs)
+        else:
+            self.overpressureTimer.stop()
+            self.holdTimerActivate = False
+            self.alertSent = False
 
     def update_plot(self):
-        if self.data_buffer and self.time_buffer:
-            self.curve.setData(list(self.time_buffer), list(self.data_buffer))
+        if self.pressureBuffer and self.timeBuffer:
+            self.curve.setData(list(self.timeBuffer), list(self.pressureBuffer))
 
     def show_error(self, message):
         QMessageBox.critical(self, "Error", message)
@@ -159,8 +184,8 @@ class MainWindow(QMainWindow):
 
     def start_reading(self):
         self.start_time = time.time()
-        self.data_buffer.clear()
-        self.time_buffer.clear()
+        self.pressureBuffer.clear()
+        self.timeBuffer.clear()
         self.reader.start()
         self.label.setText("Reading...")
 
@@ -172,7 +197,53 @@ class MainWindow(QMainWindow):
         self.stop_reading()
         event.accept()
 
+    def sendTeamsAlert(self):
+        pressure=max(self.pressureBuffer)
+        teams_webhook = r'https://prod-184.westus.logic.azure.com:443/workflows/4e8133319bd74782976b43617ed71592/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PwW7eTHBIxtbNSLiWBsPfnH53cv22VXYTCmj0yS3T8w'
+        payload = {"text":f"Overpressure detected: {pressure} (Threshold: {self.pressureThreshold})"}
+        headers = {"Content-Type":"application/json"}
+        try:
+            response = requests.post(teams_webhook,json=payload, headers=headers)
+            self.alertSent=True
+        except Exception as E:
+            print(f"Error sending teams alert: {E}")
 
+
+class FineLogAxis(pg.AxisItem):
+    def __init__(self, orientation, **kwargs):
+        super().__init__(orientation, **kwargs)
+        self.setLogMode(True)
+
+    def tickValues(self, minVal, maxVal, size):
+        # Avoid invalid log values
+        minVal = max(minVal, 1e-300)
+        maxVal = max(maxVal, minVal * 1.001)
+
+        # Desired spacing in log10 (affects how fine the ticks are)
+        log_range = np.log10(maxVal) - np.log10(minVal)
+        tick_density = size / 80  # Adjust this number to control tick density
+        log_step = log_range / tick_density
+
+        # Snap to nearest smaller log step like 0.1, 0.2, 0.5, etc.
+        nice_steps = [1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
+        step = next((s for s in nice_steps if s <= log_step), 0.01)
+
+        # Create ticks in log space
+        log_min = np.floor(np.log10(minVal / 10))
+        log_max = np.ceil(np.log10(maxVal * 10))
+        log_ticks = np.arange(log_min, log_max, step)
+        values = 10 ** log_ticks
+
+        # Split into major and minor ticks based on step
+        major_step = 1
+        major_vals = 10 ** np.arange(np.floor(np.log10(minVal)), np.ceil(np.log10(maxVal)) + 1, major_step)
+        minor_vals = [v for v in values if v not in major_vals]
+
+        return [(1, major_vals), (2, minor_vals)]
+
+    def tickStrings(self, values, scale, spacing):
+        # Show one decimal in scientific notation
+        return [f"{v:.2e}" if v > 0 else '' for v in values]
 # Run the app
 def main():
     app = QApplication(sys.argv)

@@ -8,7 +8,7 @@ for dev in device_list:
   if dev.pid==pid:
       port=dev.device
 
-TEST_COMMAND = b'COM,1\r\n' 
+TEST_COMMAND = b'PR1\r\n' 
 ENQUIRE_COMMAND = b'\x05'
 
 def test_connection():
@@ -35,7 +35,7 @@ def test_connection():
             time.sleep(.3)
             response2 = ser.read_all()
             print("Response:", response2)
-            import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             
 
     except ZeroDivisionError as E:
