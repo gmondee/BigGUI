@@ -37,6 +37,7 @@ class TableWidgetOldPlots(QWidget):
 
         self.table = QTableWidget()
         self.table.setColumnCount(2)
+        self.table.verticalHeader().setDefaultSectionSize(5)
         # self.table.setRowCount(1000)
         
         self.table.setHorizontalHeaderLabels(["Run", "Color"])
