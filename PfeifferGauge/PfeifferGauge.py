@@ -6,8 +6,10 @@ import numpy as np
 import serial
 import serial.tools.list_ports
 import pyqtgraph as pg
+import os
+import json
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QMessageBox
+    QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QMessageBox, QCheckBox, QLineEdit, QHBoxLayout, QSpinBox
 )
 from PyQt6.QtCore import pyqtSignal, QObject, QTimer
 import requests
@@ -96,6 +98,7 @@ class PressureReader(QObject):
 
 # Main GUI
 class MainWindow(QMainWindow):
+    overpressureSignal = pyqtSignal(str)
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TPG261 Vacuum Gauge Monitor")
@@ -104,9 +107,41 @@ class MainWindow(QMainWindow):
         # UI Elements
         self.label = QLabel("Pressure: --- mbar")
         self.label.setStyleSheet("font-size: 20px;")
+        self.settingsPath = os.path.join(os.path.dirname(os.path.abspath(__file__)),'pfeifferSettings.json')
+        try:
+            with open(self.settingsPath, "r") as file:
+                settings = json.load(file)
+                self.pressureThreshold = float(settings['threshold'])
+                self.overpressureTimeMs = int(settings['alertHoldTime'])
+                self.teamsEnabled = int(settings['teamsEnabled'])
+        except Exception as E:
+            print("Pressure: failed to load settings file",E)
+            self.pressureThreshold = 1.0e-4
+            self.overpressureTimeMs = 550 #in ms
+            self.teamsEnabled = True
+
+        # Pressure threshold setup
+        self.alertSent=False
+        self.holdTimerActivate = False
+        self.overpressureTimer = QTimer(self)
+        self.overpressureTimer.setSingleShot(True)
+        self.overpressureTimer.timeout.connect(self.sendTeamsAlert)
 
         self.start_button = QPushButton("Start Reading")
         self.stop_button = QPushButton("Stop Reading")
+        self.teams_enabled_switch = QCheckBox(f"Send Teams Alert?")
+        self.teams_enabled_switch.setChecked(self.teamsEnabled)
+        # self.teams_enabled_switch.checkStateChanged.connect(self.updateTeamsLabel)
+        self.threshold_label = QLabel(f"Set Alert Pressure Threshold ({self.pressureThreshold:.2e}):")
+        self.threshold_lineEdit = QLineEdit()
+        self.threshold_lineEdit.setText(f"{self.pressureThreshold:.2e}")
+        self.threshold_lineEdit.returnPressed.connect(self.updatePressureThreshold)
+
+        self.alert_hold_label = QLabel(f"Set Alert Hold Time ({self.overpressureTimeMs}ms):")
+        self.alert_hold_spinBox= QSpinBox(minimum=0,maximum=int(1e7))
+        # self.alert_hold_spinBox.setRange(0,1e7)
+        self.alert_hold_spinBox.setValue(self.overpressureTimeMs)
+        self.alert_hold_spinBox.valueChanged.connect(self.updateAlertHold)
         self.start_button.clicked.connect(self.start_reading)
         self.stop_button.clicked.connect(self.stop_reading)
 
@@ -134,8 +169,24 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         layout.addWidget(self.plot)
-        layout.addWidget(self.start_button)
-        layout.addWidget(self.stop_button)
+
+        layoutStartStopTeams = QHBoxLayout()
+        layoutStartStopTeams.addWidget(self.start_button)
+        layoutStartStopTeams.addWidget(self.stop_button)
+        layoutStartStopTeams.addWidget(self.teams_enabled_switch)
+        startStopTeamsWidget = QWidget()
+        startStopTeamsWidget.setLayout(layoutStartStopTeams)
+
+        layoutThresholdHold = QHBoxLayout()
+        layoutThresholdHold.addWidget(self.threshold_label)
+        layoutThresholdHold.addWidget(self.threshold_lineEdit)
+        layoutThresholdHold.addWidget(self.alert_hold_label)
+        layoutThresholdHold.addWidget(self.alert_hold_spinBox)
+        thresholdHoldWidget = QWidget()
+        thresholdHoldWidget.setLayout(layoutThresholdHold)
+
+        layout.addWidget(startStopTeamsWidget)
+        layout.addWidget(thresholdHoldWidget)
 
         container = QWidget()
         container.setLayout(layout)
@@ -146,14 +197,21 @@ class MainWindow(QMainWindow):
         self.reader.pressure_updated.connect(self.update_pressure)
         self.reader.error_occurred.connect(self.show_error)
 
-        # Pressure threshold setup
-        self.alertSent=False
-        self.pressureThreshold = 1.0e-4
-        self.holdTimerActivate = False
-        self.overpressureTimeMs = 550 #in ms
-        self.overpressureTimer = QTimer(self)
-        self.overpressureTimer.setSingleShot(True)
-        self.overpressureTimer.timeout.connect(self.sendTeamsAlert)
+    def updatePressureThreshold(self):
+        try: 
+            pth = float(self.threshold_lineEdit.text())
+            self.pressureThreshold = pth
+            self.threshold_label.setText(f"Set Alert Pressure Threshold ({self.pressureThreshold:.2e}):")
+            print(f"Pressure: Set alarm threshold pressure to {pth} mbar")
+        except: print("Pressure: Incorrect pressure threshold format. Use, for example, 5.0e-5")
+
+    def updateAlertHold(self):
+        try:
+            ath = int(self.alert_hold_spinBox.value())
+            self.overpressureTimeMs = ath
+            self.alert_hold_label.setText(f"Set Alert Hold Time ({self.overpressureTimeMs}ms):")
+            print(f"Pressure: Set alarm threshold time to {ath} ms")
+        except: print("Pressure: Incorrect alert hold time format. Use, for example, 550 for 550ms")
 
     def update_pressure(self, status, pressure):
         # import ipdb; ipdb.set_trace()
@@ -166,7 +224,8 @@ class MainWindow(QMainWindow):
         maxP = pressure
         if maxP>self.pressureThreshold:
             if not self.alertSent and not self.holdTimerActivate:
-                print("nope")
+                now=time.time()
+                print(f"Pressure: Overpressure {maxP:.2e} detected at {time.strftime('%X %x %Z')}")
                 self.holdTimerActivate = True
                 self.overpressureTimer.start(self.overpressureTimeMs)
         else:
@@ -195,18 +254,34 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.stop_reading()
+        self.saveSettings()
+        self.reader.ser.close()
         event.accept()
 
+    def saveSettings(self):
+        settings={
+            "threshold":str(self.pressureThreshold),
+            "alertHoldTime":str(self.overpressureTimeMs),
+            "teamsEnabled":str(int(self.teams_enabled_switch.isChecked()))
+        }
+        with open(self.settingsPath, "w") as file:
+            json.dump(settings, file)
+
+
     def sendTeamsAlert(self):
-        pressure=max(self.pressureBuffer)
-        teams_webhook = r'https://prod-184.westus.logic.azure.com:443/workflows/4e8133319bd74782976b43617ed71592/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PwW7eTHBIxtbNSLiWBsPfnH53cv22VXYTCmj0yS3T8w'
-        payload = {"text":f"Overpressure detected: {pressure} (Threshold: {self.pressureThreshold})"}
-        headers = {"Content-Type":"application/json"}
-        try:
-            response = requests.post(teams_webhook,json=payload, headers=headers)
-            self.alertSent=True
-        except Exception as E:
-            print(f"Error sending teams alert: {E}")
+        self.overpressureSignal.emit(f"Pressure limit ({self.pressureThreshold:.2e}) exceeded: {max(self.pressureBuffer):.2e}")
+        if self.teams_enabled_switch.isChecked():
+            pressure=max(self.pressureBuffer)
+            teams_webhook = r'https://prod-184.westus.logic.azure.com:443/workflows/4e8133319bd74782976b43617ed71592/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PwW7eTHBIxtbNSLiWBsPfnH53cv22VXYTCmj0yS3T8w'
+            payload = {"text":f"Overpressure detected: {pressure} (Threshold: {self.pressureThreshold})"}
+            headers = {"Content-Type":"application/json"}
+            try:
+                response = requests.post(teams_webhook,json=payload, headers=headers)
+                self.alertSent=True
+            except Exception as E:
+                print(f"Error sending teams alert: {E}")
+        else:
+            print("Pressure: Pressure alert triggered but Teams alert is disabled.")
 
 
 class FineLogAxis(pg.AxisItem):

@@ -13,6 +13,7 @@ from ui_BigGUI import Ui_NEPTUNE_BigGUI
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
 from QuantumComposer.QuantumComposer import mainWindow as QComMainWindow
+from PfeifferGauge.PfeifferGauge import MainWindow as PressureMainWindow
 from TDC.TDC_DAQGUI import TDC_GUI
 from pathlib import Path
 from qasync import QEventLoop, asyncSlot
@@ -56,31 +57,37 @@ class BigGUI(QMainWindow):
     closeAblation = QAction("Close Ablation", self)
     closeBeamline = QAction("Close Beamline", self)
     closeTDC = QAction("Close TDC", self)
+    closePressure = QAction("Close Pressure", self)
     reloadQC = QAction("Reload QC", self)
     reloadAblation = QAction("Reload Ablation", self)
     reloadBeamline = QAction("Reload Beamline", self)
     reloadTDC = QAction("Reload TDC", self)
+    reloadPressure = QAction("Reload Pressure", self)
 
     # Add actions to menu
     fileMenu.addAction(closeQC)
     fileMenu.addAction(closeAblation)
     fileMenu.addAction(closeBeamline)
     fileMenu.addAction(closeTDC)
+    fileMenu.addAction(closePressure)
     fileMenu.addAction(reloadQC)
     fileMenu.addAction(reloadAblation)
     fileMenu.addAction(reloadBeamline)
     fileMenu.addAction(reloadTDC)
+    fileMenu.addAction(reloadPressure)
 
     # Connect using QAction.triggered.connect
     closeQC.triggered.connect(self.closeQCGUI)
     closeAblation.triggered.connect(self.closeAblationGUI)
     closeBeamline.triggered.connect(self.closeBeamlineGUI)
     closeTDC.triggered.connect(self.closeTDCGUI)
+    closePressure.triggered.connect(self.closePressureGUI)
 
     reloadQC.triggered.connect(lambda: self.loadQC(verbose=True))
     reloadAblation.triggered.connect(self.loadAblation)
     reloadBeamline.triggered.connect(self.loadBeamline)
     reloadTDC.triggered.connect(self.loadTDC)
+    reloadPressure.triggered.connect(self.loadPressure)
 
   def closeQCGUI(self):
     try: self.QCGUI.deleteLater()
@@ -115,6 +122,7 @@ class BigGUI(QMainWindow):
     self.AblationLoaded = self.loadAblation()
     self.BeamlineLoaded = self.loadBeamline()
     self.QCLoaded = self.loadQC()
+    self.PressureLoaded = self.loadPressure()
     # if self.QCLoaded: self.prepareQCScan()
 
   def loadTDC(self):
@@ -183,6 +191,28 @@ class BigGUI(QMainWindow):
     self.ui.comboBoxQCScanChannel.clear()
     for channel in  self.QCGUI.stateDict.keys():
       self.ui.comboBoxQCScanChannel.addItem(channel)
+  def loadPressure(self):
+    try: 
+      self.PressureGUI.closeEvent()
+      self.PressureGUI.layout().removeWidget(self.PressureGUI)
+    except: pass
+    try: self.PressureGUI.deleteLater()
+    except: pass
+    try:
+      print("Pressure: Starting up...")
+      self.PressureGUI = PressureMainWindow()
+      self.ui.framePressure.layout().addWidget(self.PressureGUI)
+      self.PressureGUI.start_button.click()
+    except Exception as E:
+      print("Pressure: Error loading",E)
+  def closePressureGUI(self):
+    try: 
+      self.PressureGUI.stop_button.click()
+      self.PressureGUI.closeEvent() #todo:doesnt work
+      self.PressureGUI.layout().removeWidget(self.PressureGUI)
+    except: pass
+    try: self.PressureGUI.deleteLater()
+    except: pass
 
   def connect(self):
     ### Connects all of the interactive elements of the GUI to their respective functions
