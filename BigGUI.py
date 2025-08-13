@@ -8,7 +8,7 @@ from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
 from PyQt6.QtCore import QTimer, QStandardPaths, QThread, QObject, pyqtSignal
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QIcon
 from ui_BigGUI import Ui_NEPTUNE_BigGUI
 from BigSkyController.HugeSkyController import BigSkyHub
 from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
@@ -42,6 +42,7 @@ class BigGUI(QMainWindow):
     self.OPOupdateTimer = QTimer(self)
     self.OPOupdateTimer.timeout.connect(self.updateOPOGUI)
     self.buildMenuBar()
+    self.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)),"NEPTUNE-logo.png")))
 
     self.loadGUIs() #Load up the other GUIs, like the ablation control and TDC
     self.connect()  #Make the buttons do things

@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton, QMessageBox, QCheckBox, QLineEdit, QHBoxLayout, QSpinBox
 )
 from PyQt6.QtCore import pyqtSignal, QObject, QTimer
+from PyQt6.QtGui import QIcon
 import requests
 
 
@@ -108,6 +109,7 @@ class MainWindow(QMainWindow):
         self.label = QLabel("Pressure: --- mbar")
         self.label.setStyleSheet("font-size: 20px;")
         self.settingsPath = os.path.join(os.path.dirname(os.path.abspath(__file__)),'pfeifferSettings.json')
+        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)),"bbq.png")))
         try:
             with open(self.settingsPath, "r") as file:
                 settings = json.load(file)

@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QPushButton,\
 QGroupBox, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QRadioButton, \
 QComboBox, QLineEdit, QButtonGroup
 from PyQt6.QtCore import QObject, QThread, pyqtSignal, QTimer
+from PyQt6.QtGui import QIcon
 import re
 from PyQt6.QtGui import QFont
 import os
@@ -191,6 +192,7 @@ class mainWindow(QWidget):
         self.width = 1000
         self.height = 500
         self.initUI()
+        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)),"Greece.png")))
         self.stateDict = {'A': [self.channelASwitchOn, self.channelASwitchOff],
                     'B': [self.channelBSwitchOn, self.channelBSwitchOff],
                     'C': [self.channelCSwitchOn, self.channelCSwitchOff],
