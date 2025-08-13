@@ -4,15 +4,52 @@ import threading
 import time
 import datetime
 import serial
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout
 )
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QObject
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject
 import pyqtgraph as pg
+import os
+from serial.tools import list_ports
+from collections import deque
 
 # === Configuration ===
-COM_PORTS = ['COM3', 'COM4']  # Replace with actual ports
-SETPOINT_FILE = 'setpoints.json'
+device_list = list_ports.comports()
+TEST_COMMAND = b'*IDN?\r\n' 
+def test_connections():
+    lakeshores = {}
+    for dev in device_list:
+        try:
+            with serial.Serial(dev.device, 9600, timeout=0.2, bytesize=7, parity="O") as ser:
+                    
+                # print(f"Connected to {dev.device} at {9600} baud.")
+
+                # Flush buffers
+                ser.reset_input_buffer()
+                ser.reset_output_buffer()
+
+                print(f"Sending command: {TEST_COMMAND}")
+                ser.write(TEST_COMMAND)
+
+                time.sleep(0.2)  # Give device time to respond
+
+                response = ser.read_all()
+                print(f"Response:{response.decode()}")
+                # print(response)
+                if "LSCI" not in response.decode():
+                    pass
+                elif "331" in response.decode():
+                    lakeshores["Lakeshore331"] = dev.device
+                elif "218" in response.decode():
+                    lakeshores["Lakeshore218"] = dev.device
+                else:
+                    print("Unknown Lakeshore device.")
+        except:
+            pass
+    return lakeshores
+COM_PORTS = test_connections()
+# COM_PORTS = ['COM3', 'COM4']  # Replace with actual ports
+SETPOINT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),'setpoints.json')
 
 # === Helper Classes ===
 
@@ -29,24 +66,29 @@ class LakeShoreDevice(threading.Thread):
         self.alert_signal = alert_signal
         self.setpoints = setpoints
         self._stop_event = threading.Event()
-        self.ser = serial.Serial(port, 57600, timeout=1)
-        self.sensor_ids = ['A', 'B']  # Can be extended if needed
+        self.ser = serial.Serial(port, 9600, timeout=0.5, bytesize=7, parity="O")
+        self.sensor_ids = list(range(1,len(setpoints)+1))
 
     def run(self):
         while not self._stop_event.is_set():
-            timestamp = datetime.datetime.now().strftime('%H:%M:%S')
-            for sensor_id in self.sensor_ids:
+            timestamp = time.time()
+            for sensor_id, sensor_name in enumerate(self.setpoints.keys()):
+                sensor_id+=1
                 try:
-                    self.ser.write(f"KRDG? {sensor_id}\n".encode())
+                    self.ser.reset_input_buffer()
+                    self.ser.reset_output_buffer()
+                    self.ser.write(f"KRDG? {sensor_id}\r\n".encode())
+
+                    # print(self.ser.read_all())
                     temp = float(self.ser.readline().decode().strip())
-                    self.update_callback(self.name, sensor_id, timestamp, temp)
+                    self.update_callback(self.name, sensor_name, timestamp, temp)
                     if (self.name in self.setpoints and 
                         sensor_id in self.setpoints[self.name] and 
                         temp > self.setpoints[self.name][sensor_id]):
                         self.alert_signal.alert.emit(f"{self.name}-{sensor_id}", temp)
                 except Exception as e:
                     print(f"[{self.name}] Error reading sensor {sensor_id}: {e}")
-            time.sleep(1)
+            time.sleep(.4)
 
     def stop(self):
         self._stop_event.set()
@@ -106,21 +148,20 @@ class MainWindow(QMainWindow):
 
     def start_monitoring(self):
         self.status_label.setText("Monitoring started.")
-        for idx, port in enumerate(COM_PORTS):
-            name = f"Device{idx+1}"
+        for row, (Lakeshore, port) in enumerate(COM_PORTS.items()):
+            name = Lakeshore
             self.data[name] = {}
             self.plots[name] = {}
             self.curves[name] = {}
-            row = idx
 
-            for col, sensor_id in enumerate(['A', 'B']):
-                self.data[name][sensor_id] = {'x': [], 'y': []}
+            for col, sensor_id in enumerate(self.setpoints[Lakeshore].keys()):
+                self.data[name][sensor_id] = {'x': deque(maxlen=60*60*12), 'y': deque(maxlen=60*60*12)}
 
-                plot_widget = pg.PlotWidget(title=f"{name} - Sensor {sensor_id}")
+                plot_widget = pg.PlotWidget(title=f"{name} - {sensor_id}",axisItems = {'bottom': pg.DateAxisItem('bottom')})
                 plot_widget.showGrid(x=True, y=True)
                 plot_widget.setLabel('left', 'Temperature', units='K')
-                plot_widget.setLabel('bottom', 'Time')
-                plot_widget.setXRange(0, 60)
+                plot_widget.setLabel('bottom', 'Time', units='s')
+                # plot_widget.setXRange(0, 60)
                 curve = plot_widget.plot([], [], pen='y')
 
                 self.grid.addWidget(plot_widget, row, col)
@@ -132,10 +173,11 @@ class MainWindow(QMainWindow):
                 name=name,
                 update_callback=self.update_plot,
                 alert_signal=self.alert_signal,
-                setpoints=self.setpoints
+                setpoints=self.setpoints[Lakeshore]
             )
             device.start()
             self.devices.append(device)
+
 
     def stop_monitoring(self):
         self.status_label.setText("Monitoring stopped.")
@@ -148,15 +190,11 @@ class MainWindow(QMainWindow):
         data['x'].append(timestamp)
         data['y'].append(temp)
 
-        if len(data['x']) > 60:
-            data['x'] = data['x'][-60:]
-            data['y'] = data['y'][-60:]
-
         # Convert timestamp labels to index for plotting
         x_vals = list(range(len(data['x'])))
-        self.curves[device_name][sensor_id].setData(x_vals, data['y'])
+        self.curves[device_name][sensor_id].setData(data['x'], data['y'])
 
-        self.plots[device_name][sensor_id].getAxis('bottom').setTicks([list(zip(x_vals, data['x']))])
+        # self.plots[device_name][sensor_id].getAxis('bottom').setTicks([list(zip(x_vals, data['x']))])
 
     def handle_alert(self, sensor_full_name, temp):
         print(f"ALERT: {sensor_full_name} above setpoint! Temp: {temp:.2f} K")
@@ -171,4 +209,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     win = MainWindow()
     win.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

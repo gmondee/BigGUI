@@ -43,7 +43,7 @@ def test_connections():
         try:
             with serial.Serial(dev.device, 9600, timeout=0.2, bytesize=7, parity="O") as ser:
                     
-                print(f"Connected to {port} at {9600} baud.")
+                print(f"Connected to {dev.device} at {9600} baud.")
 
                 # Flush buffers
                 ser.reset_input_buffer()
