@@ -438,7 +438,7 @@ class BigGUI(QMainWindow):
   def getOPOStatus(self):
     valuesUrl = r"http://192.168.1.53:7557/values?"
     try:
-      response = requests.get(valuesUrl, auth=self.auth, timeout=0.2)
+      response = requests.get(valuesUrl, auth=self.auth, timeout=0.1)
     except Exception as E:
       print(f'OPO: Failed to get OPO values via {valuesUrl}')
       return 0
@@ -496,7 +496,7 @@ class BigGUI(QMainWindow):
     url = f"{self.IP}/send?{encoded}"
     #todo: what if this fails
     try:
-      response = requests.get(url, auth=self.auth, timeout=0.5)
+      response = requests.get(url, auth=self.auth, timeout=0.1)
     except Exception as E:
       print(f'OPO: Failed outgoing command {payload}')
       return

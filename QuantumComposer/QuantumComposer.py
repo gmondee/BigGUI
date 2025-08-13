@@ -33,7 +33,7 @@ class QComController():
                             'G': [0, 0, 0, 'Channel G: OPO Flashlamp',0],
                             'H': [0, 0, 0, 'Channel H: OPO Q-Switch',0]}
         # possibleDevices=[comport.device for comport in serial.tools.list_ports.comports()]
-        sn = 'AB0PEW5NA'
+        sn = 'AB0PEW5NA' #this is specific to the cable for the quantum composer, so it needs to be changed if the cable changes
         device_list = serial.tools.list_ports.comports()
         # import ipdb; ipdb.set_trace()
         for dev in device_list:
