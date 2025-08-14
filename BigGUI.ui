@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1105</width>
-    <height>845</height>
+    <width>1051</width>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -957,7 +957,7 @@
        </layout>
       </item>
       <item row="5" column="2">
-       <widget class="QFrame" name="framePlaceholder">
+       <widget class="QFrame" name="frameTemperatures">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -970,17 +970,7 @@
         <property name="frameShadow">
          <enum>QFrame::Shadow::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_18">
-         <item>
-          <widget class="QComboBox" name="comboBox">
-           <item>
-            <property name="text">
-             <string>This is a placeholder</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="verticalLayout_18"/>
        </widget>
       </item>
       <item row="5" column="0">
@@ -1067,7 +1057,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1105</width>
+     <width>1051</width>
      <height>37</height>
     </rect>
    </property>
