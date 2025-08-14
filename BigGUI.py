@@ -15,6 +15,7 @@ from PenningTrapISEG.Penning_Trap_Beam_Line import MyApp
 from QuantumComposer.QuantumComposer import mainWindow as QComMainWindow
 from PfeifferGauge.PfeifferGauge import MainWindow as PressureMainWindow
 from TDC.TDC_DAQGUI import TDC_GUI
+from Lakeshore.LakeshoreGUI import MainWindow as TemperatureGUI
 from pathlib import Path
 from qasync import QEventLoop, asyncSlot
 
@@ -59,11 +60,13 @@ class BigGUI(QMainWindow):
     closeBeamline = QAction("Close Beamline", self)
     closeTDC = QAction("Close TDC", self)
     closePressure = QAction("Close Pressure", self)
+    closeTemperature = QAction("Close Temperature", self)
     reloadQC = QAction("Reload QC", self)
     reloadAblation = QAction("Reload Ablation", self)
     reloadBeamline = QAction("Reload Beamline", self)
     reloadTDC = QAction("Reload TDC", self)
     reloadPressure = QAction("Reload Pressure", self)
+    reloadTemperature = QAction("Reload Temperature", self)
 
     # Add actions to menu
     fileMenu.addAction(closeQC)
@@ -76,6 +79,7 @@ class BigGUI(QMainWindow):
     fileMenu.addAction(reloadBeamline)
     fileMenu.addAction(reloadTDC)
     fileMenu.addAction(reloadPressure)
+    fileMenu.addAction(reloadTemperature)
 
     # Connect using QAction.triggered.connect
     closeQC.triggered.connect(self.closeQCGUI)
@@ -83,12 +87,14 @@ class BigGUI(QMainWindow):
     closeBeamline.triggered.connect(self.closeBeamlineGUI)
     closeTDC.triggered.connect(self.closeTDCGUI)
     closePressure.triggered.connect(self.closePressureGUI)
+    closeTemperature.triggered.connect(self.closeTemperatureGUI)
 
     reloadQC.triggered.connect(lambda: self.loadQC(verbose=True))
     reloadAblation.triggered.connect(self.loadAblation)
     reloadBeamline.triggered.connect(self.loadBeamline)
     reloadTDC.triggered.connect(self.loadTDC)
     reloadPressure.triggered.connect(self.loadPressure)
+    reloadTemperature.triggered.connect(self.loadTemperature)
 
   def closeQCGUI(self):
     try: self.QCGUI.deleteLater()
@@ -124,6 +130,7 @@ class BigGUI(QMainWindow):
     self.BeamlineLoaded = self.loadBeamline()
     self.QCLoaded = self.loadQC()
     self.PressureLoaded = self.loadPressure()
+    self.TemperatureLoaded = self.loadTemperature()
     # if self.QCLoaded: self.prepareQCScan()
 
   def loadTDC(self):
@@ -144,6 +151,30 @@ class BigGUI(QMainWindow):
     except Exception as E:
       print(f"\nFailed to load TDCGUI: {E}")
       return 0
+    
+  def loadTemperature(self):
+    try: 
+      self.TemperatureGUI.close()
+      self.TemperatureGUI.layout().removeWidget(self.TemperatureGUI)
+    except: pass
+    try: self.TemperatureGUI.deleteLater()
+    except: pass
+    try:
+      self.TemperatureGUI = TemperatureGUI()
+      self.ui.frameTemperatures.layout().addWidget(self.TemperatureGUI)
+      return 1
+    except Exception as E:
+      print(f"\nFailed to load Temperature GUI: {E}")
+      return 0
+    
+  def closeTemperatureGUI(self):
+    try: 
+      self.TemperatureGUI.close()
+      self.TemperatureGUI.layout().removeWidget(self.TemperatureGUI)
+    except: pass
+    try: self.TemperatureGUI.deleteLater()
+    except: pass
+
   def loadAblation(self):
     try: 
       self.AblationGUI.table_widget.safeExit()
@@ -542,6 +573,16 @@ class BigGUI(QMainWindow):
     try:
       print("Closing TDC GUI...")
       self.TDCGUI.safeExit()
+    except Exception as E:
+      print(E)     
+    try:
+      print("Closing Pressure GUI...")
+      self.PressureGUI.close()
+    except Exception as E:
+      print(E)
+    try:
+      print("Closing Temperature GUI...")
+      self.TemperatureGUI.close()
     except Exception as E:
       print(E)
     try:

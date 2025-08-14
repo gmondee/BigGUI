@@ -13,10 +13,11 @@ import os
 from serial.tools import list_ports
 from collections import deque
 
+
 # === Configuration ===
-device_list = list_ports.comports()
-TEST_COMMAND = b'*IDN?\r\n' 
 def test_connections():
+    device_list = list_ports.comports()
+    TEST_COMMAND = b'*IDN?\r\n' 
     lakeshores = {}
     for dev in device_list:
         try:
@@ -28,13 +29,13 @@ def test_connections():
                 ser.reset_input_buffer()
                 ser.reset_output_buffer()
 
-                print(f"Sending command: {TEST_COMMAND}")
+                # print(f"Sending command: {TEST_COMMAND}")
                 ser.write(TEST_COMMAND)
 
                 time.sleep(0.2)  # Give device time to respond
 
                 response = ser.read_all()
-                print(f"Response:{response.decode()}")
+                # print(f"Response:{response.decode()}")
                 # print(response)
                 if "LSCI" not in response.decode():
                     pass
@@ -47,9 +48,8 @@ def test_connections():
         except:
             pass
     return lakeshores
-COM_PORTS = test_connections()
-# COM_PORTS = ['COM3', 'COM4']  # Replace with actual ports
-SETPOINT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),'setpoints.json')
+# COM_PORTS = test_connections()
+
 
 # === Helper Classes ===
 
@@ -102,7 +102,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Lakeshore Temperature Monitor")
         self.setGeometry(100, 100, 1200, 800)
-
+        self.SETPOINT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),'setpoints.json')
+        self.COM_PORTS = test_connections()
         self.devices = []
         self.plots = {}
         self.curves = {}
@@ -111,8 +112,12 @@ class MainWindow(QMainWindow):
 
         self.alert_signal = SensorAlertSignal()
         self.alert_signal.alert.connect(self.handle_alert)
+        
+        self.plot_timer = QTimer()
+        self.plot_timer.timeout.connect(self.update_plots)
 
         self.init_ui()
+        self.start_button.click()
 
     def init_ui(self):
         central_widget = QWidget()
@@ -137,18 +142,24 @@ class MainWindow(QMainWindow):
 
     def load_setpoints(self):
         try:
-            with open(SETPOINT_FILE, 'r') as f:
-                return json.load(f)
+            with open(self.SETPOINT_FILE, 'r') as f:
+                allSetpoints = json.load(f)
+                connectedSetpoints = {}
+                for dev, setpoints in allSetpoints.items():
+                    if dev in self.COM_PORTS.keys():
+                        connectedSetpoints[dev]=setpoints
+                return connectedSetpoints
         except Exception:
             return {}
 
     def save_setpoints(self):
+        return
         with open(SETPOINT_FILE, 'w') as f:
             json.dump(self.setpoints, f, indent=2)
 
     def start_monitoring(self):
         self.status_label.setText("Monitoring started.")
-        for row, (Lakeshore, port) in enumerate(COM_PORTS.items()):
+        for row, (Lakeshore, port) in enumerate(self.COM_PORTS.items()):
             name = Lakeshore
             self.data[name] = {}
             self.plots[name] = {}
@@ -158,6 +169,8 @@ class MainWindow(QMainWindow):
                 self.data[name][sensor_id] = {'x': deque(maxlen=60*60*12), 'y': deque(maxlen=60*60*12)}
 
                 plot_widget = pg.PlotWidget(title=f"{name} - {sensor_id}",axisItems = {'bottom': pg.DateAxisItem('bottom')})
+                setpointHLine = pg.InfiniteLine(pos=self.setpoints[Lakeshore][sensor_id], angle=0, movable=False, pen=pg.mkPen('r', width=2))
+                plot_widget.addItem(setpointHLine)
                 plot_widget.showGrid(x=True, y=True)
                 plot_widget.setLabel('left', 'Temperature', units='K')
                 plot_widget.setLabel('bottom', 'Time', units='s')
@@ -171,30 +184,44 @@ class MainWindow(QMainWindow):
             device = LakeShoreDevice(
                 port=port,
                 name=name,
-                update_callback=self.update_plot,
+                update_callback=self.update_data,
                 alert_signal=self.alert_signal,
                 setpoints=self.setpoints[Lakeshore]
             )
             device.start()
             self.devices.append(device)
+        
+        self.syncPlot = None
+        for device, plots in self.plots.items():
+            for plot in plots.values():
+                if self.syncPlot == None:
+                    self.syncPlot = plot
+                else:
+                    plot.setXLink(self.syncPlot)
+        self.plot_timer.start(1000)
 
 
     def stop_monitoring(self):
         self.status_label.setText("Monitoring stopped.")
         for device in self.devices:
             device.stop()
+        
+        self.plot_timer.stop()
         self.devices.clear()
 
-    def update_plot(self, device_name, sensor_id, timestamp, temp):
+    def update_data(self, device_name, sensor_id, timestamp, temp):
         data = self.data[device_name][sensor_id]
         data['x'].append(timestamp)
         data['y'].append(temp)
 
-        # Convert timestamp labels to index for plotting
-        x_vals = list(range(len(data['x'])))
+    def update_plot(self, device_name, sensor_id):
+        data = self.data[device_name][sensor_id]
         self.curves[device_name][sensor_id].setData(data['x'], data['y'])
 
-        # self.plots[device_name][sensor_id].getAxis('bottom').setTicks([list(zip(x_vals, data['x']))])
+    def update_plots(self):
+        for dev, sensorsAndValues in self.setpoints.items():
+            for sensor in sensorsAndValues.keys():
+                self.update_plot(dev, sensor)
 
     def handle_alert(self, sensor_full_name, temp):
         print(f"ALERT: {sensor_full_name} above setpoint! Temp: {temp:.2f} K")

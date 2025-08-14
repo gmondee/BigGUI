@@ -3,9 +3,11 @@ from serial.tools import list_ports
 import time
 
 pid = 8963
-device_list = serial.tools.list_ports.comports()
+# sn = "AB0PEW5NA"
+device_list = list_ports.comports()
 for dev in device_list:
-  if dev.pid==pid:
+  print(dev, dev.pid, dev.hwid)
+  if dev.pid == pid:
       port=dev.device
 
 TEST_COMMAND = b'PR1\r\n' 
@@ -28,6 +30,7 @@ def test_connection():
             response = ser.read_all()
             print("Response:")
             print(response)
+            # import ipdb; ipdb.set_trace()
             if "\x06" not in response.decode():
                 print("error")
                 return
@@ -35,7 +38,6 @@ def test_connection():
             time.sleep(.3)
             response2 = ser.read_all()
             print("Response:", response2)
-            # import ipdb; ipdb.set_trace()
             
 
     except ZeroDivisionError as E:

@@ -36,24 +36,32 @@ class PressureReader(QObject):
 
     def start(self):
         try:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=.2, stopbits=1)
+            self.ser = serial.Serial(self.port, self.baudrate, timeout=.5)
             time.sleep(.2)  # Let it initialize
             self.ser.reset_input_buffer()
             self.ser.reset_output_buffer()
             # import ipdb; ipdb.set_trace()
 
+            self.ser.write(b's\r\n')
+            self.ser.readline()
             self.ser.write(b'PR1\r\n') #warm up communication for some reason??
             self.ser.readline()
-            self.ser.write(b's\r\n')
             self.ser.write(b'PR1\r\n')
-            self.ser.readlines()
+            print(self.ser.read_all())
+            self.ser.reset_input_buffer()
+            self.ser.reset_output_buffer()
 
             self.ser.write(b'COM,0\r\n')  # Start continuous output
-            ack = self.ser.readline()
+            time.sleep(.3)
+            time.sleep(.3)
+            # import ipdb; ipdb.set_trace()
+            ack = self.ser.read_all()
             if "\x06" not in ack.decode():
                 print("Pfeiffer: command rejected:", ack.decode())
+                self.ser.close()
                 return
-
+            
+            print("Pfeiffer: Connected")
             self._running = True
             self._thread = threading.Thread(target=self._read_loop, daemon=True)
             self._thread.start()
@@ -73,6 +81,7 @@ class PressureReader(QObject):
                 self.error_occurred.emit(str(e))
 
     def _read_loop(self):
+        #todo: make sure this is working
         while self._running:
             try:
                 # print(self.ser.in_waiting)
@@ -195,7 +204,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
         # Reader setup
-        self.reader = PressureReader()  # Change this port if needed
+        self.reader = PressureReader() 
         self.reader.pressure_updated.connect(self.update_pressure)
         self.reader.error_occurred.connect(self.show_error)
 
@@ -319,7 +328,6 @@ class FineLogAxis(pg.AxisItem):
         return [(1, major_vals), (2, minor_vals)]
 
     def tickStrings(self, values, scale, spacing):
-        # Show one decimal in scientific notation
         return [f"{v:.2e}" if v > 0 else '' for v in values]
 # Run the app
 def main():
