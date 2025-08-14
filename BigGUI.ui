@@ -960,8 +960,8 @@
        <widget class="QFrame" name="frameTemperatures">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
          </sizepolicy>
         </property>
         <property name="frameShape">
@@ -990,6 +990,12 @@
         <layout class="QVBoxLayout" name="verticalLayout_14">
          <item>
           <widget class="QFrame" name="frame_14">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>
            </property>
