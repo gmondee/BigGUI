@@ -23,10 +23,11 @@ class PressureReader(QObject):
 
     def __init__(self, baudrate=19200):
         super().__init__()
-        pid = 8963
+        # pid = 8963
+        sn = "CHEEB135B02"
         device_list = serial.tools.list_ports.comports()
         for dev in device_list:
-          if dev.pid==pid:
+          if dev.serial_number==sn:
               self.port=dev.device
         # self.port = port
         self.baudrate = baudrate
@@ -42,18 +43,18 @@ class PressureReader(QObject):
             self.ser.reset_output_buffer()
             # import ipdb; ipdb.set_trace()
 
-            self.ser.write(b's\r\n')
-            self.ser.readline()
-            self.ser.write(b'PR1\r\n') #warm up communication for some reason??
-            self.ser.readline()
-            self.ser.write(b'PR1\r\n')
-            print(self.ser.read_all())
-            self.ser.reset_input_buffer()
-            self.ser.reset_output_buffer()
-
+            # self.ser.write(b's\r\n')
+            # self.ser.readline()
+            # self.ser.write(b'PR1\r\n') #warm up communication for some reason??
+            # self.ser.readline()
+            # self.ser.write(b'PR1\r\n')
+            # print(self.ser.read_all())
+            # self.ser.reset_input_buffer()
+            # self.ser.reset_output_buffer()
+            # time.sleep(.3)
             self.ser.write(b'COM,0\r\n')  # Start continuous output
-            time.sleep(.3)
-            time.sleep(.3)
+            # time.sleep(.3)
+            # time.sleep(.3)
             # import ipdb; ipdb.set_trace()
             ack = self.ser.read_all()
             if "\x06" not in ack.decode():
@@ -61,10 +62,10 @@ class PressureReader(QObject):
                 self.ser.close()
                 return
             
-            print("Pfeiffer: Connected")
             self._running = True
             self._thread = threading.Thread(target=self._read_loop, daemon=True)
             self._thread.start()
+            print("Pfeiffer: Connected")
         except serial.SerialException as e:
             self.error_occurred.emit(f"Serial error: {e}")
         except Exception as E:
@@ -82,12 +83,15 @@ class PressureReader(QObject):
 
     def _read_loop(self):
         #todo: make sure this is working
+        # import ipdb; ipdb.set_trace()
         while self._running:
             try:
                 # print(self.ser.in_waiting)
                 if self.ser.in_waiting:
-                    line = self.ser.readline().decode('ascii', errors='ignore').strip()
-                    # print(line)
+                    # import ipdb; ipdb.set_trace()
+                    read = self.ser.readline()
+                    print(read)
+                    line = read.decode('ascii', errors='ignore').strip()
                     # Example line: b'0, 2.2100E-07,5, 0.0000E+00\r\n'
                     # format is S1, Pressure1E-0X, S2, Pressure2E-0X
                     # where S is the gauge status (0=okay, 4=error). 

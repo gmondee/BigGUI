@@ -3,11 +3,11 @@ from serial.tools import list_ports
 import time
 
 pid = 8963
-# sn = "AB0PEW5NA"
+sn = "CHEEB135B02"
 device_list = list_ports.comports()
 for dev in device_list:
   print(dev, dev.pid, dev.hwid)
-  if dev.pid == pid:
+  if dev.serial_number == sn:
       port=dev.device
 
 TEST_COMMAND = b'PR1\r\n' 
@@ -15,7 +15,7 @@ ENQUIRE_COMMAND = b'\x05'
 
 def test_connection():
     try:
-        with serial.Serial(port,19200, timeout=0.2) as ser:
+        with serial.Serial(port,19200, timeout=1) as ser:
             print(f"Connected to {port} at {19200} baud.")
 
             # Flush buffers
@@ -25,7 +25,7 @@ def test_connection():
             print(f"Sending command: {TEST_COMMAND}")
             ser.write(TEST_COMMAND)
 
-            time.sleep(0.2)  # Give device time to respond
+            time.sleep(1)  # Give device time to respond
 
             response = ser.read_all()
             print("Response:")
