@@ -22,6 +22,12 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="PlotWidget" name="tofPlotWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="autoFillBackground">
          <bool>true</bool>
         </property>
@@ -175,6 +181,12 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="PlotWidget" name="timeStreamPlotWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="autoFillBackground">
          <bool>true</bool>
         </property>
