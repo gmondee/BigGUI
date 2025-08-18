@@ -197,7 +197,7 @@
        <widget class="QFrame" name="oldPlotListFrame">
         <property name="minimumSize">
          <size>
-          <width>230</width>
+          <width>150</width>
           <height>0</height>
          </size>
         </property>
