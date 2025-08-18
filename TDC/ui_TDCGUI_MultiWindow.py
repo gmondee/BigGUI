@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_2.addWidget(self.timeStreamPlotWidget)
         self.oldPlotListFrame = QtWidgets.QFrame(parent=self.centralwidget)
-        self.oldPlotListFrame.setMinimumSize(QtCore.QSize(300, 0))
+        self.oldPlotListFrame.setMinimumSize(QtCore.QSize(230, 0))
         self.oldPlotListFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.oldPlotListFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.oldPlotListFrame.setObjectName("oldPlotListFrame")
