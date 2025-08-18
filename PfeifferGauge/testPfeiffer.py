@@ -3,11 +3,11 @@ from serial.tools import list_ports
 import time
 
 pid = 8963
-sn = "CHEEB135B02"
+# sn = "CHEEB135B02"
 device_list = list_ports.comports()
 for dev in device_list:
   print(dev, dev.pid, dev.hwid)
-  if dev.serial_number == sn:
+  if dev.pid == pid:
       port=dev.device
 
 TEST_COMMAND = b'PR1\r\n' 

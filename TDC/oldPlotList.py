@@ -1,7 +1,7 @@
 import sys
 import colorsys
 from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem
+    QApplication, QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy
 )
 from PyQt6.QtGui import QColor, QBrush, QPen
 from PyQt6.QtCore import Qt
@@ -41,8 +41,13 @@ class TableWidgetOldPlots(QWidget):
         # self.table.setRowCount(1000)
         
         self.table.setHorizontalHeaderLabels(["Run", "Color"])
+        self.table.horizontalHeader().setSectionResizeMode(1,QHeaderView.ResizeMode.ResizeToContents)
         self.table.setSelectionBehavior(self.table.SelectionBehavior.SelectRows)
         self.table.setSelectionMode(self.table.SelectionMode.MultiSelection)
+        self.table.setMaximumWidth(190)
+        self.table.setSizePolicy(QSizePolicy.Policy.Minimum,QSizePolicy.Policy.Minimum)
+        
+
         layout.addWidget(self.table)
 
         self.color_generator = DistinctColorGenerator()
