@@ -190,6 +190,7 @@
         <property name="autoFillBackground">
          <bool>true</bool>
         </property>
+        <layout class="QVBoxLayout" name="verticalLayout"/>
        </widget>
       </item>
       <item>
