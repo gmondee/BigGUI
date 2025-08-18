@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_NEPTUNE_BigGUI(object):
     def setupUi(self, NEPTUNE_BigGUI):
         NEPTUNE_BigGUI.setObjectName("NEPTUNE_BigGUI")
-        NEPTUNE_BigGUI.resize(1051, 744)
+        NEPTUNE_BigGUI.resize(1366, 744)
         icon = QtGui.QIcon.fromTheme("QIcon::ThemeIcon::WeatherClearNight")
         NEPTUNE_BigGUI.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(parent=NEPTUNE_BigGUI)
@@ -500,7 +500,7 @@ class Ui_NEPTUNE_BigGUI(object):
         self.gridLayout_2.addLayout(self.gridLayout, 1, 1, 1, 1)
         NEPTUNE_BigGUI.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=NEPTUNE_BigGUI)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1051, 37))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1366, 37))
         self.menubar.setObjectName("menubar")
         NEPTUNE_BigGUI.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=NEPTUNE_BigGUI)
