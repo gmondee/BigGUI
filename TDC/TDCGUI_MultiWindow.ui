@@ -182,10 +182,16 @@
       <item>
        <widget class="PlotWidget" name="timeStreamPlotWidget" native="true">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="autoFillBackground">
          <bool>true</bool>
