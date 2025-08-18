@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.oldPlotListFrame.sizePolicy().hasHeightForWidth())
         self.oldPlotListFrame.setSizePolicy(sizePolicy)
-        self.oldPlotListFrame.setMinimumSize(QtCore.QSize(150, 0))
+        self.oldPlotListFrame.setMinimumSize(QtCore.QSize(50, 0))
         self.oldPlotListFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.oldPlotListFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.oldPlotListFrame.setObjectName("oldPlotListFrame")
