@@ -23,22 +23,26 @@ class PressureReader(QObject):
 
     def __init__(self, baudrate=19200):
         super().__init__()
-        # pid = 8963
-        sn = "CHEEB135B02"
+        pid = 8963
+        # sn = "CHEEB135B02"
         device_list = serial.tools.list_ports.comports()
         for dev in device_list:
-          if dev.serial_number==sn:
+          if dev.pid==pid:
               self.port=dev.device
         # self.port = port
         self.baudrate = baudrate
         self._running = False
         self._thread = None
         self.ser = None
+        self.retries = 0
+        self.retryMax = 3
 
-    def start(self):
+    def start(self, resetRetries=True):
+        if resetRetries:
+            self.retries=0
         try:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=.5)
-            time.sleep(.2)  # Let it initialize
+            self.ser = serial.Serial(self.port, self.baudrate, timeout=.75)
+            # time.sleep(.2)  # Let it initialize
             self.ser.reset_input_buffer()
             self.ser.reset_output_buffer()
             # import ipdb; ipdb.set_trace()
@@ -51,15 +55,22 @@ class PressureReader(QObject):
             # print(self.ser.read_all())
             # self.ser.reset_input_buffer()
             # self.ser.reset_output_buffer()
-            # time.sleep(.3)
             self.ser.write(b'COM,0\r\n')  # Start continuous output
+            time.sleep(1)
             # time.sleep(.3)
             # time.sleep(.3)
             # import ipdb; ipdb.set_trace()
             ack = self.ser.read_all()
             if "\x06" not in ack.decode():
-                print("Pfeiffer: command rejected:", ack.decode())
+                print("Pfeiffer: command rejected; retrying:", ack.decode())
                 self.ser.close()
+                self.stop()
+                if self.retries<self.retryMax:
+                    self.retries+=1
+                    self.start(resetRetries=False)
+                else:
+                    print("Pfeiffer: Max retries exceeded")
+
                 return
             
             self._running = True
@@ -90,7 +101,7 @@ class PressureReader(QObject):
                 if self.ser.in_waiting:
                     # import ipdb; ipdb.set_trace()
                     read = self.ser.readline()
-                    print(read)
+                    # print(read)
                     line = read.decode('ascii', errors='ignore').strip()
                     # Example line: b'0, 2.2100E-07,5, 0.0000E+00\r\n'
                     # format is S1, Pressure1E-0X, S2, Pressure2E-0X
@@ -230,7 +241,7 @@ class MainWindow(QMainWindow):
 
     def update_pressure(self, status, pressure):
         # import ipdb; ipdb.set_trace()
-        self.label.setText(f"Pressure: {pressure:.3e} mbar")
+        self.label.setText(f"Pressure: {pressure:.2e} mbar")
         current_time = time.time()# - self.start_time
         self.pressureBuffer.append(pressure)
         self.timeBuffer.append(current_time)
@@ -253,8 +264,9 @@ class MainWindow(QMainWindow):
             self.curve.setData(list(self.timeBuffer), list(self.pressureBuffer))
 
     def show_error(self, message):
-        QMessageBox.critical(self, "Error", message)
         self.stop_reading()
+        print("Pfeiffer: Error:",message)
+        # QMessageBox.critical(self, "Error", message)
 
     def start_reading(self):
         self.start_time = time.time()
@@ -270,7 +282,8 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.stop_reading()
         self.saveSettings()
-        self.reader.ser.close()
+        try: self.reader.ser.close()
+        except: pass
         event.accept()
 
     def saveSettings(self):

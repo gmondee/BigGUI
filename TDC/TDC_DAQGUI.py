@@ -21,7 +21,7 @@ import serial.tools.list_ports
 from pathlib import Path
 from PyQt6.QtCore import QStandardPaths, Qt
 from PyQt6.QtGui import QColor, QBrush, QPen
-from PyQt6.QtWidgets import QTableWidget, QWidget, QTableWidgetItem
+from PyQt6.QtWidgets import QTableWidget, QWidget, QTableWidgetItem, QSizePolicy
 from glob import glob
 #np.set_printoptions(threshold=np.inf)
 
@@ -362,6 +362,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.oldPlotTable = TableWidgetOldPlots()
     self.oldPlotListFrame.layout().addWidget(self.oldPlotTable)
     self.populateOldRunsTable()
+    self.oldPlotListFrame.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
     self.oldPlotTable.table.itemSelectionChanged.connect(self.plotSelectedOldRuns)
 
   def getListOfRuns(self):

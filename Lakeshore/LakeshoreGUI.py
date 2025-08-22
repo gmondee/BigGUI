@@ -169,6 +169,7 @@ class MainWindow(QMainWindow):
                 self.data[name][sensor_id] = {'x': deque(maxlen=60*60*12), 'y': deque(maxlen=60*60*12)}
 
                 plot_widget = pg.PlotWidget(title=f"{name} - {sensor_id}",axisItems = {'bottom': pg.DateAxisItem('bottom')})
+                plot_widget.setMinimumSize(275, 150)
                 setpointHLine = pg.InfiniteLine(pos=self.setpoints[Lakeshore][sensor_id], angle=0, movable=False, pen=pg.mkPen('r', width=2))
                 plot_widget.addItem(setpointHLine)
                 plot_widget.showGrid(x=True, y=True)
