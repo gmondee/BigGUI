@@ -19,7 +19,7 @@ from datetime import datetime
 import pickle
 import serial.tools.list_ports
 from pathlib import Path
-from PyQt6.QtCore import QStandardPaths, Qt
+from PyQt6.QtCore import QStandardPaths, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QBrush, QPen
 from PyQt6.QtWidgets import QTableWidget, QWidget, QTableWidgetItem, QSizePolicy
 from glob import glob
@@ -30,6 +30,8 @@ qtCreatorFile = os.path.join(os.path.dirname(__file__),"TDCGUI_MultiWindow.ui") 
 
 #TODO: send stop command to TDC before attempting re-connect
 class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
+  scanStartedSignal =  pyqtSignal()
+  scanStoppedSignal = pyqtSignal()
   def __init__(self, settingsDic={}):
     QtWidgets.QMainWindow.__init__(self); Ui_MainWindow.__init__(self)
     # self.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -272,6 +274,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.tMaxLineEdit.setEnabled(True)
     self.tBinsLineEdit.setEnabled(True)
     self.handleOldRunsTableAddRun()
+    self.scanStoppedSignal.emit()
 
 
   def beginScan(self):
@@ -294,6 +297,7 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     self.timer.timeout.connect(self.updateEverything)
     self.timer.start()
+    self.scanStartedSignal.emit()
 
   def updateEverything(self):
     if not self.scanToggled:

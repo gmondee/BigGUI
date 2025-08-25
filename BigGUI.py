@@ -4,6 +4,8 @@ import requests
 import json
 import urllib
 import asyncio
+import time
+import csv
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
@@ -147,11 +149,75 @@ class BigGUI(QMainWindow):
                     'path':os.path.join(DOCS_PATH,'data','RFQ Tests')}
       self.TDCGUI = TDC_GUI(settingsDic=settingsDic)
       self.ui.frameTDC.layout().addWidget(self.TDCGUI)
+      tdcTime = time.strftime(r"%Y-%m-%d_%Hh%Mm%S")
+      self.tdcLog = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logs","TDC", "Log_"+tdcTime+".csv")
+      self.tdcLogColumns = ["Time","Run","Scan status","Ablation status","OPO Wavelength"]
+      with open(self.tdcLog, mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=self.tdcLogColumns)
+        writer.writeheader()
+      self.TDCGUI.scanStoppedSignal.connect(self.TDCScanStop)
+      self.TDCGUI.scanStartedSignal.connect(self.TDCScanStart)
       return 1
     except Exception as E:
       print(f"\nFailed to load TDCGUI: {E}")
       return 0
     
+  def TDCScanStop(self):
+    try:
+      if self.AblationGUI.table_widget.tabs.widget(1).activeStatus:
+        ablationStatus="ON"
+      else:
+        ablationStatus="OFF"
+    except:
+      ablationStatus="Not connected"
+
+    try:
+      if self.ui.lineEditLaserStatus.text() == "RUNNING":
+        opoWL = self.ui.lineEditOPOCurrent.text().split(" ")[0]
+      else:
+        opoWL = "OFF"
+    except:
+      opoWL = "Not connected"
+
+    data = {"Time":time.strftime(r"%Y-%m-%d %H:%M:%S"),
+               "Run":self.TDCGUI.scanNum-1,
+               "Scan status":"Stop",
+               "Ablation status":ablationStatus,
+               "OPO Wavelength":opoWL
+               }
+    with open(self.tdcLog, mode='a', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=data.keys())
+        writer.writerow(data)
+
+  def TDCScanStart(self):
+    # import ipdb; ipdb.set_trace()
+    try:
+      if self.AblationGUI.table_widget.tabs.widget(1).activeStatus:
+        ablationStatus="ON"
+      else:
+        ablationStatus="OFF"
+    except:
+      ablationStatus="Not connected"
+
+    try:
+      if self.ui.lineEditLaserStatus.text() == "RUNNING":
+        opoWL = self.ui.lineEditOPOCurrent.text().split(" ")[0]
+      else:
+        opoWL = "OFF"
+    except:
+      opoWL = "Not connected"
+
+    data = {"Time":time.strftime(r"%Y-%m-%d %H:%M:%S"),
+               "Run":self.TDCGUI.scanNum,
+               "Scan status":"Start",
+               "Ablation status":ablationStatus,
+               "OPO Wavelength":opoWL
+               }
+    with open(self.tdcLog, mode='a', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=data.keys())
+        writer.writerow(data)
+
+
   def loadTemperature(self):
     try: 
       self.TemperatureGUI.close()
@@ -336,7 +402,7 @@ class BigGUI(QMainWindow):
     self.ui.pushButtonStartLaser.click() #start the laser
     if self.TDCGUI.scanToggled: #if there's a TDC run in progress, stop it
       self.TDCGUI.scanToggler.click()
-    await asyncio.sleep(1.5) #let opo adjust before starting
+    await asyncio.sleep(1.0) #let opo adjust before starting
     
 
   
@@ -477,46 +543,49 @@ class BigGUI(QMainWindow):
     # json.loads
 
   def updateOPOGUI(self):
-    valuesHTTP = self.getOPOStatus()
-    if not valuesHTTP: return
-    valuesJSON = valuesHTTP.json()
-    valuesDict = {entry['device']: entry['values'] for entry in valuesJSON}
-    laserDict = valuesDict['laser']
-    OPODict = valuesDict['harmonics']
+    try:
+      valuesHTTP = self.getOPOStatus()
+      if not valuesHTTP: return
+      valuesJSON = valuesHTTP.json()
+      valuesDict = {entry['device']: entry['values'] for entry in valuesJSON}
+      laserDict = valuesDict['laser']
+      OPODict = valuesDict['harmonics']
 
-    isLaserRunning = int(laserDict["laser-run"]) #0 = not running; 1 = running
-    # breakpoint()
-    OPOWavelength = OPODict['wavelength']
-    isOPOEnabled = int(OPODict['opo-status'])
-    triggeringMode = int(laserDict["trig-mode"]) #0=internal; 1=external single; 2=external double
-    QSwitchStatus = int(laserDict["qsw-run"])
+      isLaserRunning = int(laserDict["laser-run"]) #0 = not running; 1 = running
+      # breakpoint()
+      OPOWavelength = OPODict['wavelength']
+      isOPOEnabled = int(OPODict['opo-status'])
+      triggeringMode = int(laserDict["trig-mode"]) #0=internal; 1=external single; 2=external double
+      QSwitchStatus = int(laserDict["qsw-run"])
 
-    trigmodes = ["Internal", "External (1P)", "External (2P)"]
+      trigmodes = ["Internal", "External (1P)", "External (2P)"]
 
-    if isLaserRunning:
-      self.ui.lineEditLaserStatus.setText("RUNNING")
-      self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: orange; }")
-    else:
-      self.ui.lineEditLaserStatus.setText("OFF")
-      self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: lightGray; }")
+      if isLaserRunning:
+        self.ui.lineEditLaserStatus.setText("RUNNING")
+        self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: orange; }")
+      else:
+        self.ui.lineEditLaserStatus.setText("OFF")
+        self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: lightGray; }")
 
-    self.ui.lineEditOPOCurrent.setText(f"{OPOWavelength:.2f} nm")
+      self.ui.lineEditOPOCurrent.setText(f"{OPOWavelength:.2f} nm")
 
-    if isOPOEnabled:
-      self.ui.Port1Status.setText("OPO Enabled")
-    else:
-      self.ui.Port1Status.setText("OPO Disabled")
+      if isOPOEnabled:
+        self.ui.Port1Status.setText("OPO Enabled")
+      else:
+        self.ui.Port1Status.setText("OPO Disabled")
 
-    self.ui.lineEditTrigMode.setText(trigmodes[triggeringMode])
+      self.ui.lineEditTrigMode.setText(trigmodes[triggeringMode])
 
-    if QSwitchStatus: 
-      self.ui.lineEditQSWStatus.setText("QSW ON")
-      self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: white; }")
-    else: 
-      self.ui.lineEditQSWStatus.setText("QSW OFF")
-      self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: red; }")
-    # print(valuesJSON)
-    # breakpoint()
+      if QSwitchStatus: 
+        self.ui.lineEditQSWStatus.setText("QSW ON")
+        self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: white; }")
+      else: 
+        self.ui.lineEditQSWStatus.setText("QSW OFF")
+        self.ui.lineEditQSWStatus.setStyleSheet("QLineEdit { background-color: red; }")
+      # print(valuesJSON)
+      # breakpoint()
+    except Exception as E:
+      print(E)
     
 
 
