@@ -76,6 +76,7 @@ class BigGUI(QMainWindow):
     fileMenu.addAction(closeBeamline)
     fileMenu.addAction(closeTDC)
     fileMenu.addAction(closePressure)
+    fileMenu.addAction(closeTemperature)
     fileMenu.addAction(reloadQC)
     fileMenu.addAction(reloadAblation)
     fileMenu.addAction(reloadBeamline)

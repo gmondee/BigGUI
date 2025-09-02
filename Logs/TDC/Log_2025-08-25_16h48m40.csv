@@ -1,0 +1,5 @@
+Time,Run,Scan status,Ablation status,OPO Wavelength
+2025-08-25 16:58:48,3342,Start,ON,OFF
+2025-08-25 16:59:52,3342,Stop,ON,OFF
+2025-08-25 17:00:03,3343,Start,OFF,OFF
+2025-08-25 17:01:11,3343,Stop,OFF,OFF

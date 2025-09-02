@@ -15,7 +15,7 @@
         "Quadrupole Front Left": {
             "GUI Number": 2,
             "Channel": 200,
-            "Set Voltage": 100.0,
+            "Set Voltage": 650.0,
             "State": "Off"
         },
         "Quadrupole Front Right": {
@@ -33,7 +33,7 @@
         "Quadrupole Back Right": {
             "GUI Number": 5,
             "Channel": 5,
-            "Set Voltage": 100.0,
+            "Set Voltage": 650.0,
             "State": "Off"
         },
         "Quadrupole Back Left": {
