@@ -237,25 +237,35 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
     self.oldRuns=oldRunsList
     self.loadOldRunsLineEdit.setText(str(oldRunsList).strip('[]'))
     if success:
-      self.oldData=pd.DataFrame()
-      self.hasOldData=False
-      for run in self.oldRuns:
-        try:
-          oldDataPrefix=os.path.join(self.scanDirectory,'scan'+str(run),'scan'+str(run)+'_')
-          old_dbName=oldDataPrefix+'allData.db'
-          # print('test: old_dbName=',old_dbName)
-          oldDataConnection = sl.connect(old_dbName)
-          # print('works up to here?')
-          tempFrame=pd.read_sql_query("SELECT * from TDC", oldDataConnection); #print(tempFrame)
-          self.oldData=pd.concat([self.oldData,pd.read_sql_query("SELECT * from TDC WHERE run="+str(run), oldDataConnection)])
-          oldDataConnection.close()
-          self.hasOldData=True
-        except: print(f'TDC: Failed to load run {run}.')
-      # print('test oldData:\n', self.oldData)
-      if self.hasOldData:
-        self.updatePlotTof_old()
-      else:
-        print(f"TDC: Didn't find any of these runs: {oldRunsList}")
+      try:
+        for run in oldRunsList:
+          #click on each run in the table if it is not already enabled
+          # import ipdb; ipdb.set_trace()
+          tableItem = self.oldPlotTable.table.findItems('Run '+str(run), Qt.MatchFlag.MatchExactly)[0]
+          if not tableItem.isSelected():
+            tableItem.setSelected(1)
+      except Exception as E:
+        print(E)
+        return
+      # self.oldData=pd.DataFrame()
+      # self.hasOldData=False
+      # for run in self.oldRuns:
+      #   try:
+      #     oldDataPrefix=os.path.join(self.scanDirectory,'scan'+str(run),'scan'+str(run)+'_')
+      #     old_dbName=oldDataPrefix+'allData.db'
+      #     # print('test: old_dbName=',old_dbName)
+      #     oldDataConnection = sl.connect(old_dbName)
+      #     # print('works up to here?')
+      #     tempFrame=pd.read_sql_query("SELECT * from TDC", oldDataConnection); #print(tempFrame)
+      #     self.oldData=pd.concat([self.oldData,pd.read_sql_query("SELECT * from TDC WHERE run="+str(run), oldDataConnection)])
+      #     oldDataConnection.close()
+      #     self.hasOldData=True
+      #   except: print(f'TDC: Failed to load run {run}.')
+      # # print('test oldData:\n', self.oldData)
+      # if self.hasOldData:
+      #   self.updatePlotTof_old()
+      # else:
+      #   print(f"TDC: Didn't find any of these runs: {oldRunsList}")
 
   def endScan(self):
     if self.usingEpics: self.epicsDriver.stop()

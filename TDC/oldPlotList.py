@@ -70,7 +70,6 @@ class TableWidgetOldPlots(QWidget):
     def on_selection_changed(self):
 
         self.selectedRuns={}
-
         for row in range(self.table.rowCount()):
             item = self.table.item(row, 0)
             color_cell = self.table.item(row, 1)
