@@ -44,6 +44,7 @@ class BigGUI(QMainWindow):
     self.ui.setupUi(self)
     self.OPOupdateTimer = QTimer(self)
     self.OPOupdateTimer.timeout.connect(self.updateOPOGUI)
+    self.OPOConnected = False
     self.buildMenuBar()
     self.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)),"NEPTUNE-logo.png")))
 
@@ -539,6 +540,11 @@ class BigGUI(QMainWindow):
       response = requests.get(valuesUrl, auth=self.auth, timeout=0.1)
     except Exception as E:
       print(f'OPO: Failed to get OPO values via {valuesUrl}')
+      try:
+        self.ui.lineEditLaserStatus.setText("OFFLINE")
+        self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: plum; }")
+      except:
+        pass
       return 0
     return response
     # json.loads

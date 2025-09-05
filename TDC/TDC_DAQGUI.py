@@ -240,7 +240,6 @@ class TDC_GUI(QtWidgets.QMainWindow, Ui_MainWindow):
       try:
         for run in oldRunsList:
           #click on each run in the table if it is not already enabled
-          # import ipdb; ipdb.set_trace()
           tableItem = self.oldPlotTable.table.findItems('Run '+str(run), Qt.MatchFlag.MatchExactly)[0]
           if not tableItem.isSelected():
             tableItem.setSelected(1)
