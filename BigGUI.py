@@ -6,6 +6,7 @@ import urllib
 import asyncio
 import time
 import csv
+import datetime
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
@@ -44,7 +45,7 @@ class BigGUI(QMainWindow):
     self.ui.setupUi(self)
     self.OPOupdateTimer = QTimer(self)
     self.OPOupdateTimer.timeout.connect(self.updateOPOGUI)
-    self.OPOConnected = False
+    self.OPOConnected = True #this is only used for the "opo not connected" error message
     self.buildMenuBar()
     self.setWindowIcon(QIcon(os.path.join(os.path.dirname(os.path.abspath(__file__)),"NEPTUNE-logo.png")))
 
@@ -434,6 +435,8 @@ class BigGUI(QMainWindow):
     
     ### Measure a spectrum, record parameters in the log file
     waitTime = int(1/self.frequency*self.scanParams["pulsesPerStep"])
+    print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength} nm for {waitTime} seconds.")
+    self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength}")
     self.TDCGUI.scanToggler.click()
     try:
       await self.make_sleep_task(waitTime)
@@ -464,7 +467,7 @@ class BigGUI(QMainWindow):
       pass #scan over
     else:
       self.scanWavelength += self.scanParams["stepSize"]
-      self.scanNext()
+      await self.scanNext()
 
   def stopWavelengthScan(self):
     #self.scanTimer.stop()
@@ -518,7 +521,7 @@ class BigGUI(QMainWindow):
       pass #scan over
     else:
       self.QCScanTime += self.QCScanParams["stepSize"]
-      self.scanQCNext(scanMode)
+      await self.scanQCNext(scanMode)
 
 
   @asyncSlot()
@@ -538,8 +541,11 @@ class BigGUI(QMainWindow):
     valuesUrl = r"http://192.168.1.53:7557/values?"
     try:
       response = requests.get(valuesUrl, auth=self.auth, timeout=0.1)
+      self.OPOConnected=True
     except Exception as E:
-      print(f'OPO: Failed to get OPO values via {valuesUrl}')
+      if self.OPOConnected:
+        print(f'OPO: Failed to get OPO values via {valuesUrl}')
+        self.OPOConnected=False
       try:
         self.ui.lineEditLaserStatus.setText("OFFLINE")
         self.ui.lineEditLaserStatus.setStyleSheet("QLineEdit { background-color: plum; }")
