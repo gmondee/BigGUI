@@ -55,6 +55,10 @@ class PressureReader(QObject):
             # print(self.ser.read_all())
             # self.ser.reset_input_buffer()
             # self.ser.reset_output_buffer()
+            # self.ser.write(b's\r\n')  # Stop continuous output
+            # self.ser.reset_input_buffer()
+            # self.ser.reset_output_buffer()
+            # self.ser.
             self.ser.write(b'COM,0\r\n')  # Start continuous output
             time.sleep(1)
             # time.sleep(.3)

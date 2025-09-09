@@ -58,7 +58,10 @@ class HomeTab(QWidget):
         else:
           # print(" maybe this one?")
           ser.flush(); ser.write(b'>sn\n')
-          response = ser.read(140).decode('utf-8'); #print("response:", response)
+          try:
+            response = ser.read(140).decode('utf-8'); #print("response:", response)
+          except:
+            continue
           if 'number'in response:
             print(f"Big Sky: Connecting to laser at {dev}."); ser.close()
             sn=response.strip('s// number\r\n')
@@ -70,6 +73,7 @@ class HomeTab(QWidget):
             self.layout.addWidget(self.buttons[-1], len(self.buttons)-1, 0)
             self.layout.addWidget(self.labelLineEdits[-1], len(self.buttons)-1, 1)
           else: ser.close()
+            
     self.text = QTextBrowser()
     self.layout.addWidget(self.text, len(self.buttons),0)
     self.saveButton=QPushButton('Save Labels')

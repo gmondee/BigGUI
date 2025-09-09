@@ -7,6 +7,7 @@ import asyncio
 import time
 import csv
 import datetime
+import traceback
 from functools import partial
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLayout, QFrame
@@ -263,7 +264,7 @@ class BigGUI(QMainWindow):
       print("Big Sky: Done.")
       return 1
     except Exception as E:
-      print(f"\nFailed to load ablation GUI: {E}")
+      print(f"\nFailed to load ablation GUI: {traceback.format_exc()}")
       return 0
   def loadBeamline(self):
     try:
@@ -435,13 +436,13 @@ class BigGUI(QMainWindow):
     
     ### Measure a spectrum, record parameters in the log file
     waitTime = int(1/self.frequency*self.scanParams["pulsesPerStep"])
-    print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength} nm for {waitTime} seconds.")
-    self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength}")
+    print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength:.2f} nm for {waitTime} seconds.")
+    self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength:.2f}")
     self.TDCGUI.scanToggler.click()
     try:
       await self.make_sleep_task(waitTime)
     except asyncio.CancelledError:
-      print("Main function interrupted during sleep.")
+      print("Scan interrupted during sleep.")
       self.stopWavelengthScan()
       #TODO: handle canellation
       return
@@ -454,7 +455,7 @@ class BigGUI(QMainWindow):
       try:
         await self.make_sleep_task(waitTime)
       except asyncio.CancelledError:
-        print("Main function interrupted during sleep.")
+        print("Scan interrupted during sleep.")
         self.stopWavelengthScan()
         return
       #await asyncio.sleep(waitTime)## Wait for the measurement to finish
@@ -470,11 +471,14 @@ class BigGUI(QMainWindow):
       await self.scanNext()
 
   def stopWavelengthScan(self):
-    #self.scanTimer.stop()
+    #self.scanTimer.stop() #TODO: doesnt always stop the scan
     if self.scanSleepTask and not self.scanSleepTask.done():
       self.scanSleepTask.cancel()
       print('Stopped scan')
     else:
+      try:
+        self.scanSleepTask.cancel()
+      except: pass
       print('No scan was in progress')
     self.ui.labelScanStatus.setText("Scan Status: OFF")
     
