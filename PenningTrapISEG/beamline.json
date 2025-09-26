@@ -4,7 +4,7 @@
             "GUI Number": 0,
             "Channel": 0,
             "Set Voltage": 370.0,
-            "State": "Off"
+            "State": "On"
         },
         "Quadrupole Lens Front": {
             "GUI Number": 1,
@@ -16,7 +16,7 @@
             "GUI Number": 2,
             "Channel": 200,
             "Set Voltage": 650.0,
-            "State": "Off"
+            "State": "On"
         },
         "Quadrupole Front Right": {
             "GUI Number": 3,
@@ -34,7 +34,7 @@
             "GUI Number": 5,
             "Channel": 5,
             "Set Voltage": 650.0,
-            "State": "Off"
+            "State": "On"
         },
         "Quadrupole Back Left": {
             "GUI Number": 6,
@@ -69,8 +69,8 @@
         "MagneTOF": {
             "GUI Number": 11,
             "Channel": 201,
-            "Set Voltage": 2180.0,
-            "State": "Off"
+            "Set Voltage": 2200.0,
+            "State": "On"
         },
         "Pulse Valve": {
             "GUI Number": 12,

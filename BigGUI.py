@@ -322,7 +322,7 @@ class BigGUI(QMainWindow):
     self.ui.pushButtonToggleOPO.clicked.connect(lambda: self.sendToOPO(self.dict_enable_OPO()))
     self.ui.pushButtonOPOSet.clicked.connect(lambda: self.sendToOPO(self.dict_set_OPO_wavelength()))
     self.ui.pushButtonStartScan.clicked.connect(self.startWavelengthScan)
-    self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
+    # self.ui.pushButtonStopScan.clicked.connect(self.stopWavelengthScan)
     # self.ui.pushButtonOpenOPOGUI.clicked.connect(self.openOPOGUI)
     self.ui.pushButtonOpenBeamlineGui.clicked.connect(self.openBeamlineGUI)
     self.ui.pushButtonOpenQC.clicked.connect(self.openQCGUI)
@@ -421,54 +421,109 @@ class BigGUI(QMainWindow):
     # Disable OPO options
     # Disable Ablation options
     # Disable TDC options
+    # Disable start scan button
+    self.ui.pushButtonStartScan.setEnabled(False)
+
     scanETAmin=(1/self.frequency*self.scanParams["pulsesPerStep"]+1.5)*(self.scanParams["endWL"]-self.scanParams["startWL"])/self.scanParams["stepSize"]/60
     self.ui.labelScanStatus.setText("Scan Status: ON")
     print(f'Starting scan. ETA:{scanETAmin:.2f} minutes.\nScan parameters:{self.scanParams}')
-    self.scanNext(skipSetup=True)
+    self.scanNext(skipLaserSetup=True)
 
   @asyncSlot()
-  async def scanNext(self, skipSetup=False):
-    if not skipSetup:
-      self.ui.doubleSpinBoxSetOPOWavelength.setValue(self.scanWavelength)
-      self.ui.pushButtonOPOSet.click() #set the initial wavelength
-      self.ui.pushButtonStartLaser.click() #start the laser
-      await asyncio.sleep(1.5) #let opo adjust before starting
-    
-    ### Measure a spectrum, record parameters in the log file
-    waitTime = int(1/self.frequency*self.scanParams["pulsesPerStep"])
-    print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength:.2f} nm for {waitTime} seconds.")
-    self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength:.2f}")
-    self.TDCGUI.scanToggler.click()
-    try:
-      await self.make_sleep_task(waitTime)
-    except asyncio.CancelledError:
-      print("Scan interrupted during sleep.")
+  async def scanNext(self, skipLaserSetup=False):
+
+      self.scanningActive = True  # Flag to control the loop
+
+      def stopScan():
+        print("Stop button clicked. Stopping scan.")
+        self.scanningActive = False
+
+      self.ui.pushButtonStopScan.clicked.connect(stopScan)  # Connect stop button
+
+      while self.scanningActive and self.scanWavelength <= self.scanParams["endWL"]:
+
+        if not skipLaserSetup:
+          skipLaserSetup=False
+          self.ui.doubleSpinBoxSetOPOWavelength.setValue(self.scanWavelength)
+          self.ui.pushButtonOPOSet.click()  # Set the initial wavelength
+          self.ui.pushButtonStartLaser.click()  # Start the OPO
+          await asyncio.sleep(1.5)  # Let OPO adjust before starting
+
+        waitTime = int(1 / self.frequency * self.scanParams["pulsesPerStep"])
+        print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength:.2f} nm for {waitTime} seconds.")
+        self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength:.2f}")
+        self.TDCGUI.scanToggler.click() #Start data collection in the TDC
+
+        try:
+          await self.make_sleep_task(waitTime)
+        except asyncio.CancelledError:
+          print("Scan interrupted during sleep.")
+          self.stopWavelengthScan()
+          return
+
+        self.TDCGUI.scanToggler.click() #Stop data collection in the TDC
+
+        if self.scanParams["measureAblationOff"]:
+          self.ablationTab.stopButton.click() #Turn off ablation laser
+          self.TDCGUI.scanToggler.click() #Start TDC collection for the ablation off run
+          try:
+            await self.make_sleep_task(waitTime)
+          except asyncio.CancelledError:
+            print("Scan interrupted during ablation off.")
+            self.stopWavelengthScan()
+            return
+          self.TDCGUI.scanToggler.click() #Stop TDC collection for the ablation off run
+          self.ablationTab.lampActivationButton.click()  # Turn ablation back on
+
+        # Advance to next wavelength
+        self.scanWavelength += self.scanParams["stepSize"]
+
+      print("Scan finished or stopped.")
       self.stopWavelengthScan()
-      #TODO: handle canellation
-      return
-    #await asyncio.sleep(waitTime)## Wait for the measurement to finish
-    self.TDCGUI.scanToggler.click()
+
+  # @asyncSlot()
+  # async def scanNext(self, skipSetup=False):
+  #   if not skipSetup:
+  #     self.ui.doubleSpinBoxSetOPOWavelength.setValue(self.scanWavelength)
+  #     self.ui.pushButtonOPOSet.click() #set the initial wavelength
+  #     self.ui.pushButtonStartLaser.click() #start the laser
+  #     await asyncio.sleep(1.5) #let opo adjust before starting
     
-    if self.scanParams["measureAblationOff"]:
-      self.ablationTab.stopButton.click()
-      self.TDCGUI.scanToggler.click()
-      try:
-        await self.make_sleep_task(waitTime)
-      except asyncio.CancelledError:
-        print("Scan interrupted during sleep.")
-        self.stopWavelengthScan()
-        return
-      #await asyncio.sleep(waitTime)## Wait for the measurement to finish
-      self.TDCGUI.scanToggler.click()
-      self.ablationTab.lampActivationButton.click() #turn ablation back on for the next measurement
+  #   ### Measure a spectrum, record parameters in the log file
+  #   waitTime = int(1/self.frequency*self.scanParams["pulsesPerStep"])
+  #   print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength:.2f} nm for {waitTime} seconds.")
+  #   self.ui.labelScanStatus.setText(f"Scan Status: {self.scanWavelength:.2f}")
+  #   self.TDCGUI.scanToggler.click()
+  #   try:
+  #     await self.make_sleep_task(waitTime)
+  #   except asyncio.CancelledError:
+  #     print("Scan interrupted during sleep.")
+  #     self.stopWavelengthScan()
+  #     #TODO: handle canellation
+  #     return
+  #   #await asyncio.sleep(waitTime)## Wait for the measurement to finish
+  #   self.TDCGUI.scanToggler.click()
     
-    if self.scanParams["stepSize"]+self.scanWavelength > self.scanParams["endWL"]:
-      print("\nScan finished.\n")
-      self.stopWavelengthScan()
-      pass #scan over
-    else:
-      self.scanWavelength += self.scanParams["stepSize"]
-      await self.scanNext()
+  #   if self.scanParams["measureAblationOff"]:
+  #     self.ablationTab.stopButton.click()
+  #     self.TDCGUI.scanToggler.click()
+  #     try:
+  #       await self.make_sleep_task(waitTime)
+  #     except asyncio.CancelledError:
+  #       print("Scan interrupted during sleep.")
+  #       self.stopWavelengthScan()
+  #       return
+  #     #await asyncio.sleep(waitTime)## Wait for the measurement to finish
+  #     self.TDCGUI.scanToggler.click()
+  #     self.ablationTab.lampActivationButton.click() #turn ablation back on for the next measurement
+    
+  #   if self.scanParams["stepSize"]+self.scanWavelength > self.scanParams["endWL"]:
+  #     print("\nScan finished.\n")
+  #     self.stopWavelengthScan()
+  #     pass #scan over
+  #   else:
+  #     self.scanWavelength += self.scanParams["stepSize"]
+  #     await self.scanNext()
 
   def stopWavelengthScan(self):
     #self.scanTimer.stop() #TODO: doesnt always stop the scan
@@ -481,6 +536,7 @@ class BigGUI(QMainWindow):
       except: pass
       print('No scan was in progress')
     self.ui.labelScanStatus.setText("Scan Status: OFF")
+    self.ui.pushButtonStartScan.setEnabled(True)
     
     ### Re-enable scan GUI elements
 
