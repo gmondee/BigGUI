@@ -131,6 +131,11 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TPG261 Vacuum Gauge Monitor")
+        self.logPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logs", "Pressure_"+time.strftime('%m_%d_%Y_%H-%M-%S')+".txt")
+        with open(self.logPath, 'w') as f:
+            f.write("Time\t\tPressure\n")
+        self.lastUpdateTime = 0 #dummy timestamp so we don't update too often
+        self.updatePeriodSeconds = 1 #how often, in seconds, to record a new data point in the log file
         # self.setMinimumSize(600, 400)
 
         # UI Elements
@@ -252,6 +257,7 @@ class MainWindow(QMainWindow):
         if status!=0:
             print("Pfeiffer: Gauge status not 0/OK:",status)
         maxP = pressure
+        self.updateLog(current_time, pressure)
         if maxP>self.pressureThreshold:
             if not self.alertSent and not self.holdTimerActivate:
                 now=time.time()
@@ -266,6 +272,15 @@ class MainWindow(QMainWindow):
     def update_plot(self):
         if self.pressureBuffer and self.timeBuffer:
             self.curve.setData(list(self.timeBuffer), list(self.pressureBuffer))
+    
+    def updateLog(self, newT, newP):
+        try:
+            if newT-self.lastUpdateTime>self.updatePeriodSeconds:
+                with open(self.logPath, "a") as logf:
+                    logf.write(f'{time.strftime("%m_%d_%H:%M:%S")}\t{newP}\n')
+                self.lastUpdateTime=newT
+        except Exception as E:
+            print("Pfeiffer: Failed to update log file.",E)
 
     def show_error(self, message):
         self.stop_reading()
