@@ -443,11 +443,12 @@ class BigGUI(QMainWindow):
       while self.scanningActive and self.scanWavelength <= self.scanParams["endWL"]:
 
         if not skipLaserSetup:
-          skipLaserSetup=False
           self.ui.doubleSpinBoxSetOPOWavelength.setValue(self.scanWavelength)
           self.ui.pushButtonOPOSet.click()  # Set the initial wavelength
           self.ui.pushButtonStartLaser.click()  # Start the OPO
+          print("wavelength set")
           await asyncio.sleep(1.5)  # Let OPO adjust before starting
+        skipLaserSetup=False
 
         waitTime = int(1 / self.frequency * self.scanParams["pulsesPerStep"])
         print(f"[{datetime.datetime.now()}] Starting data collection at {self.scanWavelength:.2f} nm for {waitTime} seconds.")

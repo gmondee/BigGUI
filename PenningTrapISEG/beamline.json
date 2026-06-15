@@ -3,74 +3,74 @@
         "Accelerator": {
             "GUI Number": 0,
             "Channel": 0,
-            "Set Voltage": 370.0,
+            "Set Voltage": 10.0,
             "State": "Off"
         },
         "Quadrupole Lens Front": {
             "GUI Number": 1,
             "Channel": 2,
             "Set Voltage": 0.0,
-            "State": "Off"
+            "State": "On"
         },
         "Quadrupole Front Left": {
             "GUI Number": 2,
             "Channel": 200,
-            "Set Voltage": 650.0,
-            "State": "Off"
+            "Set Voltage": 50.0,
+            "State": "On"
         },
         "Quadrupole Front Right": {
             "GUI Number": 3,
             "Channel": 4,
-            "Set Voltage": 99.0,
-            "State": "Off"
+            "Set Voltage": 10.0,
+            "State": "On"
         },
         "Quadrupole Lens Left": {
             "GUI Number": 4,
             "Channel": 1,
-            "Set Voltage": 0.0,
+            "Set Voltage": 20.0,
             "State": "Off"
         },
         "Quadrupole Back Right": {
             "GUI Number": 5,
             "Channel": 5,
-            "Set Voltage": 650.0,
-            "State": "Off"
+            "Set Voltage": 50.0,
+            "State": "On"
         },
         "Quadrupole Back Left": {
             "GUI Number": 6,
             "Channel": 3,
             "Set Voltage": 89.0,
-            "State": "Off"
+            "State": "On"
         },
         "Lens Bottom": {
             "GUI Number": 7,
             "Channel": 113,
             "Set Voltage": 11.0,
-            "State": "Off"
+            "State": "On"
         },
         "Lens Right": {
             "GUI Number": 8,
             "Channel": 115,
             "Set Voltage": 15.0,
-            "State": "Off"
+            "State": "On"
         },
         "Lens Upper": {
             "GUI Number": 9,
             "Channel": 111,
             "Set Voltage": 12.0,
-            "State": "Off"
+            "State": "On"
         },
         "Lens Left": {
             "GUI Number": 10,
-            "Channel": 114,
-            "Set Voltage": 17.0,
-            "State": "Off"
+            "Channel": 202,
+            "Set Voltage": 500.0,
+            "State": "On"
         },
         "MagneTOF": {
             "GUI Number": 11,
             "Channel": 201,
-            "Set Voltage": 2200.0,
-            "State": "Off"
+            "Set Voltage": 2160.0,
+            "State": "On"
         },
         "Pulse Valve": {
             "GUI Number": 12,
